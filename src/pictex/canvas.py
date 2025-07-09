@@ -37,12 +37,12 @@ class Canvas:
         self.style.color = self.__build_color(color)
         return self
 
-    def shadow(self, offset: tuple[float, float], blur_radius: float, color: str | SolidColor) -> Canvas:
+    def add_shadow(self, offset: tuple[float, float], blur_radius: float, color: str | SolidColor) -> Canvas:
         shadow_color = self.__build_color(color)
         self.style.shadows.append(Shadow(offset, blur_radius, shadow_color))
         return self
     
-    def box_shadow(self, offset: tuple[float, float], blur_radius: float, color: str | SolidColor) -> Canvas:
+    def add_box_shadow(self, offset: tuple[float, float], blur_radius: float, color: str | SolidColor) -> Canvas:
         shadow_color = self.__build_color(color)
         self.style.box_shadows.append(Shadow(offset, blur_radius, shadow_color))
         return self
