@@ -35,16 +35,24 @@ class SolidColor(PaintSource):
 
     @classmethod
     def from_hex(cls, hex_str: str) -> SolidColor:
-        """Creates a Color object from a hex string (e.g., '#RRGGBB' or '#RGB')."""
+        """Creates a Color object from a hex string (e.g., '#RRGGBB' or '#RGB' or '#RRGGBBAA')."""
         hex_str = hex_str.lstrip('#')
+        # RGB to RRGGBB
         if len(hex_str) == 3:
             hex_str = "".join(c * 2 for c in hex_str)
-        if len(hex_str) != 6:
-            raise ValueError("Invalid hex color format.")
-        
-        r, g, b = (int(hex_str[i:i+2], 16) for i in (0, 2, 4))
-        return cls(r, g, b)
 
+        # RRGGBBAA
+        if len(hex_str) == 8:
+            r, g, b, a = (int(hex_str[i:i+2], 16) for i in (0, 2, 4, 6))
+            return cls(r, g, b, a)
+        # RRGGBB
+        elif len(hex_str) == 6:
+            r, g, b = (int(hex_str[i:i+2], 16) for i in (0, 2, 4))
+            return cls(r, g, b)
+
+        else:
+            raise ValueError(f"Invalid hex color format: '{hex_str}'")
+        
     @classmethod
     def from_str(cls, value: str) -> SolidColor:
         """
