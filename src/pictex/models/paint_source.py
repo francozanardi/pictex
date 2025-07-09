@@ -1,4 +1,3 @@
-# src/glyphcraft/models/paint_source.py
 from abc import ABC, abstractmethod
 import skia
 
