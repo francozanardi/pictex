@@ -1,3 +1,10 @@
+"""
+pictex: A Python library for creating beautifully styled text images.
+
+This package provides a simple, fluent API to generate images from text,
+with powerful styling options like gradients, shadows, and custom fonts.
+"""
+
 import logging
 
 logger = logging.getLogger("pictex")

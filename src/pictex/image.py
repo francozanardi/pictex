@@ -11,14 +11,23 @@ class Image:
     or convert to other popular formats like NumPy arrays or Pillow images.
     """
     def __init__(self, skia_image: skia.Image, content_box: Box):
+        """
+        Initializes the Image wrapper. This is typically done by `Canvas.render()`.
+        
+        Args:
+            skia_image: The underlying `skia.Image` object.
+            content_box: The calculated bounding box of the content area.
+        """
         self._skia_image = skia_image
         self._content_box = content_box
 
     @property
     def content_box(self) -> Box:
         """
-        The bounding box of the content (text + padding), relative to the top-left corner of the final image.
-        Returns a Box(x, y, width, height) object.
+        The bounding box of the content (text + padding), relative to the image's top-left.
+        
+        Returns:
+            A `Box` object with x, y, width, and height attributes.
         """
         return self._content_box
 
