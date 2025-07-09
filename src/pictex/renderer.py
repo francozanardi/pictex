@@ -4,7 +4,7 @@ import struct
 from dataclasses import dataclass
 from typing import Optional
 
-from .models import Style, Alignment, FontStyle, DecorationLine
+from .models import Style, Alignment, FontStyle, DecorationLine, Shadow
 from . import logger
 
 @dataclass
@@ -145,16 +145,15 @@ class SkiaRenderer:
         full_bounds = skia.Rect(background_rect.left(), background_rect.top(), background_rect.right(), background_rect.bottom())
         full_bounds.join(text_bounds) # it only makes sense if padding is negative
         
-        if style.shadow:
-            shadow_filter = skia.ImageFilters.DropShadow(
-                dx=style.shadow.offset[0], dy=style.shadow.offset[1],
-                sigmaX=style.shadow.blur_radius, sigmaY=style.shadow.blur_radius,
-                color=skia.Color(0,0,0)
-            )
+        shadow_filter = self._create_composite_shadow_filter(style.shadows)
+        if shadow_filter:
             shadowed_text_bounds = shadow_filter.computeFastBounds(text_bounds)
-            
-            # This ensures both padding and the shadow are fully visible.
             full_bounds.join(shadowed_text_bounds)
+
+        box_shadow_filter = self._create_composite_shadow_filter(style.box_shadows)
+        if box_shadow_filter:
+            shadowed_bg_bounds = box_shadow_filter.computeFastBounds(background_rect)
+            full_bounds.join(shadowed_bg_bounds)
 
         draw_origin = (-full_bounds.left(), -full_bounds.top())
 
@@ -169,26 +168,38 @@ class SkiaRenderer:
         bg_paint = skia.Paint(AntiAlias=True)
         style.background.color.apply_to_paint(bg_paint, metrics.background_rect)
 
+        shadow_filter = self._create_composite_shadow_filter(style.box_shadows)
+        if shadow_filter:
+            bg_paint.setImageFilter(shadow_filter)
+
         radius = style.background.corner_radius
         if radius > 0:
             canvas.drawRoundRect(metrics.background_rect, radius, radius, bg_paint)
         else:
             canvas.drawRect(metrics.background_rect, bg_paint)
 
-    def _draw_shadow(self, text_paint: skia.Paint, style: Style) -> None:
-        if not style.shadow:
-            return
-        
-        text_paint.setImageFilter(
-            skia.ImageFilters.DropShadow(
-                dx=style.shadow.offset[0], dy=style.shadow.offset[1],
-                sigmaX=style.shadow.blur_radius, sigmaY=style.shadow.blur_radius,
+    def _create_composite_shadow_filter(self, shadows: list[Shadow]) -> Optional[skia.ImageFilter]:
+        if len(shadows) == 0:
+            return None
+
+        skia_shadow_filters = []
+        for shadow in shadows:
+            skia_shadow_filters.append(skia.ImageFilters.DropShadow(
+                dx=shadow.offset[0], dy=shadow.offset[1],
+                sigmaX=shadow.blur_radius, sigmaY=shadow.blur_radius,
                 color=skia.Color(
-                    style.shadow.color.r, style.shadow.color.g,
-                    style.shadow.color.b, style.shadow.color.a
+                    shadow.color.r, shadow.color.g,
+                    shadow.color.b, shadow.color.a
                 )
-            )
-        )
+            ))
+
+        return skia.ImageFilters.Merge(skia_shadow_filters)
+
+    def _draw_shadow(self, text_paint: skia.Paint, style: Style) -> None:
+        filter = self._create_composite_shadow_filter(style.shadows)
+        if not filter:
+            return
+        text_paint.setImageFilter(filter)
 
     def _draw_outline_stroke(self, style: Style, metrics: RenderMetrics) -> Optional[skia.Paint]:
         if not style.outline_stroke:

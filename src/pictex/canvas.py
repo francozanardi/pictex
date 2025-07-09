@@ -39,7 +39,12 @@ class Canvas:
 
     def shadow(self, offset: tuple[float, float], blur_radius: float, color: str | Color) -> Canvas:
         shadow_color = self.__build_color(color)
-        self.style.shadow = Shadow(offset, blur_radius, shadow_color)
+        self.style.shadows.append(Shadow(offset, blur_radius, shadow_color))
+        return self
+    
+    def box_shadow(self, offset: tuple[float, float], blur_radius: float, color: str | Color) -> Canvas:
+        shadow_color = self.__build_color(color)
+        self.style.box_shadows.append(Shadow(offset, blur_radius, shadow_color))
         return self
     
     def outline_stroke(self, width: float, color: str | PaintSource) -> Canvas:
