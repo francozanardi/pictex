@@ -2,9 +2,10 @@ import skia
 import os
 import struct
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Tuple
+import numpy as np
 
-from .models import Style, Alignment, FontStyle, DecorationLine, Shadow
+from .models import Style, Alignment, FontStyle, DecorationLine, Shadow, CropMode, Box
 from . import logger
 
 @dataclass
@@ -16,14 +17,14 @@ class RenderMetrics:
     draw_origin: tuple[float, float]
 
 class SkiaRenderer:
-    """Handles the actual drawing logic using Skia."""
+    """Handles the drawing logic using Skia."""
 
-    def render(self, text: str, style: Style) -> skia.Image:
+    def render(self, text: str, style: Style, crop_mode: CropMode) -> Tuple[skia.Image, Box]:
         """Renders the text with the given style onto a perfectly sized Skia surface."""
         font = self._create_font(style)
         font.setSubpixel(True)
 
-        metrics = self._calculate_metrics(text, font, style)
+        metrics = self._calculate_metrics(text, font, style, crop_mode)
         canvas_width = int(metrics.bounds.width())
         canvas_height = int(metrics.bounds.height())
         if canvas_width <= 0 or canvas_height <= 0:
@@ -45,7 +46,8 @@ class SkiaRenderer:
         self._draw_text(text, canvas, text_paint, outline_stroke_paint, font, style, metrics)
         self._draw_decorations(text, canvas, font, style, metrics)
         
-        return surface.makeImageSnapshot()
+        final_image = surface.makeImageSnapshot()
+        return self._post_process_image(final_image, metrics, crop_mode)
     
     def _create_font(self, style: Style) -> skia.Font:
         font_path_or_name = style.font.family
@@ -96,7 +98,7 @@ class SkiaRenderer:
         
         return skia.Font(typeface, style.font.size)
 
-    def _calculate_metrics(self, text: str, font: skia.Font, style: Style) -> RenderMetrics:
+    def _calculate_metrics(self, text: str, font: skia.Font, style: Style, crop_mode: CropMode) -> RenderMetrics:
         """
         Calculates all necessary geometric properties for rendering.
         This is the core layout engine.
@@ -145,15 +147,16 @@ class SkiaRenderer:
         full_bounds = skia.Rect(background_rect.left(), background_rect.top(), background_rect.right(), background_rect.bottom())
         full_bounds.join(text_bounds) # it only makes sense if padding is negative
         
-        shadow_filter = self._create_composite_shadow_filter(style.shadows)
-        if shadow_filter:
-            shadowed_text_bounds = shadow_filter.computeFastBounds(text_bounds)
-            full_bounds.join(shadowed_text_bounds)
+        if crop_mode != CropMode.CONTENT_BOX:
+            shadow_filter = self._create_composite_shadow_filter(style.shadows)
+            if shadow_filter:
+                shadowed_text_bounds = shadow_filter.computeFastBounds(text_bounds)
+                full_bounds.join(shadowed_text_bounds)
 
-        box_shadow_filter = self._create_composite_shadow_filter(style.box_shadows)
-        if box_shadow_filter:
-            shadowed_bg_bounds = box_shadow_filter.computeFastBounds(background_rect)
-            full_bounds.join(shadowed_bg_bounds)
+            box_shadow_filter = self._create_composite_shadow_filter(style.box_shadows)
+            if box_shadow_filter:
+                shadowed_bg_bounds = box_shadow_filter.computeFastBounds(background_rect)
+                full_bounds.join(shadowed_bg_bounds)
 
         draw_origin = (-full_bounds.left(), -full_bounds.top())
 
@@ -289,3 +292,41 @@ class SkiaRenderer:
             return (block_width - line_width) / 2
         
         return 0 # Alignment.LEFT
+    
+    def _post_process_image(self, image: skia.Image, metrics: RenderMetrics, crop_mode: CropMode) -> Tuple[skia.Image, Box]:
+        bg_rect = metrics.background_rect
+        content_rect = skia.Rect.MakeLTRB(bg_rect.left(), bg_rect.top(), bg_rect.right(), bg_rect.bottom())
+        content_rect.offset(metrics.draw_origin)
+        if crop_mode == CropMode.SMART:
+            crop_rect = self._get_trim_rect(image)
+            if crop_rect:
+                image = image.makeSubset(crop_rect)
+                content_rect.offset(-crop_rect.left(), -crop_rect.top())
+        
+        content_box = Box(
+            x=int(content_rect.left()),
+            y=int(content_rect.top()),
+            width=int(content_rect.width()),
+            height=int(content_rect.height())
+        )
+
+        return (image, content_box)
+
+    def _get_trim_rect(self, image: skia.Image) -> Optional[skia.Rect]:
+        """
+        Crops the image by removing transparent borders.
+        """
+        width, height = image.width(), image.height()
+        if width == 0 or height == 0:
+            return None
+        
+        pixels = np.frombuffer(image.tobytes(), dtype=np.uint8).reshape((height, width, 4))
+        alpha_channel = pixels[:, :, 3]
+        coords = np.argwhere(alpha_channel > 0)
+        if coords.size == 0:
+            # Image is fully transparent
+            return None
+
+        y_min, x_min = coords.min(axis=0)
+        y_max, x_max = coords.max(axis=0)
+        return skia.IRect.MakeLTRB(x_min, y_min, x_max + 1, y_max + 1)

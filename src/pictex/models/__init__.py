@@ -6,3 +6,5 @@ from .paint_source import PaintSource
 from .color import Color
 from .linear_gradient import LinearGradient
 from .decoration import DecorationLine, TextDecoration
+from .crop import CropMode
+from .box import Box

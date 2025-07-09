@@ -2,7 +2,7 @@
 from __future__ import annotations
 from typing import Optional
 
-from .models import Style, Color, Shadow, Alignment, FontWeight, FontStyle, TextDecoration, DecorationLine, PaintSource, OutlineStroke
+from .models import *
 from .renderer import SkiaRenderer
 from .image import Image
 
@@ -91,15 +91,19 @@ class Canvas:
         self.style.alignment = alignment if isinstance(alignment, Alignment) else Alignment(alignment)
         return self
     
-    def render(self, text: str) -> Image:
+    def render(self, text: str, crop_mode: CropMode = CropMode.NONE) -> Image:
         """
         Renders the image and returns a `Image` object.
         
         Args:
             text: Text to render.
+            crop_mode: The cropping strategy to use for the final canvas.
+                  - SMART: Tightly crops to visible pixels.
+                  - CONTENT_BOX: Crops to the text + padding box.
+                  - NONE: No cropping, includes all effect boundaries. (Default)
         """
-        skia_image = self._renderer.render(text, self.style)
-        return Image(skia_image)
+        skia_image, content_box = self._renderer.render(text, self.style, crop_mode)
+        return Image(skia_image, content_box)
 
     def __build_color(self, color: str | PaintSource) -> PaintSource:
         return Color.from_str(color) if isinstance(color, str) else color

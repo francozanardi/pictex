@@ -1,6 +1,7 @@
 from __future__ import annotations
 import skia
 import numpy as np
+from .models import Box
 
 class Image:
     """
@@ -9,8 +10,17 @@ class Image:
     This class provides convenient methods to access image data, save to a file,
     or convert to other popular formats like NumPy arrays or Pillow images.
     """
-    def __init__(self, skia_image: skia.Image):
+    def __init__(self, skia_image: skia.Image, content_box: Box):
         self._skia_image = skia_image
+        self._content_box = content_box
+
+    @property
+    def content_box(self) -> Box:
+        """
+        The bounding box of the content (text + padding), relative to the top-left corner of the final image.
+        Returns a Box(x, y, width, height) object.
+        """
+        return self._content_box
 
     @property
     def width(self) -> int:

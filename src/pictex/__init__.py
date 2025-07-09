@@ -24,4 +24,6 @@ __all__ = [
     "DecorationLine",
     "TextDecoration",
     "Image",
+    "CropMode",
+    "Box",
 ]
