@@ -4,6 +4,7 @@ from typing import Optional
 
 from .models import Style, Color, Shadow, Alignment, FontWeight, FontStyle, TextDecoration, DecorationLine, PaintSource, OutlineStroke
 from .renderer import SkiaRenderer
+from .image import Image
 
 class Canvas:
     """
@@ -90,9 +91,15 @@ class Canvas:
         self.style.alignment = alignment if isinstance(alignment, Alignment) else Alignment(alignment)
         return self
     
-    def render(self, text: str):
-        """Renders the image and returns a Skia Image object."""
-        return self._renderer.render(text, self.style)
+    def render(self, text: str) -> Image:
+        """
+        Renders the image and returns a `Image` object.
+        
+        Args:
+            text: Text to render.
+        """
+        skia_image = self._renderer.render(text, self.style)
+        return Image(skia_image)
 
     def __build_color(self, color: str | PaintSource) -> PaintSource:
         return Color.from_str(color) if isinstance(color, str) else color
