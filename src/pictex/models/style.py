@@ -20,6 +20,6 @@ class Style:
     shadows: list[Shadow] = field(default_factory=list)
     box_shadows: list[Shadow] = field(default_factory=list)
     outline_stroke: Optional[OutlineStroke] = None
-    padding: tuple[float, float, float, float] = (5, 5, 5, 5) # Top, Right, Bottom, Left
+    padding: tuple[float, float, float, float] = (10, 10, 10, 10) # Top, Right, Bottom, Left
     background: Background = field(default_factory=Background)
     decorations: list[TextDecoration] = field(default_factory=list)

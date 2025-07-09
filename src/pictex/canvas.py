@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional
+from typing import Optional, overload, Union
 
 from .models import *
 from .renderer import SkiaRenderer
@@ -66,8 +66,26 @@ class Canvas:
         )
         return self
 
-    def padding(self, left: float, top: float, right: float, bottom: float) -> Canvas:
-        self.style.padding = (left, top, right, bottom)
+    @overload
+    def padding(self, all: float) -> Canvas: ...
+    @overload
+    def padding(self, vertical: float, horizontal: float) -> Canvas: ...
+    @overload
+    def padding(self, left: float, top: float, right: float, bottom: float) -> Canvas: ...
+    def padding(self, *args: Union[float, int]) -> "Canvas":
+        if len(args) == 1:
+            value = float(args[0])
+            self.style.padding = (value, value, value, value)
+        elif len(args) == 2:
+            vertical = float(args[0])
+            horizontal = float(args[1])
+            self.style.padding = (horizontal, vertical, horizontal, vertical)
+        elif len(args) == 4:
+            left, top, right, bottom = map(float, args)
+            self.style.padding = (left, top, right, bottom)
+        else:
+            raise TypeError(f"padding() takes 1, 2 or 4 arguments but got {len(args)}")
+        
         return self
 
     def background_color(self, color: str | PaintSource) -> Canvas:
