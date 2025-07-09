@@ -1,0 +1,32 @@
+[project]
+name = "pictex"
+version = "0.1.0"
+description = "A library to generate stylized text images."
+authors = [
+    { name = "Franco Zanardi", email = "francozanardi97@gmail.com" },
+]
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "skia-python",
+]
+
+[project.urls]
+Homepage = "https://github.com/francozanardi/pictex"
+Repository = "https://github.com/francozanardi/pictex"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+sources = ["src"]
