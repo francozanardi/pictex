@@ -80,7 +80,7 @@ class Canvas:
     @overload
     def padding(self, vertical: float, horizontal: float) -> Canvas: ...
     @overload
-    def padding(self, left: float, top: float, right: float, bottom: float) -> Canvas: ...
+    def padding(self, top: float, right: float, bottom: float, left: float) -> Canvas: ...
     def padding(self, *args: Union[float, int]) -> Canvas:
         """
         Sets padding around the text. Supports 1, 2, or 4 values like CSS.
@@ -98,10 +98,10 @@ class Canvas:
         elif len(args) == 2:
             vertical = float(args[0])
             horizontal = float(args[1])
-            self._style.padding = (horizontal, vertical, horizontal, vertical)
+            self._style.padding = (vertical, horizontal, vertical, horizontal)
         elif len(args) == 4:
-            left, top, right, bottom = map(float, args)
-            self._style.padding = (left, top, right, bottom)
+            top, right, bottom, left = map(float, args)
+            self._style.padding = (top, right, bottom, left)
         else:
             raise TypeError(f"padding() takes 1, 2 or 4 arguments but got {len(args)}")
         
