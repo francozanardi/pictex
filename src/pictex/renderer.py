@@ -54,7 +54,7 @@ class SkiaRenderer:
             font_style = skia.FontStyle(
                 weight=style.font.weight,
                 width=skia.FontStyle.kNormal_Width,
-                slant=style.font.slant.to_skia_slant()
+                slant=style.font.style.to_skia_slant()
             )
             typeface = skia.Typeface(font_path_or_name, font_style)
             actual_font_family = typeface.getFamilyName()
@@ -76,8 +76,8 @@ class SkiaRenderer:
             # It's a variable font
             variations = {
                 'wght': float(style.font.weight),
-                'ital': 1.0 if style.font.slant == FontStyle.ITALIC else 0.0,
-                'slnt': -12.0 if style.font.slant == FontStyle.OBLIQUE else 0.0,
+                'ital': 1.0 if style.font.style == FontStyle.ITALIC else 0.0,
+                'slnt': -12.0 if style.font.style == FontStyle.OBLIQUE else 0.0,
             }
             to_four_char_code = lambda tag: struct.unpack('!I', tag.encode('utf-8'))[0]
             available_axes_tags = { axis.tag for axis in typeface.getVariationDesignParameters() }

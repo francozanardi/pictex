@@ -45,4 +45,4 @@ class Font:
     line_height: float = 1.0  # Multiplier for the font size, like in CSS
 
     weight: FontWeight = FontWeight.NORMAL
-    slant: FontStyle = FontStyle.NORMAL
+    style: FontStyle = FontStyle.NORMAL

@@ -30,7 +30,7 @@ class Canvas:
         return self
     
     def font_style(self, style: FontStyle | str) -> Canvas:
-        self.style.font.slant = style if isinstance(style, FontStyle) else FontStyle(style)
+        self.style.font.style = style if isinstance(style, FontStyle) else FontStyle(style)
         return self
 
     def color(self, color: str | PaintSource) -> Canvas:
