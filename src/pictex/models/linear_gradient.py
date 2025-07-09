@@ -3,7 +3,7 @@ from typing import Sequence, Optional
 import skia
 
 from .paint_source import PaintSource
-from .color import Color
+from .color import SolidColor
 
 @dataclass
 class LinearGradient(PaintSource):
@@ -55,17 +55,17 @@ class LinearGradient(PaintSource):
             stops=[0.0, 0.2, 1.0] # 'cyan' is positioned 20% along the gradient
         )
     """
-    colors: Sequence[Color]
+    colors: Sequence[SolidColor]
     stops: Optional[Sequence[float]] = None
     start_point: tuple[float, float] = (0.0, 0.5)
     end_point: tuple[float, float] = (1.0, 0.5)
 
     def __post_init__(self):
         self.colors = [
-            Color.from_str(c) if isinstance(c, str) else c
+            SolidColor.from_str(c) if isinstance(c, str) else c
             for c in self.colors
         ]
-        if not all(isinstance(c, Color) for c in self.colors):
+        if not all(isinstance(c, SolidColor) for c in self.colors):
              raise TypeError("All items in 'colors' must be Color objects or valid color strings.")
 
     def apply_to_paint(self, paint: skia.Paint, bounds: skia.Rect) -> None:

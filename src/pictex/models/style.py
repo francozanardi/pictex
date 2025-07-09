@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Optional
 
-from .color import Color
+from .color import SolidColor
 from .effects import Shadow, OutlineStroke
 from .typography import Font, Alignment
 from .background import Background
@@ -16,7 +16,7 @@ class Style:
     """
     font: Font = field(default_factory=Font)
     alignment: Alignment = Alignment.LEFT
-    color: PaintSource = field(default_factory=lambda: Color(0, 0, 0))
+    color: PaintSource = field(default_factory=lambda: SolidColor(0, 0, 0))
     shadows: list[Shadow] = field(default_factory=list)
     box_shadows: list[Shadow] = field(default_factory=list)
     outline_stroke: Optional[OutlineStroke] = None

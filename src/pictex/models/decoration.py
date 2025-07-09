@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
-from .color import Color
+from .color import SolidColor
 
 class DecorationLine(Enum):
     """The type of line to draw for the decoration."""
@@ -14,5 +14,5 @@ class DecorationLine(Enum):
 class TextDecoration:
     """Represents a line drawn over, under, or through the text."""
     line: DecorationLine
-    color: Optional[Color] = None  # If None, use the text's color.
+    color: Optional[SolidColor] = None  # If None, use the text's color.
     thickness: float = 4.0

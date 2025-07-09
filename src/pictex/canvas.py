@@ -38,12 +38,12 @@ class Canvas:
         self.style.color = self.__build_color(color)
         return self
 
-    def shadow(self, offset: tuple[float, float], blur_radius: float, color: str | Color) -> Canvas:
+    def shadow(self, offset: tuple[float, float], blur_radius: float, color: str | SolidColor) -> Canvas:
         shadow_color = self.__build_color(color)
         self.style.shadows.append(Shadow(offset, blur_radius, shadow_color))
         return self
     
-    def box_shadow(self, offset: tuple[float, float], blur_radius: float, color: str | Color) -> Canvas:
+    def box_shadow(self, offset: tuple[float, float], blur_radius: float, color: str | SolidColor) -> Canvas:
         shadow_color = self.__build_color(color)
         self.style.box_shadows.append(Shadow(offset, blur_radius, shadow_color))
         return self
@@ -106,4 +106,4 @@ class Canvas:
         return Image(skia_image, content_box)
 
     def __build_color(self, color: str | PaintSource) -> PaintSource:
-        return Color.from_str(color) if isinstance(color, str) else color
+        return SolidColor.from_str(color) if isinstance(color, str) else color

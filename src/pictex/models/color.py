@@ -26,7 +26,7 @@ NAMED_COLORS = {
 }
 
 @dataclass(frozen=True)
-class Color(PaintSource):
+class SolidColor(PaintSource):
     """Represents a solid RGBA color."""
     r: int
     g: int
@@ -34,7 +34,7 @@ class Color(PaintSource):
     a: int = 255
 
     @classmethod
-    def from_hex(cls, hex_str: str) -> Color:
+    def from_hex(cls, hex_str: str) -> SolidColor:
         """Creates a Color object from a hex string (e.g., '#RRGGBB' or '#RGB')."""
         hex_str = hex_str.lstrip('#')
         if len(hex_str) == 3:
@@ -46,7 +46,7 @@ class Color(PaintSource):
         return cls(r, g, b)
 
     @classmethod
-    def from_str(cls, value: str) -> Color:
+    def from_str(cls, value: str) -> SolidColor:
         """
         Creates a Color object from a string.
         Supports hex codes (e.g., '#ff0000') and named colors (e.g., 'red').
