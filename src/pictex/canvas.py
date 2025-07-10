@@ -2,8 +2,8 @@ from __future__ import annotations
 from typing import Optional, overload, Union
 
 from .models import *
-from .renderer import SkiaRenderer
 from .image import Image
+from .renderer import SkiaRenderer
 
 class Canvas:
     """
@@ -15,7 +15,6 @@ class Canvas:
     def __init__(self, style: Optional[Style] = None):
         """Initializes a new Canvas with an optional base style."""
         self._style = style if style is not None else Style()
-        self._renderer = SkiaRenderer()
 
     def font_family(self, family: str) -> Canvas:
         """Sets the font family or a path to a font file. Returns self for chaining."""
@@ -152,7 +151,8 @@ class Canvas:
         Returns:
             An `Image` object containing the rendered result.
         """
-        skia_image, content_box = self._renderer.render(text, self._style, crop_mode)
+        renderer = SkiaRenderer(self._style)
+        skia_image, content_box = renderer.render(text, crop_mode)
         return Image(skia_image, content_box)
 
     def __build_color(self, color: str | PaintSource) -> PaintSource:
