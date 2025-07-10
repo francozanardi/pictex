@@ -1,7 +1,21 @@
-# Pictex
+# PicTex
 
-A powerful Python library to generate beautifully styled text images, powered by Skia.
-It supports high-quality text rendering including custom fonts, shadows, strokes, and more.
+[![PyPI version](https://badge.fury.io/py/pictex.svg)](https://badge.fury.io/py/pictex)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A powerful Python library to create beautifully styled text images with a simple, fluent API. Powered by Skia.
+
+![PicTex](docs/assets/readme-1.png)
+
+**`PicTex`** makes it easy to generate styled text images for social media, video overlays, digital art, or any application where stylized text is needed. It abstracts away the complexity of graphics libraries, offering a declarative and chainable interface inspired by CSS.
+
+## Features
+
+-   **Fluent & Reusable API**: Build styles declaratively and reuse them.
+-   **Rich Styling**: Gradients, multiple shadows, outlines, and text decorations.
+-   **Advanced Typography**: Custom fonts (`.ttf`/`.otf`), font weight/style, line height, and alignment.
+-   **Flexible Output**: Save as PNG, or convert to NumPy arrays or Pillow images with ease.
+-   **High-Quality Rendering**: Powered by Google's Skia graphics engine.
 
 ## Installation
 
@@ -9,24 +23,49 @@ It supports high-quality text rendering including custom fonts, shadows, strokes
 pip install pictex
 ```
 
-## Usage
+## Quickstart
+
+Creating a stylized text image is as simple as building a `Canvas` and calling `.render()`.
 
 ```python
 from pictex import Canvas
 
-# The canvas is where the texts will be rendered, it holds the styles to be used
+# 1. Create a style template using the fluent API
 canvas = (
     Canvas()
-    .font_family("Roboto")
-    .font_size(96)
-    .color("#3498db")
-    .shadow(offset=(5, 5), blur_radius=4, color="#2980b9")
+    .font_family("path/to/font.ttf")
+    .font_size(60)
+    .color("white")
+    .padding(20)
+    .background_color(LinearGradient(["navy", "teal"]))
+    .background_radius(10)
+    .add_shadow(offset=(2, 2), blur_radius=3, color="black")
 )
 
-# Here we save a image with the text "Hello, world!"
+# 2. Render some text using the template
 image = canvas.render("Hello, world!")
-image.save("output.png")
 
-# Here we create and save another image with the same styles and the text "Another text"
-canvas.render("Another text").save("another.png") 
+# 3. Save or show the result
+image.save("hello.png")
+
 ```
+
+![Quickstart result](docs/assets/readme-2.png)
+
+## 📚 Dive Deeper
+
+For a complete guide on all features, including text decorations, advanced gradients, smart cropping, and more, check out our full documentation:
+
+-   [**Getting Started & Core Concepts**](docs/getting_started.md)
+-   [**Styling Guide: Colors & Gradients**](docs/colors.md)
+-   [**Styling Guide: Text & Fonts**](docs/text.md)
+-   [**Styling Guide: Containers & Effects**](docs/effects.md)
+-   API Reference (coming soon)
+
+## Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/francozanardi/pictex/issues).
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
