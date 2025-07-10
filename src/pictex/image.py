@@ -2,6 +2,7 @@ from __future__ import annotations
 import skia
 import numpy as np
 from .models import Box
+import os
 
 class Image:
     """
@@ -87,14 +88,31 @@ class Image:
         # Pillow works with RGBA arrays
         return PillowImage.fromarray(self.to_numpy(rgba=True))
 
-    def save(self, output_path: str) -> None:
+    def save(self, output_path: str, quality: int = 100) -> None:
         """
         Saves the image to a file. The format is inferred from the extension.
         
         Args:
             output_path: The path to save the output image (e.g., 'image.png').
+            quality: An integer from 0 to 100 indicating image quality. Used for lossy formats
+                     like JPEG and WebP. Ignored for PNG.
         """
-        self._skia_image.save(output_path)
+        ext = os.path.splitext(output_path)[1].lower()
+        format_map = {
+            ".png": skia.EncodedImageFormat.kPNG,
+            ".jpg": skia.EncodedImageFormat.kJPEG,
+            ".jpeg": skia.EncodedImageFormat.kJPEG,
+            ".webp": skia.EncodedImageFormat.kWEBP,
+        }
+        if ext not in format_map:
+            ext = "png"
+        fmt = format_map[ext]
+        data = self._skia_image.encodeToData(fmt, quality)
+        if data is None:
+            raise RuntimeError(f"Failed to encode image to format '{fmt}'")
+        
+        with open(output_path, "wb") as f:
+            f.write(data.bytes())
         
     def show(self) -> None:
         """
