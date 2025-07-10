@@ -196,7 +196,14 @@ class SkiaRenderer:
                 )
             ))
 
-        return skia.ImageFilters.Merge(skia_shadow_filters)
+        if len(skia_shadow_filters) == 1:
+            return skia_shadow_filters[0]
+
+        composite_filter = skia_shadow_filters[0]
+        for i in range(1, len(skia_shadow_filters)):
+            composite_filter = skia.ImageFilters.Compose(skia_shadow_filters[i], composite_filter)
+
+        return composite_filter
 
     def _draw_shadow(self, text_paint: skia.Paint, style: Style) -> None:
         filter = self._create_composite_shadow_filter(style.shadows)
