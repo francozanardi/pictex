@@ -12,7 +12,7 @@ The container is the box model around your text.
 
 ## Shadows: `add_shadow` and `add_box_shadow`
 
-`pictex` supports two types of shadows, and you can add multiple of each to create complex, layered effects.
+`PicTex` supports two types of shadows, and you can add multiple of each to create complex, layered effects.
 
 1.  **Text Shadow (`.add_shadow()`)**: A shadow applied directly to the text glyphs.
 2.  **Box Shadow (`.add_box_shadow()`)**: A shadow applied to the background container.

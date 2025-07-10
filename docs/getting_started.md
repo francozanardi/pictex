@@ -4,7 +4,7 @@ Welcome to the `PicTex` documentation! This guide will walk you through the core
 
 ## The Core Idea: Canvas and Image
 
-The two most important classes in `pictex` are `Canvas` and `Image`.
+The two most important classes in `PicTex` are `Canvas` and `Image`.
 
 1.  **`Canvas`**: Think of a `Canvas` as a **reusable style template**. You use its fluent methods (`.font_size()`, `.color()`, etc.) to build up a set of styling rules. You create a `Canvas` once and can use it many times.
 
@@ -26,7 +26,7 @@ image2.save("second.png")
 
 ## Smart Sizing and Cropping
 
-By default, `pictex` automatically calculates the smallest possible canvas size to fit your text and all its effects (like shadows). Sometimes, you may want more control. The `render()` method accepts a `crop_mode` argument:
+By default, `PicTex` automatically calculates the smallest possible canvas size to fit your text and all its effects (like shadows). Sometimes, you may want more control. The `render()` method accepts a `crop_mode` argument:
 
 -   `CropMode.NONE` (Default): The canvas will be large enough to include all effects, including the full extent of shadows.
 -   `CropMode.CONTENT_BOX`: The canvas will be cropped to the "content box" (the text area plus its padding). This is useful if you want to ignore shadows for layout purposes.
@@ -80,4 +80,4 @@ numpy_array_bgra = image.to_numpy()
 numpy_array_rgba = image.to_numpy(rgba=True)
 ```
 
-Now that you understand the basics, dive into the specific styling guides to see everything `pictex` can do!
+Now that you understand the basics, dive into the specific styling guides to see everything `PicTex` can do!
