@@ -1,6 +1,21 @@
 # CHANGELOG
 
-## v0.2.0 - 07/10/2025
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.2.1] - 2025-07-10
+
+### Features
+
+-   **Configurable Font Smoothing:** Added a `.font_smoothing()` method to the `Canvas` to control the text anti-aliasing strategy. This allows users to choose between `'subpixel'` (default, for maximum sharpness on LCDs) and `'standard'` (grayscale, for universal compatibility).
+
+### Fixes
+
+-   **Text Rendering Quality:** Resolved a major issue where text could appear aliased or pixelated. The new default font smoothing (`'subpixel'`) ensures crisp, high-quality text output out-of-the-box.
+
+## [0.2.0] - 2025-07-10
 
 ### Features
 
@@ -10,6 +25,6 @@
 
 -   **Modular Renderer:** The monolithic `SkiaRenderer` has been refactored into a modular `renderer` package. This greatly improves maintainability, testability, and code clarity.
 
-## v0.1.0 - 07/09/2025
+## [0.1.0] - 2025-07-09
 
 -   Initial release.
