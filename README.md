@@ -13,7 +13,8 @@ A powerful Python library to create beautifully styled text images with a simple
 
 -   **Fluent & Reusable API**: Build styles declaratively and reuse them.
 -   **Rich Styling**: Gradients, multiple shadows, outlines, and text decorations.
--   **Advanced Typography**: Custom fonts (`.ttf`/`.otf`), font weight/style, line height, and alignment.
+-   **Advanced Typography**: Custom fonts, variable fonts, line height, and alignment.
+-   **Automatic Font Fallback**: Seamlessly render emojis and special characters even if your main font doesn't support them.
 -   **Flexible Output**: Save as PNG, or convert to NumPy arrays or Pillow images with ease.
 -   **High-Quality Rendering**: Powered by Google's Skia graphics engine.
 
@@ -37,13 +38,13 @@ canvas = (
     .font_size(60)
     .color("white")
     .padding(20)
-    .background_color(LinearGradient(["navy", "teal"]))
+    .background_color(LinearGradient(["#2C3E50", "#FD746C"]))
     .background_radius(10)
     .add_shadow(offset=(2, 2), blur_radius=3, color="black")
 )
 
 # 2. Render some text using the template
-image = canvas.render("Hello, world!")
+image = canvas.render("Hello, PicTex! 🎨✨")
 
 # 3. Save or show the result
 image.save("hello.png")

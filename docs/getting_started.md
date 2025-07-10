@@ -24,43 +24,6 @@ image1.save("first.png")
 image2.save("second.png")
 ```
 
-## Smart Sizing and Cropping
-
-By default, `PicTex` automatically calculates the smallest possible canvas size to fit your text and all its effects (like shadows). Sometimes, you may want more control. The `render()` method accepts a `crop_mode` argument:
-
--   `CropMode.NONE` (Default): The canvas will be large enough to include all effects, including the full extent of shadows.
--   `CropMode.CONTENT_BOX`: The canvas will be cropped to the "content box" (the text area plus its padding). This is useful if you want to ignore shadows for layout purposes.
--   `CropMode.SMART`: A smart crop that trims all fully transparent pixels from the edges of the image. This is often the best choice for the tightest possible output.
-
-```python
-from pictex import Canvas, CropMode
-
-canvas = Canvas().font_size(100).add_shadow(offset=(10,10), blur_radius=20, color="white")
-canvas.background_color("blue")
-
-# Render with different crop modes
-img_none = canvas.render("Test", crop_mode=CropMode.NONE)
-img_smart = canvas.render("Test", crop_mode=CropMode.SMART)
-img_content_box = canvas.render("Test", crop_mode=CropMode.CONTENT_BOX)
-
-# We save them as JPG images to force a black background instead of transparent, so it's easier to see the difference
-img_none.save("test_none.jpg")
-img_smart.save("test_smart.jpg")
-img_content_box.save("test_content_box.jpg")
-```
-
-**`CropMode.NONE`** (default):
-
-![None crop result](assets/getting-started-1-none.jpg)
-
-**`CropMode.SMART`**:
-
-![Smart crop result](assets/getting-started-1-smart.jpg)
-
-**`CropMode.CONTENT_BOX`**:
-
-![Content-box crop result](assets/getting-started-1-cb.jpg)
-
 ## Working with the `Image` Object
 
 ```python
@@ -80,4 +43,18 @@ numpy_array_bgra = image.to_numpy()
 numpy_array_rgba = image.to_numpy(rgba=True)
 ```
 
-Now that you understand the basics, dive into the specific styling guides to see everything `PicTex` can do!
+## What's Next?
+
+You now understand the basic workflow of `PicTex`. The real power of the library lies in its rich styling capabilities. We recommend you explore the guides in the following order:
+
+1.  **[Text & Fonts](./text.md)**
+    *Learn how to use custom fonts, variable fonts, set weights and styles, and master the automatic font fallback system for emojis and special characters.*
+
+2.  **[Colors & Gradients](./colors.md)**
+    *Discover how to use solid colors and apply beautiful linear gradients to text, backgrounds, and even decorations.*
+
+3.  **[Containers & Effects](./effects.md)**
+    *Dive into creating backgrounds, padding, outlines, and adding depth with multiple text and box shadows.*
+
+4.  **[Smart Sizing & Cropping](./crop.md)**
+    *Take full control over the final image dimensions with different cropping strategies.*

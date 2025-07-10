@@ -2,9 +2,7 @@
 
 This guide covers all options related to fonts, typography, and text decorations.
 
-## Fonts
-
-### Font Family, Size, Weight, and Style
+## Font Family, Size, Weight, and Style
 
 You can use system-installed fonts by name or provide a path to a `.ttf` or `.otf` file.
 
@@ -24,7 +22,48 @@ canvas_system = (
 canvas_local = Canvas().font_family("assets/fonts/Inter-Variable.ttf").font_size(80)
 ```
 
-### Variable Fonts
+## Font Fallbacks and Emoji Support
+
+One of `PicTex`'s most powerful features is its automatic font fallback system. If your primary font doesn't support a specific character (like an emoji `✨` or a symbol `→`), `PicTex` will automatically search through a list of fallback fonts to find one that does.
+
+This means you can render complex, multi-lingual text and emojis without worrying about missing characters (often shown as `□`).
+
+### How It Works
+
+The fallback chain is:
+1.  Your primary font set with `.font_family()`.
+2.  Any custom fallback fonts you provide with `.font_fallbacks()`.
+3.  A list of default system emoji fonts (`Segoe UI Emoji` on Windows, `Apple Color Emoji` on macOS, `Noto Color Emoji` on Linux).
+
+### Providing Custom Fallbacks
+
+You can specify your own list of fallback fonts. This is useful if you are working with multiple languages and want to ensure a specific look.
+
+```python
+from pictex import Canvas
+
+# A font that doesn't support Japanese or emojis
+primary_font = "Lato-BoldItalic.ttf" 
+
+# A Japanese font
+japanese_font = "NotoSansJP-Regular.ttf"
+
+canvas = (
+    Canvas()
+    .font_family(primary_font)
+    .font_fallbacks(japanese_font)
+    .font_size(80)
+    .color("olive")
+    .padding(20)
+)
+
+text = "Hello, 世界 ✨"
+canvas.render(text).save("font_fallback_example.png")
+```
+
+![Font fallback result](assets/text-0.png)
+
+## Variable Fonts
 
 `PicTex` has support for **Variable Fonts**. If you provide a variable font file, it will automatically apply the `weight` and `style` settings to the font's variation axes (`wght`, `ital`, `slnt`).
 
@@ -48,7 +87,7 @@ canvas.render("Variable Font").save("variable_font.png")
 
 `FontWeight` can be an enum member (e.g., `FontWeight.BOLD`) or an integer from 100 to 900.
 
-### Multi-line Text and Alignment
+## Multi-line Text and Alignment
 
 `PicTex` fully supports multi-line text using newline characters (`\n`).
 
