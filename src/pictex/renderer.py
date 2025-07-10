@@ -16,15 +16,29 @@ class RenderMetrics:
     text_rect: skia.Rect
     draw_origin: tuple[float, float]
 
+@dataclass
+class TextRun:
+    """Represents a segment of text that can be rendered with a single font."""
+    text: str
+    font: skia.Font
+    width: float = 0.0
+
+@dataclass
+class Line:
+    """Represents a full line composed of multiple TextRuns."""
+    runs: list[TextRun]
+    width: float
+    bounds: skia.Rect
+
 class SkiaRenderer:
     """Handles the drawing logic using Skia."""
 
     def render(self, text: str, style: Style, crop_mode: CropMode) -> Tuple[skia.Image, Box]:
         """Renders the text with the given style onto a perfectly sized Skia surface."""
-        font = self._create_font(style)
-        font.setSubpixel(True)
 
-        metrics = self._calculate_metrics(text, font, style, crop_mode)
+        lines = self._shape_text_into_lines(text, style)
+
+        metrics = self._calculate_metrics(lines, style, crop_mode)
         canvas_width = int(metrics.bounds.width())
         canvas_height = int(metrics.bounds.height())
         if canvas_width <= 0 or canvas_height <= 0:
@@ -43,15 +57,13 @@ class SkiaRenderer:
 
         self._draw_shadow(text_paint, style)
         outline_stroke_paint = self._draw_outline_stroke(style, metrics)
-        self._draw_text(text, canvas, text_paint, outline_stroke_paint, font, style, metrics)
-        self._draw_decorations(text, canvas, font, style, metrics)
+        self._draw_text(lines, canvas, text_paint, outline_stroke_paint, style, metrics)
+        self._draw_decorations(lines, canvas, style, metrics)
         
         final_image = surface.makeImageSnapshot()
         return self._post_process_image(final_image, metrics, crop_mode)
     
-    def _create_font(self, style: Style) -> skia.Font:
-        font_path_or_name = style.font.family
-
+    def _create_font(self, style: Style, font_path_or_name: str) -> skia.Font:
         if not os.path.exists(font_path_or_name):
             font_style = skia.FontStyle(
                 weight=style.font.weight,
@@ -65,7 +77,9 @@ class SkiaRenderer:
                     f"Font '{font_path_or_name}' not found in the system. "
                     f"Pictex is falling back to '{actual_font_family}'"
                 )
-            return skia.Font(typeface, style.font.size)
+            font = skia.Font(typeface, style.font.size)
+            font.setSubpixel(True)
+            return font
         
         typeface = skia.Typeface.MakeFromFile(font_path_or_name)
         if not typeface:
@@ -96,36 +110,36 @@ class SkiaRenderer:
                 font_args.setVariationDesignPosition(variation_position)
                 typeface = typeface.makeClone(font_args)
         
-        return skia.Font(typeface, style.font.size)
+        font = skia.Font(typeface, style.font.size)
+        font.setSubpixel(True)
+        return font
 
-    def _calculate_metrics(self, text: str, font: skia.Font, style: Style, crop_mode: CropMode) -> RenderMetrics:
+    def _calculate_metrics(self, lines: list[Line], style: Style, crop_mode: CropMode) -> RenderMetrics:
         """
         Calculates all necessary geometric properties for rendering.
         This is the core layout engine.
         """
-        lines = text.split('\n')
-        font_metrics = font.getMetrics()
-        line_gap = style.font.line_height * style.font.size
+        line_gap = style.font.line_height * style.font.size if lines else 0
 
         current_y = 0
         text_bounds = skia.Rect.MakeEmpty()
         decorations_bounds = skia.Rect.MakeEmpty()
 
         for line in lines:
-            line_bounds = skia.Rect()
-            line_width = font.measureText(line, bounds=line_bounds)
-            
+            line_bounds = skia.Rect.MakeLTRB(line.bounds.left(), line.bounds.top(), line.bounds.right(), line.bounds.bottom())
             line_bounds.offset(0, current_y)
             text_bounds.join(line_bounds)
 
             for deco in style.decorations:
+                primary_font = self._create_font(style, style.font.family)
+                font_metrics = primary_font.getMetrics()
                 line_y_offset = self._decoration_line_to_line_y_offset(deco.line, font_metrics)
                 line_y = current_y + line_y_offset
                 half_thickness = deco.thickness / 2
                 deco_rect = skia.Rect.MakeLTRB(
-                    0, 
+                    line_bounds.left(), 
                     line_y - half_thickness, 
-                    line_width, 
+                    line_bounds.right(), 
                     line_y + half_thickness
                 )
                 decorations_bounds.join(deco_rect)
@@ -166,6 +180,85 @@ class SkiaRenderer:
             text_rect=text_bounds,
             draw_origin=draw_origin
         )
+    
+    def _shape_text_into_lines(self, text: str, style: Style) -> list[Line]:
+        """
+        Breaks a text string into lines and runs, applying font fallbacks.
+        This is the core of the text shaping and fallback logic.
+        """
+        primary_font = self._create_font(style, style.font.family)
+        fallback_fonts = [self._create_font(style, fb) for fb in style.font_fallbacks]
+        
+        emoji_fallbacks = [
+            skia.Typeface("Segoe UI Emoji"), # Windows
+            skia.Typeface("Apple Color Emoji"), # macOS
+            skia.Typeface("Noto Color Emoji"), # Linux
+        ]
+        fallback_typefaces = [f.getTypeface() for f in fallback_fonts] + [tf for tf in emoji_fallbacks if tf]
+        
+        shaped_lines: list[Line] = []
+        for line_text in text.split('\n'):
+            if not line_text:
+                # Handle empty lines by creating a placeholder with correct height
+                line = Line(runs=[], width=0, bounds=skia.Rect.MakeEmpty())
+                font_metrics = primary_font.getMetrics()
+                line.bounds = skia.Rect.MakeLTRB(0, font_metrics.fAscent, 0, font_metrics.fDescent)
+                shaped_lines.append(line)
+                continue
+
+            current_run_text = ""
+            current_font = primary_font
+            line_runs: list[TextRun] = []
+
+            for char in line_text:
+                glyph_id = current_font.unicharToGlyph(ord(char))
+                
+                if glyph_id != 0:
+                    # Character is supported, continue the current run
+                    current_run_text += char
+                    continue
+
+                # Glyph not found in current font
+                if current_run_text:
+                    run = TextRun(current_run_text, current_font)
+                    line_runs.append(run)
+                
+                # Find a new font that supports this character
+                found_fallback = False
+                for typeface in fallback_typefaces:
+                    if typeface.unicharToGlyph(ord(char)) != 0:
+                        # Found a fallback!
+                        current_font = primary_font.makeWithSize(primary_font.getSize())
+                        current_font.setTypeface(typeface)
+                        found_fallback = True
+                        break
+                
+                if not found_fallback:
+                    current_font = primary_font
+
+                # If no fallback supports it, revert to the primary font
+                # which will render the '.notdef' (e.g., '□') glyph.
+                current_run_text = char
+            
+            # Add the last run
+            if current_run_text:
+                run = TextRun(current_run_text, current_font)
+                line_runs.append(run)
+
+            # Calculate widths for the completed line
+            line_width = 0
+            line_bounds = skia.Rect.MakeEmpty()
+            for run in line_runs:
+                run.width = run.font.measureText(run.text)
+                run_bounds = skia.Rect()
+                run.font.measureText(run.text, bounds=run_bounds)
+                run_bounds.offset(line_width, 0)
+                line_bounds.join(run_bounds)
+                line_width += run.width
+
+            shaped_lines.append(Line(runs=line_runs, width=line_width, bounds=line_bounds))
+            
+        return shaped_lines
     
     def _draw_background(self, canvas: skia.Canvas, style: Style, metrics: RenderMetrics) -> None:
         bg_paint = skia.Paint(AntiAlias=True)
@@ -225,64 +318,68 @@ class SkiaRenderer:
 
     def _draw_text(
             self,
-            text: str,
+            lines: list[Line],
             canvas: skia.Canvas,
             text_paint: skia.Paint,
             outline_paint: Optional[skia.Paint],
-            font: skia.Font,
             style: Style,
             metrics: RenderMetrics
         ) -> None:
-        lines = text.split('\n')
         line_gap = style.font.line_height * style.font.size
         current_y = 0
+        block_width = metrics.text_rect.width()
         
         for line in lines:
-            line_width = font.measureText(line)
-            draw_x = self._get_line_x(style.alignment, metrics.text_rect.width(), line_width)
-
-            if outline_paint:
-                canvas.drawString(line, draw_x, current_y, font, outline_paint)
-
-            canvas.drawString(line, draw_x, current_y, font, text_paint)
+            draw_x_start = self._get_line_x(style.alignment, block_width, line.width)
+            current_x = draw_x_start
+            
+            for run in line.runs:
+                if outline_paint:
+                    canvas.drawString(run.text, current_x, current_y, run.font, outline_paint)
+                canvas.drawString(run.text, current_x, current_y, run.font, text_paint)
+                current_x += run.width
+            
             current_y += line_gap
 
     def _draw_decorations(
             self,
-            text: str,
+            lines: list[Line],
             canvas: skia.Canvas,
-            font: skia.Font,
             style: Style,
             metrics: RenderMetrics
         ) -> None:
 
-        if len(style.decorations) == 0:
+        if not style.decorations:
             return
         
-        lines = text.split('\n')
+        primary_font = self._create_font(style, style.font.family)
+        font_metrics = primary_font.getMetrics()
         line_gap = style.font.line_height * style.font.size
-        font_metrics = font.getMetrics()
-        
         current_y = 0
+        block_width = metrics.text_rect.width()
+        
         for line in lines:
-            line_width = font.measureText(line)
+            if not line.runs:
+                current_y += line_gap
+                continue
+
+            line_x_start = self._get_line_x(style.alignment, block_width, line.width)
             
             for deco in style.decorations:                
                 line_y_offset = self._decoration_line_to_line_y_offset(deco.line, font_metrics)
                 line_y = current_y + line_y_offset
-                line_x = self._get_line_x(style.alignment, metrics.text_rect.width(), line_width)
-
+                
                 paint = skia.Paint(AntiAlias=True, StrokeWidth=deco.thickness)
                 half_thickness = deco.thickness / 2
                 if deco.color:
                     color = deco.color
-                    bounds = skia.Rect.MakeLTRB(line_x, line_y - half_thickness, line_x + line_width, line_y + half_thickness)
+                    bounds = skia.Rect.MakeLTRB(line_x_start, line_y - half_thickness, line_x_start + line.width, line_y + half_thickness)
                     color.apply_to_paint(paint, bounds)
                 else:
                     color = style.color
                     color.apply_to_paint(paint, metrics.text_rect)
 
-                canvas.drawLine(line_x, line_y, line_x + line_width, line_y, paint)
+                canvas.drawLine(line_x_start, line_y, line_x_start + line.width, line_y, paint)
 
             current_y += line_gap
 

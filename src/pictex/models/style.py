@@ -15,6 +15,7 @@ class Style:
     This is the core data model for the library.
     """
     font: Font = field(default_factory=Font)
+    font_fallbacks: list[Font] = field(default_factory=list)
     alignment: Alignment = Alignment.LEFT
     color: PaintSource = field(default_factory=lambda: SolidColor(0, 0, 0))
     shadows: list[Shadow] = field(default_factory=list)

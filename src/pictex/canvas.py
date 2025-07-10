@@ -22,6 +22,14 @@ class Canvas:
         self._style.font.family = family
         return self
     
+    def font_fallbacks(self, *fonts: str) -> Canvas:
+        """
+        Specifies a list of fallback fonts to use for characters not supported
+        by the primary font. Can be font names or paths to font files.
+        """
+        self.style.font_fallbacks = list(fonts)
+        return self
+    
     def font_size(self, size: float) -> Canvas:
         """Sets the font size in points. Returns self for chaining."""
         self._style.font.size = size
