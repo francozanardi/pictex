@@ -137,6 +137,20 @@ class Canvas:
         self._style.alignment = alignment if isinstance(alignment, Alignment) else Alignment(alignment)
         return self
     
+    def font_smoothing(self, mode: FontSmoothing | str) -> Canvas:
+        """
+        Sets the font anti-aliasing strategy.
+        
+        Args:
+            mode: Accepts either `FontSmoothing.SUBPIXEL` or `FontSmoothing.STANDARD`, 
+              or their string equivalents ("subpixel" or "standard").
+ 
+        Returns:
+            The Canvas instance for chaining.
+        """
+        self._style.font.smoothing = mode if isinstance(mode, FontSmoothing) else FontSmoothing(mode)
+        return self
+    
     def render(self, text: str, crop_mode: CropMode = CropMode.NONE) -> Image:
         """
         Renders an image from the given text using the configured style.

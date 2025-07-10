@@ -2,7 +2,7 @@ import skia
 import os
 import struct
 from typing import List
-from ..models import Style, FontStyle
+from ..models import Style, FontStyle, FontSmoothing
 from .. import logger
 
 class FontManager:
@@ -20,7 +20,12 @@ class FontManager:
     def _create_font(self, font_path_or_name) -> skia.Font:
         typeface = self._create_font_typeface(font_path_or_name)
         font = skia.Font(typeface, self._style.font.size)
-        font.setSubpixel(True)
+        if self._style.font.smoothing == FontSmoothing.SUBPIXEL:
+            font.setEdging(skia.Font.Edging.kSubpixelAntiAlias)
+            font.setSubpixel(True)
+        else: # STANDARD
+            font.setEdging(skia.Font.Edging.kAntiAlias)
+            font.setSubpixel(False)
         return font
 
     def _create_font_typeface(self, font_path_or_name: str) -> skia.Typeface:

@@ -33,6 +33,11 @@ class FontWeight(int, Enum):
     EXTRA_BOLD = 800
     BLACK = 900
 
+class FontSmoothing(str, Enum):
+    """Defines the anti-aliasing strategy for text rendering."""
+    SUBPIXEL = "subpixel"
+    STANDARD = "standard"
+
 @dataclass
 class Font:
     """Represents font properties."""
@@ -46,3 +51,5 @@ class Font:
 
     weight: FontWeight = FontWeight.NORMAL
     style: FontStyle = FontStyle.NORMAL
+
+    smoothing: FontSmoothing = FontSmoothing.SUBPIXEL

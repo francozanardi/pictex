@@ -2,7 +2,7 @@
 
 from .effects import Shadow, OutlineStroke
 from .style import Style
-from .typography import Font, Alignment, FontStyle, FontWeight
+from .typography import Font, Alignment, FontStyle, FontWeight, FontSmoothing
 from .background import Background
 from .paint_source import PaintSource
 from .color import SolidColor

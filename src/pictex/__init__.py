@@ -25,6 +25,7 @@ __all__ = [
     "Shadow",
     "OutlineStroke",
     "Font",
+    "FontSmoothing",
     "Alignment",
     "FontStyle",
     "FontWeight",
