@@ -26,7 +26,7 @@ class Canvas:
         Specifies a list of fallback fonts to use for characters not supported
         by the primary font. Can be font names or paths to font files.
         """
-        self.style.font_fallbacks = list(fonts)
+        self._style.font_fallbacks = list(fonts)
         return self
     
     def font_size(self, size: float) -> Canvas:
