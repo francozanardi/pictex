@@ -42,13 +42,13 @@ class Canvas:
         self._style.color = self.__build_color(color)
         return self
 
-    def add_shadow(self, offset: tuple[float, float], blur_radius: float, color: str | SolidColor) -> Canvas:
+    def add_shadow(self, offset: tuple[float, float], blur_radius: float = 0, color: str | SolidColor = 'black') -> Canvas:
         """Adds a text shadow effect. Can be called multiple times. Returns self for chaining."""
         shadow_color = self.__build_color(color)
         self._style.shadows.append(Shadow(offset, blur_radius, shadow_color))
         return self
     
-    def add_box_shadow(self, offset: tuple[float, float], blur_radius: float, color: str | SolidColor) -> Canvas:
+    def add_box_shadow(self, offset: tuple[float, float], blur_radius: float = 0, color: str | SolidColor = 'black') -> Canvas:
         """Adds a background box shadow. Can be called multiple times. Returns self for chaining."""
         shadow_color = self.__build_color(color)
         self._style.box_shadows.append(Shadow(offset, blur_radius, shadow_color))
