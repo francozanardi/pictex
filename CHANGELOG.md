@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- **Bug in font fallbacks**: when a font fallback was used for a glyph, the next characters was also rendered using the fallback, even when the primary font supported them (more info on issue #2).
+
+### Changed
+- `Canvas.font_family(...)` and `Canvas.font_fallbacks(...)` now support a `Path` object instance in addition to a string.
+
 ## [0.2.1] - 2025-07-10
 
 ### Added
