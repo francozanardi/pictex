@@ -1,5 +1,5 @@
 import skia
-from typing import List
+from typing import List, Optional
 from ..models import Style
 from .structs import Line, TextRun
 from .font_manager import FontManager
@@ -51,39 +51,26 @@ class TextShaper:
     
     def _split_line_in_runs(self, line_text: str) -> list[TextRun]:
         primary_font = self._font_manager.get_primary_font()
-        fallback_typefaces = self._font_manager.get_fallback_font_typefaces()
-
         line_runs: list[TextRun] = []
         current_run_text = ""
         current_font = primary_font
 
         for char in line_text:
-            glyph_id = current_font.unicharToGlyph(ord(char))
-            
-            if glyph_id != 0:
-                # Character is supported, continue the current run
+            if self._is_glyph_supported_for_typeface(char, current_font.getTypeface()):
                 current_run_text += char
                 continue
 
-            # Glyph not found in current font
             if current_run_text:
                 run = TextRun(current_run_text, current_font)
                 line_runs.append(run)
-            
-            # Find a new font that supports this character
-            found_fallback = False
-            for typeface in fallback_typefaces:
-                if typeface.unicharToGlyph(ord(char)) != 0:
-                    # Found a fallback!
-                    current_font = primary_font.makeWithSize(primary_font.getSize())
-                    current_font.setTypeface(typeface)
-                    found_fallback = True
-                    break
 
-            # If no fallback supports it, revert to the primary font
-            # which will render the '.notdef' (e.g., '□') glyph.                
-            if not found_fallback:
-                current_font = primary_font
+            new_typeface = self._find_fallback_typeface_for_glyph(char)
+            if new_typeface:
+                current_font = primary_font.makeWithSize(primary_font.getSize())
+                current_font.setTypeface(new_typeface)
+            else:
+                # if we don't find a font supporting the glyph, we just use the primary font
+                current_font = primary_font 
 
             current_run_text = char
         
@@ -93,3 +80,14 @@ class TextShaper:
             line_runs.append(run)
         
         return line_runs
+
+    def _find_fallback_typeface_for_glyph(self, glyph: str) -> Optional[skia.Typeface]:
+        fallback_typefaces = self._font_manager.get_fallback_font_typefaces()
+        for typeface in fallback_typefaces:
+            if self._is_glyph_supported_for_typeface(glyph, typeface):
+                return typeface
+
+        return None
+
+    def _is_glyph_supported_for_typeface(self, glyph: str, typeface: skia.Typeface) -> bool:
+        return typeface.unicharToGlyph(ord(glyph)) != 0
