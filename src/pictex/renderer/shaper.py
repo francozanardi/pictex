@@ -21,7 +21,7 @@ class TextShaper:
                 shaped_lines.append(self._create_empty_line())
                 continue
             
-            runs: list[TextRun] = self._split_line_in_runs()
+            runs: list[TextRun] = self._split_line_in_runs(line_text)
             line = self._create_line(runs)
             shaped_lines.append(line)
             
