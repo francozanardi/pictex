@@ -24,7 +24,7 @@ class TextShaper:
             runs: list[TextRun] = self._split_line_in_runs(line_text)
             line = self._create_line(runs)
             shaped_lines.append(line)
-            
+        
         return shaped_lines
 
     def _create_empty_line(self) -> Line:
@@ -53,41 +53,45 @@ class TextShaper:
         primary_font = self._font_manager.get_primary_font()
         line_runs: list[TextRun] = []
         current_run_text = ""
-        current_font = primary_font
 
         for char in line_text:
-            if self._is_glyph_supported_for_typeface(char, current_font.getTypeface()):
+            if self._is_glyph_supported_for_typeface(char, primary_font.getTypeface()):
                 current_run_text += char
                 continue
 
             if current_run_text:
-                run = TextRun(current_run_text, current_font)
+                run = TextRun(current_run_text, primary_font)
                 line_runs.append(run)
+                current_run_text = ""
 
-            new_typeface = self._find_fallback_typeface_for_glyph(char)
-            if new_typeface:
-                current_font = primary_font.makeWithSize(primary_font.getSize())
-                current_font.setTypeface(new_typeface)
+            fallback_font = self._get_fallback_font_for_glyph(char, primary_font)
+            is_same_font_than_last_run = len(line_runs) > 0 and line_runs[-1].font.getTypeface() == fallback_font.getTypeface()
+            if is_same_font_than_last_run:
+                # we join contiguous runs with same font
+                line_runs[-1] = TextRun(line_runs[-1].text + char, fallback_font)
             else:
-                # if we don't find a font supporting the glyph, we just use the primary font
-                current_font = primary_font 
-
-            current_run_text = char
+                line_runs.append(TextRun(char, fallback_font))
         
         # Add the last run
         if current_run_text:
-            run = TextRun(current_run_text, current_font)
+            run = TextRun(current_run_text, primary_font)
             line_runs.append(run)
         
         return line_runs
 
-    def _find_fallback_typeface_for_glyph(self, glyph: str) -> Optional[skia.Typeface]:
+    def _get_fallback_font_for_glyph(self, glyph: str, primary_font: skia.Font) -> skia.Font:
         fallback_typefaces = self._font_manager.get_fallback_font_typefaces()
         for typeface in fallback_typefaces:
             if self._is_glyph_supported_for_typeface(glyph, typeface):
-                return typeface
+                fallback_font = primary_font.makeWithSize(primary_font.getSize())
+                fallback_font.setTypeface(typeface)
+                return fallback_font
 
-        return None
+        # if we don't find a font supporting the glyph, we just use the primary font
+        return primary_font
 
     def _is_glyph_supported_for_typeface(self, glyph: str, typeface: skia.Typeface) -> bool:
         return typeface.unicharToGlyph(ord(glyph)) != 0
+    
+    def _mix_contiguos_runs_with_same_font(self):
+        pass
