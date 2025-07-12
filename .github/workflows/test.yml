@@ -1,10 +1,6 @@
 name: Run Python Tests
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [push, pull_request]
 
 jobs:
   test:
@@ -37,13 +33,16 @@ jobs:
         python -m pip install --upgrade pip
         pip install -e ".[test]"
 
-    - name: Run tests with pytest
+    - name: Run tests with coverage
       run: |
-        pytest
+        pytest --cov=src/pictex --cov-branch --cov-report=xml
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
 
     - name: Upload regression test artifacts
       uses: actions/upload-artifact@v4
-      if: always()
+      if: failure()
       with:
         name: regression-images-py${{ matrix.python-version }}
-        path: tests/test_pictex/
+        path: tests/
