@@ -1,7 +1,11 @@
 # PicTex
 
-[![PyPI version](https://badge.fury.io/py/pictex.svg)](https://badge.fury.io/py/pictex)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<p align="center">
+  <a href="https://pypi.org/project/pictex/"><img src="https://badge.fury.io/py/pictex.svg" alt="PyPI version"></a>
+  <a href="https://github.com/francozanardi/pictex/actions/workflows/ci.yml"><img src="https://github.com/francozanardi/pictex/actions/workflows/test.yml/badge.svg" alt="CI Status"></a>
+  <a href="https://codecov.io/gh/francozanardi/pictex"><img src="https://codecov.io/gh/francozanardi/pictex/branch/main/graph/badge.svg" alt="Codecov"></a>
+  <a href=https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+</p>
 
 A powerful Python library to create beautifully styled text images with a simple, fluent API. Powered by Skia.
 
