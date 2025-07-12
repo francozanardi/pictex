@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import Optional, overload, Union
-
+from pathlib import Path
 from .models import *
 from .image import Image
 from .renderer import SkiaRenderer
@@ -16,17 +16,17 @@ class Canvas:
         """Initializes a new Canvas with an optional base style."""
         self._style = style if style is not None else Style()
 
-    def font_family(self, family: str) -> Canvas:
+    def font_family(self, family: str | Path) -> Canvas:
         """Sets the font family or a path to a font file. Returns self for chaining."""
-        self._style.font.family = family
+        self._style.font.family = str(family)
         return self
     
-    def font_fallbacks(self, *fonts: str) -> Canvas:
+    def font_fallbacks(self, *fonts: str | Path) -> Canvas:
         """
         Specifies a list of fallback fonts to use for characters not supported
         by the primary font. Can be font names or paths to font files.
         """
-        self._style.font_fallbacks = list(fonts)
+        self._style.font_fallbacks = [str(font) for font in list(fonts)]
         return self
     
     def font_size(self, size: float) -> Canvas:
