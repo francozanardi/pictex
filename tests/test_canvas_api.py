@@ -1,4 +1,5 @@
 from pictex import *
+from pathlib import Path
 
 def test_canvas_fluent_api_and_style_building():
     """
@@ -108,3 +109,12 @@ def test_padding():
     assert canvas._style.padding == (10, 20, 10, 20)
     canvas.padding(1, 2, 3, 4)
     assert canvas._style.padding == (1, 2, 3, 4)
+
+def test_font_paths_can_be_object():
+    canvas = Canvas()
+    canvas.font_family(Path("myfont1.ttf"))
+    canvas.font_fallbacks(Path("myfont2.ttf"), "myfont3.ttf", Path("myfont4.ttf"))
+
+    style = canvas._style
+    assert style.font.family == "myfont1.ttf"
+    assert style.font_fallbacks == ["myfont2.ttf", "myfont3.ttf", "myfont4.ttf"]
