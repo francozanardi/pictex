@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
+from typing import Optional
 import skia
 
 class Alignment(str, Enum):
@@ -41,10 +42,10 @@ class FontSmoothing(str, Enum):
 @dataclass
 class Font:
     """Represents font properties."""
-    family: str = "Arial"
+    family: Optional[str] = None
     """
-    The font family. Can be a system font name (e.g., "Arial", "Times New Roman")
-    or a path to a font file (e.g., "path/to/my_font.ttf").
+    The font family. Can be a system font name (e.g., "Arial"), a path
+    to a font file, or None to use the system's default font.
     """
     size: float = 50.0
     line_height: float = 1.0  # Multiplier for the font size, like in CSS
