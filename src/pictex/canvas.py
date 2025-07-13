@@ -3,7 +3,7 @@ from typing import Optional, overload, Union
 from pathlib import Path
 from .models import *
 from .image import Image
-from .renderer import SkiaRenderer
+from .renderer import Renderer
 
 class Canvas:
     """
@@ -165,7 +165,7 @@ class Canvas:
         Returns:
             An `Image` object containing the rendered result.
         """
-        renderer = SkiaRenderer(self._style)
+        renderer = Renderer(self._style)
         return renderer.render(text, crop_mode)
 
     def __build_color(self, color: str | PaintSource) -> PaintSource:

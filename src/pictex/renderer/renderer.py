@@ -1,20 +1,18 @@
 import skia
-from typing import Tuple
-from ..models import Style, CropMode, Box
+from ..models import Style, CropMode
 from .shaper import TextShaper
 from .font_manager import FontManager
 from .metrics_calculator import MetricsCalculator
 from .painters import Painter, BackgroundPainter, DecorationPainter, TextPainter
 from .image_processor import ImageProcessor
+from ..image import Image
 
-class SkiaRenderer:
-    """Handles the drawing logic using Skia."""
-
+class Renderer:
     def __init__(self, style: Style):
         self._style = style
 
-    def render(self, text: str, crop_mode: CropMode) -> Tuple[skia.Image, Box]:
-        """Renders the text with the given style onto a perfectly sized Skia surface."""
+    def render(self, text: str, crop_mode: CropMode) -> Image:
+        """Renders the text with the given style, generating a raster image."""
 
         font_manager = FontManager(self._style)
         shaper = TextShaper(self._style, font_manager)
