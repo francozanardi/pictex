@@ -5,6 +5,7 @@ def test_render_with_smart_crop(file_regression):
     """Tests that the SMART crop mode works correctly."""
     canvas = (
         Canvas()
+        .font_family("Arial")
         .font_size(80)
         .add_shadow((10, 10), 15, "#000") # Large shadow to create extra space
     )
@@ -17,6 +18,7 @@ def test_render_with_content_box_crop(file_regression):
     """Tests that the CONTENT_BOX crop mode works correctly."""
     canvas = (
         Canvas()
+        .font_family("Arial")
         .font_size(80)
         .add_shadow((10, 10), 15, "#000")
         .add_box_shadow((10, 10), 15, "#000")

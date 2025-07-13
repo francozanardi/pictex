@@ -1,6 +1,3 @@
-# tests/test_shadows.py
-
-import pytest
 from pathlib import Path
 from pictex import Canvas
 from .utils import check_images_match
@@ -11,6 +8,7 @@ def test_render_with_simple_text_shadow(file_regression):
     """
     canvas = (
         Canvas()
+        .font_family("Arial")
         .font_size(120)
         .color("white")
         .padding(20)
@@ -25,6 +23,7 @@ def test_render_with_simple_box_shadow(file_regression):
     """
     canvas = (
         Canvas()
+        .font_family("Arial")
         .font_size(80)
         .color("black")
         .padding(30)
@@ -42,6 +41,7 @@ def test_render_with_multiple_text_shadows(file_regression):
     """
     canvas = (
         Canvas()
+        .font_family("Arial")
         .font_size(120)
         .padding(20)
         .background_color("#AAA")
@@ -59,6 +59,7 @@ def test_render_with_multiple_box_shadows(file_regression):
     """
     canvas = (
         Canvas()
+        .font_family("Arial")
         .font_size(80)
         .padding(40)
         .background_color("white")
@@ -76,6 +77,7 @@ def test_text_and_box_shadows_together(file_regression):
     """
     canvas = (
         Canvas()
+        .font_family("Arial")
         .font_size(100)
         .padding(40)
         .background_color("#EEEEEE")
@@ -94,6 +96,7 @@ def test_hard_shadow_without_blur(file_regression):
     """
     canvas = (
         Canvas()
+        .font_family("Arial")
         .font_size(120)
         .color("#e74c3c")
         .padding(20)
