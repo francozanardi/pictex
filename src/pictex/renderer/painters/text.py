@@ -46,3 +46,4 @@ class TextPainter(Painter):
             StrokeWidth=self._style.outline_stroke.width
         )
         self._style.outline_stroke.color.apply_to_paint(paint, self._metrics.text_rect)
+        return paint
