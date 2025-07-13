@@ -51,7 +51,7 @@ def test_render_with_system_font_fallback(file_regression):
         .font_size(70)
         .color("black")
     )
-    image = canvas.render("Hello, 世界 ✨")
+    image = canvas.render("PF | 世界 | Again, PF | ✨ | PF.")
     check_images_match(file_regression, image)
 
 @pytest.mark.parametrize("text, align", [
