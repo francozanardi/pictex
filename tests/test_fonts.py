@@ -64,3 +64,29 @@ def test_render_basic_text_and_alignment(file_regression, text, align):
     canvas = Canvas().font_family("Arial").alignment(align)
     image = canvas.render(text)
     check_images_match(file_regression, image)
+
+def test_render_with_default_font(file_regression):
+    """
+    Tests default system font is used when font is not set
+    """
+    canvas = (
+        Canvas()
+        .font_size(70)
+        .color("orange")
+    )
+    image = canvas.render("Default font")
+    check_images_match(file_regression, image)
+
+def test_render_with_invalid_fonts(file_regression):
+    """
+    Tests invalid fonts are ignored
+    """
+    canvas = (
+        Canvas()
+        .font_family("invalid")
+        .font_fallbacks("invalid", STATIC_FONT_PATH, "invalid")
+        .font_size(70)
+        .color("cyan")
+    )
+    image = canvas.render("Invalid is ignored")
+    check_images_match(file_regression, image)
