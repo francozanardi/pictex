@@ -19,10 +19,11 @@ class SkiaRenderer:
         font_manager = FontManager(self._style)
         shaper = TextShaper(self._style, font_manager)
         metrics_calculator = MetricsCalculator(self._style, font_manager)
+        # to keep in mind: the orders of the painters is important!
         painters = [
             BackgroundPainter,
+            TextPainter,
             DecorationPainter,
-            TextPainter
         ]
 
         lines = shaper.shape(text)
