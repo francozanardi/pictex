@@ -14,6 +14,7 @@ def test_gradient_on_text_fill(file_regression):
     
     canvas = (
         Canvas()
+        .font_family("Arial")
         .font_size(120)
         .color(gradient)
     )
@@ -32,6 +33,7 @@ def test_gradient_direction_vertical(file_regression):
     
     canvas = (
         Canvas()
+        .font_family("Arial")
         .font_size(120)
         .color(gradient)
     )
@@ -50,6 +52,7 @@ def test_gradient_with_custom_stops(file_regression):
     
     canvas = (
         Canvas()
+        .font_family("Arial")
         .font_size(120)
         .padding(20)
         .background_color("#222222")

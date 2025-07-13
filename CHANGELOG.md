@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - `Canvas.font_family(...)` and `Canvas.font_fallbacks(...)` now support a `Path` object instance in addition to a string.
+- The default font family now is the system font (it was `Arial`)
+- If the primary font or any fallback font is not found, a warning is generated, and that font is ignored.
 
 ## [0.2.1] - 2025-07-10
 

@@ -1,9 +1,10 @@
 import skia
 import os
 import struct
-from typing import List
+from typing import List, Optional
 from ..models import Style, FontStyle, FontSmoothing
-from .. import logger
+import warnings
+from ..exceptions import FontNotFoundWarning
 
 class FontManager:
     def __init__(self, style: Style):
@@ -17,8 +18,10 @@ class FontManager:
     def get_fallback_font_typefaces(self) -> List[skia.Typeface]:
         return self._fallback_font_typefaces
     
-    def _create_font(self, font_path_or_name) -> skia.Font:
+    def _create_font(self, font_path_or_name: Optional[str]) -> skia.Font:
         typeface = self._create_font_typeface(font_path_or_name)
+        if not typeface:
+            typeface = skia.Typeface.MakeDefault()
         font = skia.Font(typeface, self._style.font.size)
         if self._style.font.smoothing == FontSmoothing.SUBPIXEL:
             font.setEdging(skia.Font.Edging.kSubpixelAntiAlias)
@@ -28,7 +31,10 @@ class FontManager:
             font.setSubpixel(False)
         return font
 
-    def _create_font_typeface(self, font_path_or_name: str) -> skia.Typeface:
+    def _create_font_typeface(self, font_path_or_name: Optional[str]) -> skia.Typeface:
+        if font_path_or_name is None:
+            return skia.Typeface.MakeDefault()
+
         if not os.path.exists(font_path_or_name):
             return self._create_system_font_typeface(font_path_or_name)
         
@@ -44,7 +50,7 @@ class FontManager:
         
         return typeface
     
-    def _create_system_font_typeface(self, font_family: str) -> skia.Font:
+    def _create_system_font_typeface(self, font_family: str) -> Optional[skia.Font]:
         font_style = skia.FontStyle(
             weight=self._style.font.weight,
             width=skia.FontStyle.kNormal_Width,
@@ -53,10 +59,10 @@ class FontManager:
         typeface = skia.Typeface(font_family, font_style)
         actual_font_family = typeface.getFamilyName()
         if actual_font_family.lower() != font_family.lower():
-            logger.warning(
-                f"Font '{font_family}' not found in the system. "
-                f"Pictex is falling back to '{actual_font_family}'"
-            )
+            warning_message = f"Font '{font_family}' was not found. It will be ignored."
+            warnings.warn(FontNotFoundWarning(warning_message))
+            return None
+        
         return typeface
     
     def _apply_variations_to_variable_font(self, typeface: skia.Typeface) -> skia.Typeface:
@@ -84,6 +90,7 @@ class FontManager:
 
     def _prepare_fallbacks(self) -> List[skia.Font]:
         user_fallbacks = [self._create_font_typeface(fb) for fb in self._style.font_fallbacks]
+        user_fallbacks = list(filter(lambda e: e, user_fallbacks))
         emoji_fallbacks = [
             skia.Typeface("Segoe UI Emoji"),
             skia.Typeface("Apple Color Emoji"),

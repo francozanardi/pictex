@@ -5,11 +5,6 @@ This package provides a simple, fluent API to generate images from text,
 with powerful styling options like gradients, shadows, and custom fonts.
 """
 
-import logging
-
-logger = logging.getLogger("pictex")
-logger.addHandler(logging.NullHandler())
-
 from .canvas import Canvas
 from .models import *
 from .image import Image

@@ -35,6 +35,8 @@ The fallback chain is:
 2.  Any custom fallback fonts you provide with `.font_fallbacks()`.
 3.  A list of default system emoji fonts (`Segoe UI Emoji` on Windows, `Apple Color Emoji` on macOS, `Noto Color Emoji` on Linux).
 
+If a provided font is not found, a warning message is displayed and the font is ignored.
+
 ### Providing Custom Fallbacks
 
 You can specify your own list of fallback fonts. This is useful if you are working with multiple languages and want to ensure a specific look.

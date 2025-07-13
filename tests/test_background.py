@@ -1,5 +1,3 @@
-# tests/test_background.py
-
 from pictex import Canvas, LinearGradient
 from .utils import check_images_match, VARIABLE_WGHT_FONT_PATH
 
