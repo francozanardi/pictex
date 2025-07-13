@@ -93,5 +93,3 @@ class TextShaper:
     def _is_glyph_supported_for_typeface(self, glyph: str, typeface: skia.Typeface) -> bool:
         return typeface.unicharToGlyph(ord(glyph)) != 0
     
-    def _mix_contiguos_runs_with_same_font(self):
-        pass
