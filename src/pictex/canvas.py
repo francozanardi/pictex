@@ -166,8 +166,7 @@ class Canvas:
             An `Image` object containing the rendered result.
         """
         renderer = SkiaRenderer(self._style)
-        skia_image, content_box = renderer.render(text, crop_mode)
-        return Image(skia_image, content_box)
+        return renderer.render(text, crop_mode)
 
     def __build_color(self, color: str | PaintSource) -> PaintSource:
         """Internal helper to create a SolidColor from a string or return it as is."""
