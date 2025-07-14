@@ -5,6 +5,7 @@ from typing import List, Optional
 from ..models import Style, FontStyle, FontSmoothing
 import warnings
 from ..exceptions import FontNotFoundWarning
+from .typeface_loader import TypefaceLoader
 
 class FontManager:
     def __init__(self, style: Style):
@@ -21,7 +22,7 @@ class FontManager:
     def _create_font(self, font_path_or_name: Optional[str]) -> skia.Font:
         typeface = self._create_font_typeface(font_path_or_name)
         if not typeface:
-            typeface = skia.Typeface.MakeDefault()
+            typeface = TypefaceLoader.load_default()
         font = skia.Font(typeface, self._style.font.size)
         if self._style.font.smoothing == FontSmoothing.SUBPIXEL:
             font.setEdging(skia.Font.Edging.kSubpixelAntiAlias)
@@ -33,12 +34,12 @@ class FontManager:
 
     def _create_font_typeface(self, font_path_or_name: Optional[str]) -> skia.Typeface:
         if font_path_or_name is None:
-            return skia.Typeface.MakeDefault()
+            return TypefaceLoader.load_default()
 
         if not os.path.exists(font_path_or_name):
             return self._create_system_font_typeface(font_path_or_name)
         
-        typeface = skia.Typeface.MakeFromFile(font_path_or_name)
+        typeface = TypefaceLoader.load_from_file(font_path_or_name)
         if not typeface:
             raise ValueError(
                 f"Failed to load font from '{font_path_or_name}'. "
@@ -56,7 +57,7 @@ class FontManager:
             width=skia.FontStyle.kNormal_Width,
             slant=self._style.font.style.to_skia_slant()
         )
-        typeface = skia.Typeface(font_family, font_style)
+        typeface = TypefaceLoader.load_system_font(font_family, font_style)
         actual_font_family = typeface.getFamilyName()
         if actual_font_family.lower() != font_family.lower():
             warning_message = f"Font '{font_family}' was not found. It will be ignored."
@@ -92,8 +93,8 @@ class FontManager:
         user_fallbacks = [self._create_font_typeface(fb) for fb in self._style.font_fallbacks]
         user_fallbacks = list(filter(lambda e: e, user_fallbacks))
         emoji_fallbacks = [
-            skia.Typeface("Segoe UI Emoji"),
-            skia.Typeface("Apple Color Emoji"),
-            skia.Typeface("Noto Color Emoji"),
+            TypefaceLoader.load_system_font("Segoe UI Emoji"),
+            TypefaceLoader.load_system_font("Apple Color Emoji"),
+            TypefaceLoader.load_system_font("Noto Color Emoji"),
         ]
         return user_fallbacks + emoji_fallbacks
