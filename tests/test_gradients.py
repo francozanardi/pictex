@@ -1,7 +1,6 @@
 from pictex import Canvas, LinearGradient
-from .utils import check_images_match
 
-def test_gradient_on_text_fill(file_regression):
+def test_gradient_on_text_fill(file_regression, render_engine):
     """
     A basic test to confirm a gradient can be applied to the text fill.
     This is the primary use case.
@@ -18,10 +17,11 @@ def test_gradient_on_text_fill(file_regression):
         .font_size(120)
         .color(gradient)
     )
-    image = canvas.render("GRADIENT")
-    check_images_match(file_regression, image)
+    render_func, check_func = render_engine
+    image = render_func(canvas, "GRADIENT")
+    check_func(file_regression, image)
     
-def test_gradient_direction_vertical(file_regression):
+def test_gradient_direction_vertical(file_regression, render_engine):
     """
     Tests that start_point and end_point correctly create a vertical gradient.
     """
@@ -37,10 +37,11 @@ def test_gradient_direction_vertical(file_regression):
         .font_size(120)
         .color(gradient)
     )
-    image = canvas.render("VERTICAL")
-    check_images_match(file_regression, image)
+    render_func, check_func = render_engine
+    image = render_func(canvas, "VERTICAL")
+    check_func(file_regression, image)
 
-def test_gradient_with_custom_stops(file_regression):
+def test_gradient_with_custom_stops(file_regression, render_engine):
     """
     Verifies that the `stops` parameter works, allowing for non-uniform
     color distribution in the gradient.
@@ -58,5 +59,6 @@ def test_gradient_with_custom_stops(file_regression):
         .background_color("#222222")
         .color(gradient)
     )
-    image = canvas.render("STOPS")
-    check_images_match(file_regression, image)
+    render_func, check_func = render_engine
+    image = render_func(canvas, "STOPS")
+    check_func(file_regression, image)

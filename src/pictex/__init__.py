@@ -8,6 +8,7 @@ with powerful styling options like gradients, shadows, and custom fonts.
 from .canvas import Canvas
 from .models import *
 from .image import Image
+from .vector_image import VectorImage
 
 __version__ = "0.2.1"
 
@@ -27,6 +28,7 @@ __all__ = [
     "DecorationLine",
     "TextDecoration",
     "Image",
+    "VectorImage",
     "CropMode",
     "Box",
 ]

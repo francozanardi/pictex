@@ -7,3 +7,12 @@ class FontNotFoundWarning(Warning):
         otherwise the default system font will be used.
     """
     pass
+
+class SystemFontCanNotBeEmbeddedInSvgWarning(Warning):
+    """
+        Warning raised when a user render a image as svg,
+        with the flag `embed_fonts = True`, but system fonts are being used.
+
+        The system fonts can't be embedded in a SVG file.
+        PicTex will continue the execution are ignore the system fonts in the final SVG.
+    """

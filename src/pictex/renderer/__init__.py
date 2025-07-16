@@ -1,1 +1,1 @@
-from .skia_renderer import SkiaRenderer
+from .renderer import Renderer

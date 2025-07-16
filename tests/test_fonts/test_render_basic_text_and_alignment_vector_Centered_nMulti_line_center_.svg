@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="222" height="107">
+<defs>
+    <style type="text/css">
+        
+    </style>
+</defs>
+            
+	<rect fill-opacity="0" width="222" height="107" />
+	<text transform="translate(8 47)" font-size="50" font-family="Arial" x="-2.5, 33.5, 61.5, 89.5, 103.5, 131.5, 148.5, 176.5, " y="0, ">
+			Centered
+	</text>
+	<text transform="translate(8 47)" font-size="50" font-family="Arial" x="0.5, 42.5, 70.5, 81.5, 95.5, 106.5, 123.5, 134.5, 145.5, 173.5, " y="50, ">
+			Multi-line
+	</text>
+</svg>

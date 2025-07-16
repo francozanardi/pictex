@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 import skia
+from enum import Enum
+from typing import Optional
 
 @dataclass
 class TextRun:
@@ -22,3 +24,13 @@ class RenderMetrics:
     background_rect: skia.Rect
     text_rect: skia.Rect
     draw_origin: tuple[float, float]
+
+class TypefaceSource(str, Enum):
+    SYSTEM = "system"
+    FILE = "file"
+
+@dataclass
+class TypefaceLoadingInfo:
+    typeface: skia.Typeface
+    source: TypefaceSource
+    filepath: Optional[str] # only valid on 'file' fonts

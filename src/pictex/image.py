@@ -105,7 +105,7 @@ class Image:
             ".webp": skia.EncodedImageFormat.kWEBP,
         }
         if ext not in format_map:
-            ext = "png"
+            ext = ".png"
         fmt = format_map[ext]
         data = self._skia_image.encodeToData(fmt, quality)
         if data is None:

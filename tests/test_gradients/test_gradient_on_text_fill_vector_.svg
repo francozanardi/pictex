@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="632" height="108">
+<defs>
+    <style type="text/css">
+        
+    </style>
+</defs>
+            
+	<rect fill-opacity="0" width="632" height="108" />
+	<defs>
+		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="6" y1="-43" x2="618" y2="-43">
+			<stop offset="0" stop-color="#F12711" />
+			<stop offset="1" stop-color="#F5AF19" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_0)" transform="translate(4 97)" font-size="120" font-family="Arial" x="0, 93, 180, 260, 347, 380, 460, 547, " y="0, ">
+			GRADIENT
+	</text>
+</svg>

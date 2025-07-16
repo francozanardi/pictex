@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="393" height="116">
+<defs>
+    <style type="text/css">
+        
+    </style>
+</defs>
+            
+	<rect fill-opacity="0" width="393" height="116" />
+	<text transform="translate(7 46)" font-size="50" font-family="Arial" x="75, 111, 122, 150, 178, 192, 206, 239, 250, 261, 289, 317, 345, " y="0, ">
+			Right Aligned
+	</text>
+	<text transform="translate(7 46)" font-size="50" font-family="Arial" x="-5, 23, 51, 79, 107, 135, 152, 166, 197, 208, 225, 250, 264, 278, 306, 317, 345, " y="50, ">
+			Longer First Line
+	</text>
+</svg>

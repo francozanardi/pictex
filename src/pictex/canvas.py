@@ -3,7 +3,8 @@ from typing import Optional, overload, Union
 from pathlib import Path
 from .models import *
 from .image import Image
-from .renderer import SkiaRenderer
+from .vector_image import VectorImage
+from .renderer import Renderer
 
 class Canvas:
     """
@@ -165,9 +166,31 @@ class Canvas:
         Returns:
             An `Image` object containing the rendered result.
         """
-        renderer = SkiaRenderer(self._style)
-        skia_image, content_box = renderer.render(text, crop_mode)
-        return Image(skia_image, content_box)
+        renderer = Renderer(self._style)
+        return renderer.render_as_bitmap(text, crop_mode)
+    
+    def render_as_svg(self, text: str, embed_font: bool = True) -> VectorImage:
+        """
+        Renders the text as a scalable vector graphic (SVG).
+
+        This method produces a vector-based image, ideal for web use and
+        applications requiring resolution independence.
+
+        Args:
+            text: The text string to render.
+            embed_font: If True (default), any custom font files (`.ttf`/`.otf`)
+                        provided will be embedded directly into the SVG. This
+                        ensures perfect visual fidelity across all devices, but
+                        increases file size. A warning will be issued if a system
+                        font is used with this option enabled.
+                        If False, the SVG will reference the font by name,
+                        relying on the viewing system to have the font installed.
+
+        Returns:
+            A `VectorImage` object containing the SVG data.
+        """
+        renderer = Renderer(self._style)
+        return renderer.render_as_svg(text, embed_font)
 
     def __build_color(self, color: str | PaintSource) -> PaintSource:
         """Internal helper to create a SolidColor from a string or return it as is."""
