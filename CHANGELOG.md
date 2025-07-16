@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Render image as SVG. A new method was added in the Canvas class: `render_as_svg()`.
+- If a character can't be rendered by the fonts provided, a system font for it will be searched.
 
 ### Fixed
 
