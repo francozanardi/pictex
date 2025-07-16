@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2025-07-16
+
 ### Added
 
 - Render image as SVG. A new method was added in the Canvas class: `render_as_svg()`.

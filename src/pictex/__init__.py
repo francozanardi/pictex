@@ -10,7 +10,7 @@ from .models import *
 from .image import Image
 from .vector_image import VectorImage
 
-__version__ = "0.2.1"
+__version__ = "0.3.0"
 
 __all__ = [
     "Canvas",
