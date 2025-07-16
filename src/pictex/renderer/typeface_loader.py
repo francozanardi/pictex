@@ -4,6 +4,7 @@ from .structs import TypefaceLoadingInfo, TypefaceSource
 
 class TypefaceLoader:
     _typefaces_loading_info: list[TypefaceLoadingInfo] = []
+    _font_manager: skia.FontMgr = None
 
     @staticmethod
     def load_default() -> skia.Typeface:
@@ -21,6 +22,16 @@ class TypefaceLoader:
             Will never return null.
         """
         return TypefaceLoader._save(skia.Typeface(family, style), TypefaceSource.SYSTEM)
+
+    @staticmethod
+    def load_for_glyph(glyph: str, style: skia.FontStyle) -> Optional[skia.Typeface]:
+        system_typeface = TypefaceLoader._get_font_manager().matchFamilyStyleCharacter(
+            "",
+            style,
+            [],
+            ord(glyph)
+        )
+        return TypefaceLoader._save(system_typeface, TypefaceSource.SYSTEM)
 
     @staticmethod
     def clone_with_arguments(typeface: skia.Typeface, arguments: skia.FontArguments) -> skia.Typeface:
@@ -46,3 +57,9 @@ class TypefaceLoader:
         
         TypefaceLoader._typefaces_loading_info.append(TypefaceLoadingInfo(typeface, source, filepath))
         return typeface
+
+    @staticmethod
+    def _get_font_manager() -> skia.FontMgr:
+        if TypefaceLoader._font_manager is None:
+            TypefaceLoader._font_manager = skia.FontMgr()
+        return TypefaceLoader._font_manager

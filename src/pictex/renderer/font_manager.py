@@ -91,10 +91,4 @@ class FontManager:
 
     def _prepare_fallbacks(self) -> List[skia.Font]:
         user_fallbacks = [self._create_font_typeface(fb) for fb in self._style.font_fallbacks]
-        user_fallbacks = list(filter(lambda e: e, user_fallbacks))
-        emoji_fallbacks = [
-            TypefaceLoader.load_system_font("Segoe UI Emoji"),
-            TypefaceLoader.load_system_font("Apple Color Emoji"),
-            TypefaceLoader.load_system_font("Noto Color Emoji"),
-        ]
-        return user_fallbacks + emoji_fallbacks
+        return list(filter(lambda e: e, user_fallbacks))
