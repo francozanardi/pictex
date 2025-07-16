@@ -92,6 +92,7 @@ class VectorImageProcessor:
         
         css = ""
         for typeface in typefaces:
+            font_family = self._get_svg_family_name(typeface.typeface)
             filepath = typeface.filepath
             try:
                 with open(filepath, "rb") as font_file:
@@ -108,16 +109,20 @@ class VectorImageProcessor:
 
             css += f"""
 @font-face {{
-    font-family: '{typeface.typeface.getFamilyName()}';
+    font-family: '{font_family}';
     src: url('{src}');
 }}
             """
         
         return css
+
+    def _get_svg_family_name(self, typeface: skia.Typeface) -> str:
+        family_names = list(map(lambda fn: fn[0], typeface.getFamilyNames()))
+        return ", ".join(family_names)
     
     def _add_prefix_to_font_families(self, svg: str, typefaces: list[TypefaceLoadingInfo]) -> str:
         for typeface in typefaces:
-            font_family = typeface.typeface.getFamilyName()
+            font_family = self._get_svg_family_name(typeface.typeface)
             svg = svg.replace(f"'{font_family}'", f"'pictex-{font_family}'")
             svg = svg.replace(f'"{font_family}"', f'"pictex-{font_family}"')
         return svg
@@ -139,7 +144,7 @@ class VectorImageProcessor:
         elements = root.findall(".//{http://www.w3.org/2000/svg}text")
         for tf in typefaces:
             is_variable_font = tf.typeface.getVariationDesignParameters()
-            font_family = tf.typeface.getFamilyName()
+            font_family = self._get_svg_family_name(tf.typeface)
             for text_elem in elements:
                 if text_elem.attrib.get("font-family", None) != font_family:
                     continue
