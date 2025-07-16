@@ -8,9 +8,10 @@ class BackgroundPainter(Painter):
         bg_paint = skia.Paint(AntiAlias=True)
         self._style.background.color.apply_to_paint(bg_paint, self._metrics.background_rect)
 
-        shadow_filter = create_composite_shadow_filter(self._style.box_shadows)
-        if shadow_filter:
-            bg_paint.setImageFilter(shadow_filter)
+        if not self._is_svg:
+            shadow_filter = create_composite_shadow_filter(self._style.box_shadows)
+            if shadow_filter:
+                bg_paint.setImageFilter(shadow_filter)
 
         radius = self._style.background.corner_radius
         if radius > 0:

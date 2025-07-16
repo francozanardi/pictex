@@ -13,6 +13,9 @@ class TextPainter(Painter):
         self._draw_text(canvas, lines, paint)
 
     def _add_shadows_to_paint(self, paint: skia.Paint) -> None:
+        if self._is_svg:
+            return
+
         filter = create_composite_shadow_filter(self._style.shadows)
         if not filter:
             return

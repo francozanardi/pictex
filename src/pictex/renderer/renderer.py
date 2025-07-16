@@ -44,7 +44,7 @@ class Renderer:
         shaper = TextShaper(self._style, font_manager)
         metrics_calculator = MetricsCalculator(self._style, font_manager)
         lines = shaper.shape(text)
-        metrics = metrics_calculator.calculate(lines, CropMode.CONTENT_BOX)
+        metrics = metrics_calculator.calculate(lines, CropMode.NONE)
 
         stream = skia.DynamicMemoryWStream()
         width, height = self._validate_canvas_size(metrics)
@@ -54,11 +54,11 @@ class Renderer:
         canvas.translate(metrics.draw_origin[0], metrics.draw_origin[1])
 
         for PainterClass in self._get_painters():
-            p: Painter = PainterClass(self._style, metrics, font_manager)
+            p: Painter = PainterClass(self._style, metrics, font_manager, True)
             p.paint(canvas, lines)
 
         del canvas
-        return VectorImageProcessor().process(stream, embed_fonts, lines)
+        return VectorImageProcessor().process(stream, embed_fonts, lines, self._style)
     
     def _validate_canvas_size(self, metrics: RenderMetrics) -> Tuple[int, int]:
         width = int(metrics.bounds.width())
