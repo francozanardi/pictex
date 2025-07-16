@@ -1,5 +1,5 @@
 from pictex import *
-from .utils import check_images_match
+from .conftest import check_images_match
 
 def test_render_with_smart_crop(file_regression):
     """Tests that the SMART crop mode works correctly."""

@@ -1,8 +1,7 @@
 from pictex import *
-from .utils import check_images_match, VARIABLE_WGHT_FONT_PATH
-from pathlib import Path
+from .conftest import VARIABLE_WGHT_FONT_PATH
 
-def test_kitchen_sink_all_features_combined(file_regression):
+def test_kitchen_sink_all_features_combined(file_regression, render_engine):
     """
     This is a visual integration test that combines a large number of features
     to ensure they work together without unexpected visual artifacts.
@@ -29,5 +28,6 @@ def test_kitchen_sink_all_features_combined(file_regression):
         .underline(thickness=4, color="#FFD700")
     )
     
-    image = canvas.render("Kitchen Sink\nTest!")
-    check_images_match(file_regression, image)
+    render_func, check_func = render_engine
+    image = render_func(canvas, "Kitchen Sink\nTest!")
+    check_func(file_regression, image)
