@@ -89,7 +89,12 @@ class TextShaper:
                 return fallback_font
 
         # if we don't find a font supporting the glyph, we try to find one in the system
-        system_typeface = TypefaceLoader.load_for_glyph(glyph, primary_font.getTypeface().fontStyle())
+        font_style = skia.FontStyle(
+            weight=self._style.font.weight,
+            width=skia.FontStyle.kNormal_Width,
+            slant=self._style.font.style.to_skia_slant()
+        )
+        system_typeface = TypefaceLoader.load_for_glyph(glyph, font_style)
         if system_typeface:
             fallback_font = primary_font.makeWithSize(primary_font.getSize())
             fallback_font.setTypeface(system_typeface)
