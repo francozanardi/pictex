@@ -17,7 +17,9 @@ A powerful Python library to create beautifully styled text images with a simple
 -   **Rich Styling**: Gradients, multiple shadows, outlines, and text decorations.
 -   **Advanced Typography**: Custom fonts, variable fonts, line height, and alignment.
 -   **Automatic Font Fallback**: Seamlessly render emojis and special characters even if your main font doesn't support them.
--   **Flexible Output**: Save as PNG, or convert to NumPy arrays or Pillow images with ease.
+-   **Flexible Output**: 
+    -   **Raster**: Save as PNG/JPEG/WebP, or convert to NumPy/Pillow.
+    -   **Vector**: Export to a clean, scalable SVG file with font embedding.
 -   **High-Quality Rendering**: Powered by Google's Skia graphics engine.
 
 ## Installation
@@ -55,11 +57,20 @@ image.save("hello.png")
 
 ![Quickstart result](https://raw.githubusercontent.com/francozanardi/pictex/main/docs/assets/readme-2.png)
 
+You can also render it as SVG using `Canvas.render_as_svg()`.
+```
+image = canvas.render_as_svg("Hello, PicTex! 🎨✨")
+image.save("hello.svg")
+```
+
+![Quickstart SVG result](https://raw.githubusercontent.com/francozanardi/pictex/main/docs/assets/readme-3.svg)
+
 ## 📚 Dive Deeper
 
 For a complete guide on all features, including text decorations, advanced gradients, smart cropping, and more, check out our full documentation:
 
 -   [**Getting Started & Core Concepts**](docs/getting_started.md)
+-   [**Exporting to SVG**](docs/exporting_svg.md)
 -   [**Styling Guide: Colors & Gradients**](docs/colors.md)
 -   [**Styling Guide: Text & Fonts**](docs/text.md)
 -   [**Styling Guide: Containers & Effects**](docs/effects.md)

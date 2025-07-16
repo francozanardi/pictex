@@ -8,7 +8,9 @@ The two most important classes in `PicTex` are `Canvas` and `Image`.
 
 1.  **`Canvas`**: Think of a `Canvas` as a **reusable style template**. You use its fluent methods (`.font_size()`, `.color()`, etc.) to build up a set of styling rules. You create a `Canvas` once and can use it many times.
 
-2.  **`Image`**: An `Image` is the **final rendered product**. You get an `Image` object by calling `canvas.render("some text")`. This object holds the pixel data and provides helpful methods to save, display, or convert it.
+2.  **`Image`**: An `Image` is the **final rendered product** when you use `Canvas.render(...)`. This object holds the pixel data and provides helpful methods to save, display, or convert it.
+
+3.  **`VectorImage`**: This is a **vector image** containing SVG data, returned by `Canvas.render_as_svg(...)`.
 
 This separation allows for clean and efficient code:
 
@@ -17,11 +19,11 @@ This separation allows for clean and efficient code:
 my_template = Canvas().font_size(80).color("blue")
 
 # Render multiple images from the same template
-image1 = my_template.render("First Text")
-image2 = my_template.render("Second Text")
+raster_image = my_template.render("First Text")
+vector_image = my_template.render_as_svg("Second Text")
 
-image1.save("first.png")
-image2.save("second.png")
+raster_image.save("first.png")
+vector_image.save("second.svg")
 ```
 
 ## Working with the `Image` Object
@@ -43,6 +45,21 @@ numpy_array_bgra = image.to_numpy()
 numpy_array_rgba = image.to_numpy(rgba=True)
 ```
 
+## Working with the `VectorImage` Object
+
+The `VectorImage` object is simple. It holds the SVG content as a string.
+
+```python
+vector_image = canvas.render_as_svg("Hello SVG")
+
+# Save to a file
+vector_image.save("hello.svg")
+
+# Get the raw SVG string
+svg_string = vector_image.svg
+print(svg_string)
+```
+
 ## What's Next?
 
 You now understand the basic workflow of `PicTex`. The real power of the library lies in its rich styling capabilities. We recommend you explore the guides in the following order:
@@ -58,3 +75,6 @@ You now understand the basic workflow of `PicTex`. The real power of the library
 
 4.  **[Smart Sizing & Cropping](./crop.md)**
     *Take full control over the final image dimensions with different cropping strategies.*
+
+5.  **[Exporting as SVG](./exporting_svg.md)**
+    *Export your canvas as SVG image.*
