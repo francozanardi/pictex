@@ -15,12 +15,22 @@ class TypefaceLoader:
 
     @staticmethod
     def load_system_font(family: str, style: skia.FontStyle = None) -> skia.Typeface:
-        '''
+        """
             Creates a new reference to the typeface that most closely
             matches the requested familyName and fontStyle.
             Will never return null.
-        '''
+        """
         return TypefaceLoader._save(skia.Typeface(family, style), TypefaceSource.SYSTEM)
+
+    @staticmethod
+    def clone_with_arguments(typeface: skia.Typeface, arguments: skia.FontArguments) -> skia.Typeface:
+        typeface_loading_info = TypefaceLoader.get_typeface_loading_info(typeface)
+        if not typeface_loading_info:
+            raise RuntimeError("Impossible to clone typeface: it was not loaded")
+
+        new_typeface = typeface.makeClone(arguments)
+        typeface_loading_info.typeface = new_typeface
+        return new_typeface
     
     @staticmethod
     def get_typeface_loading_info(typeface: skia.Typeface) -> Optional[TypefaceLoadingInfo]:

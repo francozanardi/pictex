@@ -87,7 +87,7 @@ class FontManager:
         variation_position = skia.FontArguments.VariationPosition(coordinates)
         font_args = skia.FontArguments()
         font_args.setVariationDesignPosition(variation_position)
-        return typeface.makeClone(font_args)
+        return TypefaceLoader.clone_with_arguments(typeface, font_args)
 
     def _prepare_fallbacks(self) -> List[skia.Font]:
         user_fallbacks = [self._create_font_typeface(fb) for fb in self._style.font_fallbacks]
