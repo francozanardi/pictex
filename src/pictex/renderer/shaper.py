@@ -1,5 +1,6 @@
 import skia
-from typing import List, Optional
+from typing import List
+from .typeface_loader import TypefaceLoader
 from ..models import Style
 from .structs import Line, TextRun
 from .font_manager import FontManager
@@ -87,7 +88,19 @@ class TextShaper:
                 fallback_font.setTypeface(typeface)
                 return fallback_font
 
-        # if we don't find a font supporting the glyph, we just use the primary font
+        # if we don't find a font supporting the glyph, we try to find one in the system
+        font_style = skia.FontStyle(
+            weight=self._style.font.weight,
+            width=skia.FontStyle.kNormal_Width,
+            slant=self._style.font.style.to_skia_slant()
+        )
+        system_typeface = TypefaceLoader.load_for_glyph(glyph, font_style)
+        if system_typeface:
+            fallback_font = primary_font.makeWithSize(primary_font.getSize())
+            fallback_font.setTypeface(system_typeface)
+            return fallback_font
+
+        # if we don't find any font in the system supporting the glyph, we just use the primary font
         return primary_font
 
     def _is_glyph_supported_for_typeface(self, glyph: str, typeface: skia.Typeface) -> bool:
