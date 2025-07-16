@@ -9,6 +9,7 @@ import xml.etree.ElementTree as ET
 from ..vector_image import VectorImage
 from ..models import Shadow, Style
 from typing import Optional
+import os
 
 class VectorImageProcessor:
     
@@ -98,7 +99,7 @@ class VectorImageProcessor:
             except IOError as e:
                 continue
             
-            src = filepath
+            src = os.path.normpath(filepath).replace("\\", "/")
             if embed_fonts:
                 encoded_font = base64.b64encode(font_data).decode("utf-8")
                 file_extension = filepath.lower().split('.')[-1]
