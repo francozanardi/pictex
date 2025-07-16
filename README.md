@@ -1,6 +1,6 @@
 # PicTex
 
-[![PyPI version](https://badge.fury.io/py/pictex.svg?v=1)](https://pypi.org/project/pictex/)
+[![PyPI version](https://badge.fury.io/py/pictex.svg?v=2)](https://pypi.org/project/pictex/)
 [![CI Status](https://github.com/francozanardi/pictex/actions/workflows/test.yml/badge.svg)](https://github.com/francozanardi/pictex/actions/workflows/ci.yml)
 [![Codecov](https://codecov.io/gh/francozanardi/pictex/branch/main/graph/badge.svg)](https://codecov.io/gh/francozanardi/pictex)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
