@@ -65,16 +65,15 @@ image.save("hello.svg")
 
 ![Quickstart SVG result](https://raw.githubusercontent.com/francozanardi/pictex/main/docs/assets/readme-3.svg)
 
-## 📚 Dive Deeper
+## 📚 Documentation
 
-For a complete guide on all features, including text decorations, advanced gradients, smart cropping, and more, check out our full documentation:
+For a complete guide on all features, examples, and the full API reference, please visit our documentation website.
 
--   [**Getting Started & Core Concepts**](docs/getting_started.md)
--   [**Exporting to SVG**](docs/exporting_svg.md)
--   [**Styling Guide: Colors & Gradients**](docs/colors.md)
--   [**Styling Guide: Text & Fonts**](docs/text.md)
--   [**Styling Guide: Containers & Effects**](docs/effects.md)
--   API Reference (coming soon)
+**[Read the Full Documentation](https://pictex.readthedocs.io/)**
+
+## Featured On
+
+[<img alt="Python Weekly Logo" src="https://media.beehiiv.com/cdn-cgi/image/fit=scale-down,format=auto,onerror=redirect,quality=80/uploads/publication/logo/0dfe72e1-380f-4399-a50e-134919512092/Python-Weekly-Square-Logo.jpg" width="80">](https://www.pythonweekly.com/p/python-weekly-issue-707-july-17-2025-0b345aeeec65adb3)
 
 ## Contributing
 
