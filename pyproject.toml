@@ -48,3 +48,8 @@ test = [
     "pytest-regressions",
     "Pillow"
 ]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocstrings[python]"
+]

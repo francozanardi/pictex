@@ -76,5 +76,5 @@ You now understand the basic workflow of `PicTex`. The real power of the library
 4.  **[Smart Sizing & Cropping](./crop.md)**
     *Take full control over the final image dimensions with different cropping strategies.*
 
-5.  **[Exporting as SVG](./exporting_svg.md)**
-    *Export your canvas as SVG image.*
+5.  **[Exporting to SVG](./exporting_svg.md)**
+    *Export your canvas as an SVG image.*
