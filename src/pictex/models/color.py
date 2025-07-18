@@ -25,46 +25,92 @@ NAMED_COLORS = {
     'pink': '#ffc0cb',
 }
 
+
 @dataclass(frozen=True)
 class SolidColor(PaintSource):
-    """Represents a solid RGBA color."""
+    """Represents a solid color with RGBA components.
+
+    This class provides a structured way to handle solid colors, with methods
+    for creating instances from various string formats like hex codes or
+    standard color names.
+
+    Attributes:
+        r (int): The red component of the color (0-255).
+        g (int): The green component of the color (0-255).
+        b (int): The blue component of the color (0-255).
+        a (int): The alpha (opacity) component of the color (0-255), where
+            255 is fully opaque. Defaults to 255.
+    """
     r: int
     g: int
     b: int
     a: int = 255
 
     @classmethod
-    def from_hex(cls, hex_str: str) -> SolidColor:
-        """Creates a Color object from a hex string (e.g., '#RRGGBB' or '#RGB' or '#RRGGBBAA')."""
+    def _from_hex(cls, hex_str: str) -> SolidColor:
+        """Creates a SolidColor object from a hexadecimal string.
+
+        Supports various hex formats: '#RGB', '#RRGGBB', and '#RRGGBBAA'.
+
+        Args:
+            hex_str: The hexadecimal color string.
+
+        Returns:
+            A new `SolidColor` instance.
+
+        Raises:
+            ValueError: If the hex string format is invalid.
+        """
         hex_str = hex_str.lstrip('#')
-        # RGB to RRGGBB
-        if len(hex_str) == 3:
+
+        if len(hex_str) == 3:  # Expand short form like #F0C to #FF00CC
             hex_str = "".join(c * 2 for c in hex_str)
 
-        # RRGGBBAA
-        if len(hex_str) == 8:
-            r, g, b, a = (int(hex_str[i:i+2], 16) for i in (0, 2, 4, 6))
+        if len(hex_str) == 8:  # RRGGBBAA
+            r, g, b, a = (int(hex_str[i:i + 2], 16) for i in (0, 2, 4, 6))
             return cls(r, g, b, a)
-        # RRGGBB
-        elif len(hex_str) == 6:
-            r, g, b = (int(hex_str[i:i+2], 16) for i in (0, 2, 4))
+        elif len(hex_str) == 6:  # RRGGBB
+            r, g, b = (int(hex_str[i:i + 2], 16) for i in (0, 2, 4))
             return cls(r, g, b)
-
         else:
             raise ValueError(f"Invalid hex color format: '{hex_str}'")
-        
+
     @classmethod
     def from_str(cls, value: str) -> SolidColor:
+        """Creates a SolidColor object from a general color string.
+
+        This method acts as a factory, supporting standard color names
+        (e.g., 'red', 'blue') and hexadecimal codes.
+
+        Args:
+            value: The color string to parse.
+
+        Returns:
+            A new `SolidColor` instance.
+
+        Raises:
+            ValueError: If the color name is unknown or the format is invalid.
         """
-        Creates a Color object from a string.
-        Supports hex codes (e.g., '#ff0000') and named colors (e.g., 'red').
-        """
-        hex_code = value.strip().lower() if value.startswith('#') else NAMED_COLORS.get(value, None)
+        clean_value = value.strip().lower()
+        if clean_value.startswith('#'):
+            return cls._from_hex(clean_value)
+
+        hex_code = NAMED_COLORS.get(clean_value)
         if hex_code:
-            return cls.from_hex(hex_code)
-        
+            return cls._from_hex(hex_code)
+
         raise ValueError(f"Unknown color name or format: '{value}'")
 
     def apply_to_paint(self, paint: skia.Paint, bounds: skia.Rect) -> None:
-        """Applies this solid color to the paint object."""
+        """Applies this solid color to a Skia Paint object.
+
+        This method is part of the `PaintSource` interface and is used by the
+        rendering engine.
+
+        Args:
+            paint: The `skia.Paint` object to modify.
+            bounds: The bounding box of the area to be painted. This is not
+                used for solid colors but is part of the interface for
+                compatibility with gradients.
+        """
         paint.setColor(skia.Color(self.r, self.g, self.b, self.a))

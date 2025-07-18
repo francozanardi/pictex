@@ -34,18 +34,23 @@ class LinearGradient(PaintSource):
 
     Example:
         # A simple horizontal gradient from red to blue
+        ```python
         horizontal_gradient = LinearGradient(
             colors=['#FF0000', 'blue']
         )
+        ```
 
         # A vertical gradient from top (yellow) to bottom (orange)
+        ```python
         vertical_gradient = LinearGradient(
             colors=['yellow', 'orange'],
             start_point=(0.5, 0.0),
             end_point=(0.5, 1.0)
         )
+        ```
 
         # A diagonal gradient with a custom color stop
+        ```python
         diagonal_gradient = LinearGradient(
             colors=[
                 'magenta',
@@ -54,6 +59,7 @@ class LinearGradient(PaintSource):
             ],
             stops=[0.0, 0.2, 1.0] # 'cyan' is positioned 20% along the gradient
         )
+        ```
     """
     colors: Sequence[SolidColor]
     stops: Optional[Sequence[float]] = None
