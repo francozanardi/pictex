@@ -65,11 +65,14 @@ image.save("hello.svg")
 
 ![Quickstart SVG result](https://raw.githubusercontent.com/francozanardi/pictex/main/docs/assets/readme-3.svg)
 
-## 📚 Documentation
+## 📚 Dive Deeper
 
-For a complete guide on all features, examples, and the full API reference, please visit our documentation website.
+For a complete guide on all features, including text decorations, advanced gradients, and more, check out our full documentation:
 
-**[Read the Full Documentation](https://pictex.readthedocs.io/)**
+-   [**Getting Started & Core Concepts**](https://pictex.readthedocs.io/en/latest/getting_started/)
+-   [**Styling Guide: Colors & Gradients**](https://pictex.readthedocs.io/en/latest/colors/)
+-   [**Styling Guide: Text & Fonts**](https://pictex.readthedocs.io/en/latest/text/)
+-   [**Styling Guide: Containers & Effects**](https://pictex.readthedocs.io/en/latest/effects/)
 
 ## Featured On
 
