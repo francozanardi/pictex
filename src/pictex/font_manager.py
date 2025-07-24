@@ -2,15 +2,17 @@ import skia
 import os
 import struct
 from typing import List, Optional
-from ..models import Style, FontStyle, FontSmoothing
 import warnings
-from ..exceptions import FontNotFoundWarning
+from .models import Style, FontStyle, FontSmoothing
+from .exceptions import FontNotFoundWarning
 from .typeface_loader import TypefaceLoader
 
 class FontManager:
-    def __init__(self, style: Style):
+
+    def __init__(self, style: Style, font_smoothing: FontSmoothing):
         self._style = style
-        self._primary_font = self._create_font(self._style.font.family)
+        self._font_smoothing = font_smoothing
+        self._primary_font = self._create_font(self._style.font_family)
         self._fallback_font_typefaces = self._prepare_fallbacks()
 
     def get_primary_font(self) -> skia.Font:
@@ -23,8 +25,8 @@ class FontManager:
         typeface = self._create_font_typeface(font_path_or_name)
         if not typeface:
             typeface = TypefaceLoader.load_default()
-        font = skia.Font(typeface, self._style.font.size)
-        if self._style.font.smoothing == FontSmoothing.SUBPIXEL:
+        font = skia.Font(typeface, self._style.font_size)
+        if self._font_smoothing == FontSmoothing.SUBPIXEL:
             font.setEdging(skia.Font.Edging.kSubpixelAntiAlias)
             font.setSubpixel(True)
         else: # STANDARD
@@ -53,9 +55,9 @@ class FontManager:
     
     def _create_system_font_typeface(self, font_family: str) -> Optional[skia.Font]:
         font_style = skia.FontStyle(
-            weight=self._style.font.weight,
+            weight=self._style.font_weight,
             width=skia.FontStyle.kNormal_Width,
-            slant=self._style.font.style.to_skia_slant()
+            slant=self._style.font_style.to_skia_slant()
         )
         typeface = TypefaceLoader.load_system_font(font_family, font_style)
         actual_font_family = typeface.getFamilyName()
@@ -68,9 +70,9 @@ class FontManager:
     
     def _apply_variations_to_variable_font(self, typeface: skia.Typeface) -> skia.Typeface:
         variations = {
-            'wght': float(self._style.font.weight),
-            'ital': 1.0 if self._style.font.style == FontStyle.ITALIC else 0.0,
-            'slnt': -12.0 if self._style.font.style == FontStyle.OBLIQUE else 0.0,
+            'wght': float(self._style.font_weight),
+            'ital': 1.0 if self._style.font_style == FontStyle.ITALIC else 0.0,
+            'slnt': -12.0 if self._style.font_style == FontStyle.OBLIQUE else 0.0,
         }
         to_four_char_code = lambda tag: struct.unpack('!I', tag.encode('utf-8'))[0]
         available_axes_tags = { axis.tag for axis in typeface.getVariationDesignParameters() }

@@ -1,6 +1,6 @@
-from ...models import Shadow
 import skia
 from typing import Optional
+from ..models import Shadow
 
 def create_composite_shadow_filter(shadows: list[Shadow]) -> Optional[skia.ImageFilter]:
     if len(shadows) == 0:

@@ -1,16 +1,16 @@
 import skia
 from ..models import CropMode, Box
-from typing import Tuple, Optional
-from .structs import RenderMetrics
+from typing import Optional
 import numpy as np
 from ..image import Image
+from ..nodes import Node
+from .. import utils
 
 class ImageProcessor:
 
-    def process(self, image: skia.Image, metrics: RenderMetrics, crop_mode: CropMode) -> Image:
-        bg_rect = metrics.background_rect
-        content_rect = skia.Rect.MakeLTRB(bg_rect.left(), bg_rect.top(), bg_rect.right(), bg_rect.bottom())
-        content_rect.offset(metrics.draw_origin)
+    def process(self, root: Node, image: skia.Image, crop_mode: CropMode) -> Image:
+        content_rect = utils.clone_skia_rect(root.box_bounds)
+        content_rect.offset(-root.paint_bounds.left(), -root.paint_bounds.top())
         if crop_mode == CropMode.SMART:
             crop_rect = self._get_trim_rect(image)
             if crop_rect:

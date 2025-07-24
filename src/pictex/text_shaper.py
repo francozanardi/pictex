@@ -1,8 +1,7 @@
 import skia
 from typing import List
 from .typeface_loader import TypefaceLoader
-from ..models import Style
-from .structs import Line, TextRun
+from .models import Style, Line, TextRun
 from .font_manager import FontManager
 
 class TextShaper:
@@ -17,19 +16,24 @@ class TextShaper:
         """
 
         shaped_lines: list[Line] = []
+        font_height = self._get_primary_font_height()
         for line_text in text.split('\n'):
             if not line_text:
                 shaped_lines.append(self._create_empty_line())
                 continue
             
             runs: list[TextRun] = self._split_line_in_runs(line_text)
-            line = self._create_line(runs)
+            line = self._create_line(runs, font_height)
             shaped_lines.append(line)
         
         return shaped_lines
 
+    def _get_primary_font_height(self) -> float:
+        font_metrics = self._font_manager.get_primary_font().getMetrics()
+        return -font_metrics.fAscent + font_metrics.fDescent + font_metrics.fLeading
+
     def _create_empty_line(self) -> Line:
-        '''Handle empty lines by creating a placeholder with correct height'''
+        """Handle empty lines by creating a placeholder with correct height"""
 
         primary_font = self._font_manager.get_primary_font()
         line = Line(runs=[], width=0, bounds=skia.Rect.MakeEmpty())
@@ -37,18 +41,13 @@ class TextShaper:
         line.bounds = skia.Rect.MakeLTRB(0, font_metrics.fAscent, 0, font_metrics.fDescent)
         return line
     
-    def _create_line(self, runs: list[TextRun]) -> Line:
+    def _create_line(self, runs: list[TextRun], font_height: float) -> Line:
         line_width = 0
-        line_bounds = skia.Rect.MakeEmpty()
         for run in runs:
             run.width = run.font.measureText(run.text)
-            run_bounds = skia.Rect()
-            run.font.measureText(run.text, bounds=run_bounds)
-            run_bounds.offset(line_width, 0)
-            line_bounds.join(run_bounds)
             line_width += run.width
 
-        return Line(runs=runs, width=line_width, bounds=line_bounds)
+        return Line(runs=runs, width=line_width, height=font_height, bounds=skia.Rect.MakeWH(line_width, font_height))
     
     def _split_line_in_runs(self, line_text: str) -> list[TextRun]:
         primary_font = self._font_manager.get_primary_font()
@@ -90,9 +89,9 @@ class TextShaper:
 
         # if we don't find a font supporting the glyph, we try to find one in the system
         font_style = skia.FontStyle(
-            weight=self._style.font.weight,
+            weight=self._style.font_weight,
             width=skia.FontStyle.kNormal_Width,
-            slant=self._style.font.style.to_skia_slant()
+            slant=self._style.font_style.to_skia_slant()
         )
         system_typeface = TypefaceLoader.load_for_glyph(glyph, font_style)
         if system_typeface:

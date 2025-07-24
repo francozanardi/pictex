@@ -25,7 +25,7 @@ def test_canvas_fluent_api_and_style_building():
         .background_color('olive')
         .background_radius(15.5)
         .line_height(1.5)
-        .alignment('right')
+        .text_align('right')
         .font_smoothing(FontSmoothing.STANDARD)
     )
     
@@ -36,7 +36,7 @@ def test_canvas_fluent_api_and_style_building():
     assert style.font.weight == FontWeight.BOLD
     assert style.font.style == FontStyle.ITALIC
     assert style.color == SolidColor.from_str("#FF0000")
-    assert style.shadows == [Shadow([1, 1], 1, SolidColor.from_str('black')), Shadow([2, 2], 2, SolidColor.from_str('black'))]
+    assert style.text_shadows == [Shadow([1, 1], 1, SolidColor.from_str('black')), Shadow([2, 2], 2, SolidColor.from_str('black'))]
     assert style.box_shadows == [Shadow([3, 3], 3, SolidColor.from_str('blue')), Shadow([4, 4], 4, SolidColor.from_str('blue'))]
     assert style.outline_stroke == OutlineStroke(10, SolidColor.from_str('green'))
     assert style.decorations == [
@@ -47,7 +47,7 @@ def test_canvas_fluent_api_and_style_building():
     assert style.background.color == SolidColor.from_str('olive')
     assert style.background.corner_radius == 15.5
     assert style.font.line_height == 1.5
-    assert style.alignment == Alignment('right')
+    assert style.text_align == Alignment('right')
     assert style.font.smoothing == FontSmoothing.STANDARD
 
 def test_color_formats():
@@ -73,7 +73,7 @@ def test_color_formats():
         )
         style = canvas._style
         assert style.color == expected_color
-        assert style.shadows == [Shadow([0, 0], 0, expected_color)]
+        assert style.text_shadows == [Shadow([0, 0], 0, expected_color)]
         assert style.box_shadows == [Shadow([0, 0], 0, expected_color)]
         assert style.outline_stroke == OutlineStroke(0, expected_color)
         assert style.decorations == [

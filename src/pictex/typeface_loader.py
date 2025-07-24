@@ -1,6 +1,6 @@
 from typing import Optional
 import skia
-from .structs import TypefaceLoadingInfo, TypefaceSource
+from .models import TypefaceLoadingInfo, TypefaceSource
 
 class TypefaceLoader:
     _typefaces_loading_info: list[TypefaceLoadingInfo] = []

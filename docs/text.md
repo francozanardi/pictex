@@ -105,7 +105,7 @@ canvas = (
     .font_weight(700)
     .font_size(50)
     .color("magenta")
-    .alignment(Alignment.CENTER) # a string is also accepted ("center")
+    .text_align(Alignment.CENTER)  # a string is also accepted ("center")
     .line_height(1.2)
     .padding(20)
 )

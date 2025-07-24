@@ -15,7 +15,7 @@ The two most important classes in `PicTex` are `Canvas` and `Image`.
 This separation allows for clean and efficient code:
 
 ```python
-# Create one style template
+# Create one builders template
 my_template = Canvas().font_size(80).color("blue")
 
 # Render multiple images from the same template

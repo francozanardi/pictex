@@ -5,14 +5,8 @@ from typing import Optional
 
 from .color import SolidColor
 
-class DecorationLine(Enum):
-    """The type of line to draw for the decoration."""
-    UNDERLINE = "underline"
-    STRIKETHROUGH = "strikethrough"
-
 @dataclass
 class TextDecoration:
     """Represents a line drawn over, under, or through the text."""
-    line: DecorationLine
     color: Optional[SolidColor] = None  # If None, use the text's color.
     thickness: float = 4.0

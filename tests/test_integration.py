@@ -17,7 +17,7 @@ def test_kitchen_sink_all_features_combined(file_regression, render_engine):
         .font_style(FontStyle.ITALIC)
         .font_smoothing(FontSmoothing.STANDARD)
         .line_height(1.3)
-        .alignment(Alignment.CENTER)
+        .text_align(Alignment.CENTER)
         .padding(30, 40)
         .background_color(LinearGradient(colors=["#414345", "#232526"]))
         .background_radius(25)

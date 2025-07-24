@@ -1,34 +1,49 @@
 from .painter import Painter
-from ..structs import Line
+from ..font_manager import FontManager
 from ..utils import create_composite_shadow_filter, get_line_x_position
 from typing import Optional
 import skia
+from ..models import Style, Line
 
 class TextPainter(Painter):
 
-    def paint(self, canvas: skia.Canvas, lines: list[Line]) -> None:
+    def __init__(
+            self,
+            style: Style,
+            font_manager: FontManager,
+            text_bounds: skia.Rect,
+            lines: list[Line],
+            is_svg: bool
+    ):
+        super().__init__(style)
+        self._font_manager = font_manager
+        self._text_bounds = text_bounds
+        self._is_svg = is_svg
+        self._lines: list[Line] = lines
+
+    def paint(self, canvas: skia.Canvas) -> None:
         paint = skia.Paint(AntiAlias=True)
-        self._style.color.apply_to_paint(paint, self._metrics.text_rect)
+        self._style.color.apply_to_paint(paint, self._text_bounds)
         self._add_shadows_to_paint(paint)
-        self._draw_text(canvas, lines, paint)
+        self._draw_text(canvas, paint)
 
     def _add_shadows_to_paint(self, paint: skia.Paint) -> None:
         if self._is_svg:
             return
 
-        filter = create_composite_shadow_filter(self._style.shadows)
+        filter = create_composite_shadow_filter(self._style.text_shadows)
         if not filter:
             return
         paint.setImageFilter(filter)
 
-    def _draw_text(self, canvas: skia.Canvas, lines: list[Line], paint: skia.Paint) -> None:
-        line_gap = self._style.font.line_height * self._style.font.size
-        current_y = 0
-        block_width = self._metrics.text_rect.width()
+    def _draw_text(self, canvas: skia.Canvas, paint: skia.Paint) -> None:
+        line_gap = self._style.line_height * self._style.font_size
+        current_y = self._text_bounds.top() + self._style.font_size
+        block_width = self._text_bounds.width()
         outline_paint = self._build_outline_paint()
         
-        for line in lines:
-            draw_x_start = get_line_x_position(line.width, block_width, self._style.alignment)
+        for line in self._lines:
+            draw_x_start = get_line_x_position(line.width, block_width, self._style.text_align)
             current_x = draw_x_start
             
             for run in line.runs:
@@ -48,5 +63,5 @@ class TextPainter(Painter):
             Style=skia.Paint.kStroke_Style,
             StrokeWidth=self._style.outline_stroke.width
         )
-        self._style.outline_stroke.color.apply_to_paint(paint, self._metrics.text_rect)
+        self._style.outline_stroke.color.apply_to_paint(paint, self._text_bounds)
         return paint
