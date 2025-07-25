@@ -7,4 +7,4 @@ from .linear_gradient import LinearGradient
 from .decoration import TextDecoration
 from .crop import CropMode
 from .box import Box
-from .position import Position, HorizontalPosition, VerticalPosition
+from .position import Position

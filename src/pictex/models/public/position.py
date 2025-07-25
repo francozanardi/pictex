@@ -1,17 +1,5 @@
 from dataclasses import dataclass
-from enum import Enum
 from typing import Tuple
-
-
-class VerticalPosition(str, Enum):
-    TOP = "top"
-    CENTER = "center"
-    BOTTOM = "bottom"
-
-class HorizontalPosition(str, Enum):
-    LEFT = "left"
-    CENTER = "center"
-    RIGHT = "right"
 
 @dataclass
 class Position:

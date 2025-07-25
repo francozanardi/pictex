@@ -1,5 +1,5 @@
 from typing import Self, Union, Tuple
-from ..models import VerticalPosition, HorizontalPosition, Position, Style
+from ..models import Position, Style
 
 class PositionableMixin:
 
