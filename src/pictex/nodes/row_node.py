@@ -32,7 +32,7 @@ class RowNode(Node):
             child_bounds_shifted = child.paint_bounds.makeOffset(paint_bounds.width(), 0)
             paint_bounds.join(child_bounds_shifted)
 
-        paint_bounds.join(self.box_bounds)
+        paint_bounds.join(self._compute_shadow_bounds(self.box_bounds, self.computed_styles.box_shadows.get()))
         return paint_bounds
 
     def _get_painters(self) -> list[Painter]:
