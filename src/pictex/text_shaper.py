@@ -89,9 +89,9 @@ class TextShaper:
 
         # if we don't find a font supporting the glyph, we try to find one in the system
         font_style = skia.FontStyle(
-            weight=self._style.font_weight,
+            weight=self._style.font_weight.get(),
             width=skia.FontStyle.kNormal_Width,
-            slant=self._style.font_style.to_skia_slant()
+            slant=self._style.font_style.get().to_skia_slant()
         )
         system_typeface = TypefaceLoader.load_for_glyph(glyph, font_style)
         if system_typeface:

@@ -17,7 +17,7 @@ class Stylable:
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.font_family = str(family)
+        self._style.font_family.set(str(family))
         return self
 
     def font_fallbacks(self, *fonts: Union[str, Path]) -> Self:
@@ -31,7 +31,7 @@ class Stylable:
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.font_fallbacks = [str(font) for font in fonts]
+        self._style.font_fallbacks.set([str(font) for font in fonts])
         return self
 
     def font_size(self, size: float) -> Self:
@@ -43,7 +43,7 @@ class Stylable:
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.font_size = size
+        self._style.font_size.set(size)
         return self
 
     def font_weight(self, weight: Union[FontWeight, int]) -> Self:
@@ -55,7 +55,7 @@ class Stylable:
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.font_weight = weight if isinstance(weight, FontWeight) else FontWeight(weight)
+        self._style.font_weight.set(weight if isinstance(weight, FontWeight) else FontWeight(weight))
         return self
 
     def font_style(self, style: Union[FontStyle, str]) -> Self:
@@ -67,7 +67,7 @@ class Stylable:
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.font_style = style if isinstance(style, FontStyle) else FontStyle(style)
+        self._style.font_style.set(style if isinstance(style, FontStyle) else FontStyle(style))
         return self
 
     def line_height(self, multiplier: float) -> Self:
@@ -81,7 +81,7 @@ class Stylable:
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.line_height = multiplier
+        self._style.line_height.set(multiplier)
         return self
 
     # TODO: rename to text_color?
@@ -94,7 +94,7 @@ class Stylable:
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.color = self._build_color(color)
+        self._style.color.set(self._build_color(color))
         return self
 
     # TODO: rename to text_shadow() and support multiple Shadow objects.
@@ -117,7 +117,7 @@ class Stylable:
             The `Self` instance for chaining.
         """
         shadow_color = self._build_color(color)
-        self._style.text_shadows.append(Shadow(offset, blur_radius, shadow_color))
+        self._style.text_shadows.set([Shadow(offset, blur_radius, shadow_color)])
         return self
 
     # TODO: rename to box_shadow() and support multiple Shadow objects.
@@ -140,7 +140,7 @@ class Stylable:
             The `Self` instance for chaining.
         """
         shadow_color = self._build_color(color)
-        self._style.box_shadows.append(Shadow(offset, blur_radius, shadow_color))
+        self._style.box_shadows.set([Shadow(offset, blur_radius, shadow_color)])
         return self
 
     def outline_stroke(self, width: float, color: Union[str, PaintSource]) -> Self:
@@ -153,7 +153,7 @@ class Stylable:
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.outline_stroke = OutlineStroke(width=width, color=self._build_color(color))
+        self._style.outline_stroke.set(OutlineStroke(width=width, color=self._build_color(color)))
         return self
 
     def underline(
@@ -171,10 +171,10 @@ class Stylable:
             The `Self` instance for chaining.
         """
         decoration_color = self._build_color(color) if color else None
-        self._style.underline = TextDecoration(
+        self._style.underline.set(TextDecoration(
             color=decoration_color,
             thickness=thickness
-        )
+        ))
         return self
 
     def strikethrough(
@@ -192,10 +192,10 @@ class Stylable:
             The `Self` instance for chaining.
         """
         decoration_color = self._build_color(color) if color else None
-        self._style.strikethrough = TextDecoration(
+        self._style.strikethrough.set(TextDecoration(
             color=decoration_color,
             thickness=thickness
-        )
+        ))
         return self
 
     @overload
@@ -229,14 +229,14 @@ class Stylable:
         """
         if len(args) == 1:
             value = float(args[0])
-            self._style.padding = (value, value, value, value)
+            self._style.padding.set((value, value, value, value))
         elif len(args) == 2:
             vertical = float(args[0])
             horizontal = float(args[1])
-            self._style.padding = (vertical, horizontal, vertical, horizontal)
+            self._style.padding.set((vertical, horizontal, vertical, horizontal))
         elif len(args) == 4:
             top, right, bottom, left = map(float, args)
-            self._style.padding = (top, right, bottom, left)
+            self._style.padding.set((top, right, bottom, left))
         else:
             raise TypeError(
                 f"padding() takes 1, 2, or 4 arguments but got {len(args)}")
@@ -252,7 +252,7 @@ class Stylable:
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.background_color = self._build_color(color)
+        self._style.background_color.set(self._build_color(color))
         return self
 
     # TODO: review this when border gets supported
@@ -265,7 +265,7 @@ class Stylable:
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.box_radius = radius
+        self._style.box_radius.set(radius)
         return self
 
     def text_align(self, alignment: Union[TextAlign, str]) -> Self:
@@ -277,7 +277,7 @@ class Stylable:
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.text_align = alignment if isinstance(alignment, TextAlign) else TextAlign(alignment)
+        self._style.text_align.set(alignment if isinstance(alignment, TextAlign) else TextAlign(alignment))
         return self
 
     def _build_color(self, color: Union[str, PaintSource]) -> PaintSource:

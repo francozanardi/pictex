@@ -43,7 +43,7 @@ class Node:
 
     @property
     def absolute_position(self) -> Optional[Tuple[float, float]]:
-        position = self.computed_styles.position
+        position = self.computed_styles.position.get()
         if not position or not self._parent:
             return self._absolute_position
 
@@ -74,7 +74,7 @@ class Node:
         Compute the box bounds, relative to the node box size, (0, 0).
         """
         content_bounds = self.content_bounds
-        top_pad, right_pad, bottom_pad, left_pad = self.computed_styles.padding
+        top_pad, right_pad, bottom_pad, left_pad = self.computed_styles.padding.get()
         return skia.Rect.MakeLTRB(
             content_bounds.left() - left_pad,
             content_bounds.top() - top_pad,
@@ -170,7 +170,8 @@ class Node:
             if computed_styles.is_explicit(field_name):
                 continue
 
-            setattr(computed_styles, field_name, getattr(parent_computed_styles, field_name))
+            parent_field_value = deepcopy(getattr(parent_computed_styles, field_name))
+            setattr(computed_styles, field_name, parent_field_value)
 
         return computed_styles
 

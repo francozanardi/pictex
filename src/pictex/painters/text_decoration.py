@@ -16,7 +16,7 @@ class DecorationPainter(Painter):
     def paint(self, canvas: skia.Canvas) -> None:
         primary_font = self._font_manager.get_primary_font()
         font_metrics = primary_font.getMetrics()
-        line_gap = self._style.line_height * self._style.font_size
+        line_gap = self._style.line_height.get() * self._style.font_size.get()
         current_y = 0
         block_width = self._text_bounds.width()
         
@@ -25,9 +25,9 @@ class DecorationPainter(Painter):
                 current_y += line_gap
                 continue
 
-            line_x_start = get_line_x_position(line.width, block_width, self._style.text_align)
-            self._draw_decoration(canvas, self._style.underline, line_x_start, current_y + font_metrics.fUnderlinePosition, line.width)
-            self._draw_decoration(canvas, self._style.strikethrough, line_x_start, current_y + font_metrics.fStrikeoutPosition, line.width)
+            line_x_start = get_line_x_position(line.width, block_width, self._style.text_align.get())
+            self._draw_decoration(canvas, self._style.underline.get(), line_x_start, current_y + font_metrics.fUnderlinePosition, line.width)
+            self._draw_decoration(canvas, self._style.strikethrough.get(), line_x_start, current_y + font_metrics.fStrikeoutPosition, line.width)
 
             current_y += line_gap
 
@@ -54,7 +54,7 @@ class DecorationPainter(Painter):
             )
             color.apply_to_paint(paint, bounds)
         else:
-            color = self._style.color
+            color = self._style.color.get()
             color.apply_to_paint(paint, self._text_bounds)
 
         canvas.drawLine(line_x_start, line_y, line_x_start + line_width, line_y, paint)

@@ -53,7 +53,7 @@ class TextNode(Node):
         ]
 
     def _compute_content_bounds(self) -> skia.Rect:
-        line_gap = self.computed_styles.line_height * self.computed_styles.font_size
+        line_gap = self.computed_styles.line_height.get() * self.computed_styles.font_size.get()
         current_y = 0
         content_bounds = skia.Rect.MakeEmpty()
         primary_font = self._font_manager.get_primary_font()
@@ -63,8 +63,8 @@ class TextNode(Node):
             line_bounds = skia.Rect.MakeLTRB(line.bounds.left(), line.bounds.top(), line.bounds.right(), line.bounds.bottom())
             line_bounds.offset(0, current_y)
 
-            self._add_decoration_bounds(content_bounds, self.computed_styles.underline, line_bounds, current_y + font_metrics.fUnderlinePosition)
-            self._add_decoration_bounds(content_bounds, self.computed_styles.strikethrough, line_bounds, current_y + font_metrics.fStrikeoutPosition)
+            self._add_decoration_bounds(content_bounds, self.computed_styles.underline.get(), line_bounds, current_y + font_metrics.fUnderlinePosition)
+            self._add_decoration_bounds(content_bounds, self.computed_styles.strikethrough.get(), line_bounds, current_y + font_metrics.fStrikeoutPosition)
 
             current_y += line_gap
 
@@ -92,12 +92,12 @@ class TextNode(Node):
     def _compute_paint_bounds(self) -> skia.Rect:
         paint_bounds = utils.clone_skia_rect(self.box_bounds)
         paint_bounds.join(self.content_bounds)
-        paint_bounds.join(self._compute_shadow_bounds(self.text_bounds, self.computed_styles.text_shadows))
-        paint_bounds.join(self._compute_shadow_bounds(self.box_bounds, self.computed_styles.box_shadows))
+        paint_bounds.join(self._compute_shadow_bounds(self.text_bounds, self.computed_styles.text_shadows.get()))
+        paint_bounds.join(self._compute_shadow_bounds(self.box_bounds, self.computed_styles.box_shadows.get()))
         return paint_bounds
 
     def _compute_text_bounds(self) -> skia.Rect:
-        line_gap = self.computed_styles.line_height * self.computed_styles.font_size
+        line_gap = self.computed_styles.line_height.get() * self.computed_styles.font_size.get()
         current_y = 0
         text_bounds = skia.Rect.MakeEmpty()
 

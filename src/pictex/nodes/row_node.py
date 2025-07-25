@@ -14,7 +14,7 @@ class RowNode(Node):
         content_bounds = skia.Rect.MakeEmpty()
 
         for child in self.children:
-            if child.computed_styles.position is not None:
+            if child.computed_styles.position.get() is not None:
                 continue
 
             child_bounds_shifted = child.content_bounds.makeOffset(content_bounds.width(), 0)
@@ -26,7 +26,7 @@ class RowNode(Node):
         paint_bounds = skia.Rect.MakeEmpty()
 
         for child in self.children:
-            if child.computed_styles.position is not None:
+            if child.computed_styles.position.get() is not None:
                 continue
 
             child_bounds_shifted = child.paint_bounds.makeOffset(paint_bounds.width(), 0)
@@ -46,7 +46,7 @@ class RowNode(Node):
         current_y = y + self.content_bounds.top()
 
         for child in self.children:
-            if child.computed_styles.position:
+            if child.computed_styles.position.get():
                 continue
 
             child._set_absolute_position(current_x, current_y)

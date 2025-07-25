@@ -23,7 +23,7 @@ class TextPainter(Painter):
 
     def paint(self, canvas: skia.Canvas) -> None:
         paint = skia.Paint(AntiAlias=True)
-        self._style.color.apply_to_paint(paint, self._text_bounds)
+        self._style.color.get().apply_to_paint(paint, self._text_bounds)
         self._add_shadows_to_paint(paint)
         self._draw_text(canvas, paint)
 
@@ -31,19 +31,19 @@ class TextPainter(Painter):
         if self._is_svg:
             return
 
-        filter = create_composite_shadow_filter(self._style.text_shadows)
+        filter = create_composite_shadow_filter(self._style.text_shadows.get())
         if not filter:
             return
         paint.setImageFilter(filter)
 
     def _draw_text(self, canvas: skia.Canvas, paint: skia.Paint) -> None:
-        line_gap = self._style.line_height * self._style.font_size
-        current_y = self._text_bounds.top() + self._style.font_size
+        line_gap = self._style.line_height.get() * self._style.font_size.get()
+        current_y = self._text_bounds.top() + self._style.font_size.get()
         block_width = self._text_bounds.width()
         outline_paint = self._build_outline_paint()
         
         for line in self._lines:
-            draw_x_start = get_line_x_position(line.width, block_width, self._style.text_align)
+            draw_x_start = get_line_x_position(line.width, block_width, self._style.text_align.get())
             current_x = draw_x_start
             
             for run in line.runs:
@@ -55,13 +55,13 @@ class TextPainter(Painter):
             current_y += line_gap
 
     def _build_outline_paint(self) -> Optional[skia.Paint]:
-        if not self._style.outline_stroke:
+        if not self._style.outline_stroke.get():
             return None
         
         paint = skia.Paint(
             AntiAlias=True,
             Style=skia.Paint.kStroke_Style,
-            StrokeWidth=self._style.outline_stroke.width
+            StrokeWidth=self._style.outline_stroke.get().width
         )
-        self._style.outline_stroke.color.apply_to_paint(paint, self._text_bounds)
+        self._style.outline_stroke.get().color.apply_to_paint(paint, self._text_bounds)
         return paint

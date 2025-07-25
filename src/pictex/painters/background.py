@@ -12,14 +12,14 @@ class BackgroundPainter(Painter):
 
     def paint(self, canvas: skia.Canvas) -> None:
         bg_paint = skia.Paint(AntiAlias=True)
-        self._style.background_color.apply_to_paint(bg_paint, self._box_bounds)
+        self._style.background_color.get().apply_to_paint(bg_paint, self._box_bounds)
 
         if not self._is_svg:
-            shadow_filter = create_composite_shadow_filter(self._style.box_shadows)
+            shadow_filter = create_composite_shadow_filter(self._style.box_shadows.get())
             if shadow_filter:
                 bg_paint.setImageFilter(shadow_filter)
 
-        radius = self._style.box_radius
+        radius = self._style.box_radius.get()
         if radius > 0:
             canvas.drawRoundRect(self._box_bounds, radius, radius, bg_paint)
         else:

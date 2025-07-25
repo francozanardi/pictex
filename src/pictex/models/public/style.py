@@ -2,6 +2,7 @@ from dataclasses import dataclass, field, fields
 from typing import Optional, Any
 from .effects import Shadow, OutlineStroke
 from .position import Position
+from .style_property import StyleProperty
 from .typography import TextAlign, FontWeight, FontStyle
 from .paint_source import PaintSource
 from .decoration import TextDecoration
@@ -14,51 +15,37 @@ class Style:
     This is the core data model for the library.
     """
     # Properties that can be inherited.
-    font_family: Optional[str] = None
-    font_fallbacks: list[str] = field(default_factory=list)
-    font_size: float = 50
-    font_weight: FontWeight = FontWeight.NORMAL
-    font_style: FontStyle = FontStyle.NORMAL
-    line_height: float = 1.0  # Multiplier for the font size, like in CSS
-    text_align: TextAlign = TextAlign.LEFT
-    color: PaintSource = field(default_factory=lambda: SolidColor(0, 0, 0))
-    text_shadows: list[Shadow] = field(default_factory=list)
-    underline: TextDecoration = None
-    strikethrough: TextDecoration = None
+    font_family: StyleProperty[Optional[str]] = field(default_factory=lambda: StyleProperty(None))
+    font_fallbacks: StyleProperty[list[str]] = field(default_factory=lambda: StyleProperty([]))
+    font_size: StyleProperty[float] = field(default_factory=lambda: StyleProperty(50))
+    font_weight: StyleProperty[FontWeight] = field(default_factory=lambda: StyleProperty(FontWeight.NORMAL))
+    font_style: StyleProperty[FontStyle] = field(default_factory=lambda: StyleProperty(FontStyle.NORMAL))
+    line_height: StyleProperty[float] = field(default_factory=lambda: StyleProperty(1.0))  # Multiplier for the font size, like in CSS
+    text_align: StyleProperty[TextAlign] = field(default_factory=lambda: StyleProperty(TextAlign.LEFT))
+    color: StyleProperty[PaintSource] = field(default_factory=lambda: StyleProperty(SolidColor(0, 0, 0)))
+    text_shadows: StyleProperty[list[Shadow]] = field(default_factory=lambda: StyleProperty([]))
+    underline: StyleProperty[Optional[TextDecoration]] = field(default_factory=lambda: StyleProperty(None))
+    strikethrough: StyleProperty[Optional[TextDecoration]] = field(default_factory=lambda: StyleProperty(None))
 
     # Properties that cannot be inherited.
-    box_shadows: list[Shadow] = field(default_factory=list)
-    outline_stroke: Optional[OutlineStroke] = None
-    padding: tuple[float, float, float, float] = (0, 0, 0, 0) # Top, Right, Bottom, Left. TODO: create padding class
-    background_color: PaintSource = field(default_factory=lambda: SolidColor(0, 0, 0, 0))
-    box_radius: float = 0.0
-    position: Optional[Position] = None
-
-    # FIXME: this is not being copied correctly
-    #  and, it's not taking into account when a list is modified, for example, adding a value.
-    _touched_fields: set[str] = field(default_factory=set, init=False, repr=False)
-
-    def __setattr__(self, key: str, value: Any):
-        if "_touched_fields" in self.__dict__ and key in self.get_field_names():
-            self._touched_fields.add(key)
-        super().__setattr__(key, value)
+    box_shadows: StyleProperty[list[Shadow]] = field(default_factory=lambda: StyleProperty([], inheritable=False))
+    outline_stroke: StyleProperty[Optional[OutlineStroke]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
+    padding: StyleProperty[tuple[float, float, float, float]] = field(default_factory=lambda: StyleProperty((0, 0, 0, 0), inheritable=False)) # Top, Right, Bottom, Left. TODO: create padding class
+    background_color: StyleProperty[PaintSource] = field(default_factory=lambda: StyleProperty(SolidColor(0, 0, 0), inheritable=False))
+    box_radius: StyleProperty[float] = field(default_factory=lambda: StyleProperty(0.0, inheritable=False))
+    position: StyleProperty[Optional[Position]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
 
     def is_explicit(self, field_name: str) -> bool:
-        return field_name in self._touched_fields
+        property: Optional[StyleProperty] = getattr(self, field_name)
+        if not property:
+            raise ValueError(f"Field '{field_name}' doesn't exist.")
+        return property.was_set
 
     def is_inheritable(self, field_name: str) -> bool:
-        not_inheritable_props = [
-            "box_shadows",
-            "outline_stroke",
-            "padding",
-            "background_color",
-            "box_radius",
-            "position"
-        ]
-        if field_name not in self.get_field_names():
+        property: Optional[StyleProperty] = getattr(self, field_name)
+        if not property:
             raise ValueError(f"Field '{field_name}' doesn't exist.")
-
-        return field_name not in not_inheritable_props
+        return property.is_inheritable
 
     def get_field_names(self) -> list[str]:
         return [f.name for f in fields(self)]
