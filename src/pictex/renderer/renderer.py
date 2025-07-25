@@ -21,7 +21,7 @@ class Renderer:
         surface = skia.Surface(image_info)
         canvas = surface.getCanvas()
         canvas.clear(skia.ColorTRANSPARENT)
-        # canvas.translate(-canvas_bounds.left(), -canvas_bounds.top())
+        canvas.translate(-canvas_bounds.left(), -canvas_bounds.top())
 
         root.paint(canvas)
         del canvas

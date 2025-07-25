@@ -118,9 +118,7 @@ class Node:
             child._calculate_bounds()
 
         bounds = self._get_all_bounds()
-        is_root = self._parent is None # TODO: maybe we should create a class node Root/Canvas to avoid this logic
-        limit_bounds = self.paint_bounds if is_root else self.box_bounds
-        offset_x, offset_y = -limit_bounds.left(), -limit_bounds.top()
+        offset_x, offset_y = -self.box_bounds.left(), -self.box_bounds.top()
         for bound in bounds:
             bound.offset(offset_x, offset_y)
 
