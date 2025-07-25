@@ -15,22 +15,23 @@ class HorizontalPosition(str, Enum):
 
 @dataclass
 class Position:
-    horizontal: HorizontalPosition = HorizontalPosition.LEFT
-    vertical: VerticalPosition = VerticalPosition.TOP
-    x_offset: float = 0
-    y_offset: float = 0
+    container_anchor_x: float = 0.0
+    container_anchor_y: float = 0.0
+
+    content_anchor_x: float = 0.0
+    content_anchor_y: float = 0.0
+
+    x_offset: float = 0.0
+    y_offset: float = 0.0
 
     def get_absolute_position(self, content_width: int, content_height: int, container_width: int, container_height: int) -> Tuple[float, float]:
-        x = self.x_offset
-        y = self.y_offset
-        if self.horizontal == HorizontalPosition.CENTER:
-            x += (container_width / 2.0) - (content_width / 2.0)
-        elif self.horizontal == HorizontalPosition.RIGHT:
-            x += container_width - content_width
+        container_point_x = container_width * self.container_anchor_x
+        container_point_y = container_height * self.container_anchor_y
 
-        if self.vertical == VerticalPosition.CENTER:
-            y += (container_height / 2.0) - (content_height / 2.0)
-        elif self.vertical == VerticalPosition.BOTTOM:
-            y += container_height - content_height
+        content_offset_x = content_width * self.content_anchor_x
+        content_offset_y = content_height * self.content_anchor_y
 
-        return x, y
+        final_x = container_point_x - content_offset_x + self.x_offset
+        final_y = container_point_y - content_offset_y + self.y_offset
+
+        return final_x, final_y
