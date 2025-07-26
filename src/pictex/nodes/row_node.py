@@ -29,7 +29,7 @@ class RowNode(Node):
         return skia.Rect.MakeWH(width, height)
 
     def _compute_paint_bounds(self) -> skia.Rect:
-        paint_bounds = clone_skia_rect(self.layout_bounds)
+        paint_bounds = skia.Rect.MakeEmpty()
 
         for child in self.children:
             if child.computed_styles.position.get() is not None:
@@ -39,6 +39,7 @@ class RowNode(Node):
             paint_bounds.join(child_bounds_shifted)
 
         paint_bounds.join(self._compute_shadow_bounds(self.box_bounds, self.computed_styles.box_shadows.get()))
+        paint_bounds.join(self.layout_bounds)
         return paint_bounds
 
     def _get_painters(self) -> list[Painter]:
