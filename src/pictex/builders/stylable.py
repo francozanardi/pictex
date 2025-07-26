@@ -229,17 +229,62 @@ class Stylable:
         """
         if len(args) == 1:
             value = float(args[0])
-            self._style.padding.set((value, value, value, value))
+            self._style.padding.set(Padding(value, value, value, value))
         elif len(args) == 2:
             vertical = float(args[0])
             horizontal = float(args[1])
-            self._style.padding.set((vertical, horizontal, vertical, horizontal))
+            self._style.padding.set(Padding(vertical, horizontal, vertical, horizontal))
         elif len(args) == 4:
             top, right, bottom, left = map(float, args)
-            self._style.padding.set((top, right, bottom, left))
+            self._style.padding.set(Padding(top, right, bottom, left))
         else:
             raise TypeError(
                 f"padding() takes 1, 2, or 4 arguments but got {len(args)}")
+
+        return self
+
+    @overload
+    def margin(self, all: float) -> Self: ...
+
+    @overload
+    def margin(self, vertical: float, horizontal: float) -> Self: ...
+
+    @overload
+    def margin(
+        self, top: float, right: float, bottom: float, left: float
+    ) -> Self: ...
+
+    def margin(self, *args: Union[float, int]) -> Self:
+        """Sets margin around the element, similar to CSS.
+
+        This method accepts one, two, or four values to specify the margin
+        for the top, right, bottom, and left sides.
+
+        Args:
+            *args:
+                - One value: all four sides.
+                - Two values: vertical, horizontal.
+                - Four values: top, right, bottom, left.
+
+        Returns:
+            The `Self` instance for chaining.
+
+        Raises:
+            TypeError: If the number of arguments is not 1, 2, or 4.
+        """
+        if len(args) == 1:
+            value = float(args[0])
+            self._style.margin.set(Margin(value, value, value, value))
+        elif len(args) == 2:
+            vertical = float(args[0])
+            horizontal = float(args[1])
+            self._style.margin.set(Margin(vertical, horizontal, vertical, horizontal))
+        elif len(args) == 4:
+            top, right, bottom, left = map(float, args)
+            self._style.margin.set(Margin(top, right, bottom, left))
+        else:
+            raise TypeError(
+                f"margin() takes 1, 2, or 4 arguments but got {len(args)}")
 
         return self
 

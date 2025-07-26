@@ -43,7 +43,7 @@ class TextPainter(Painter):
         outline_paint = self._build_outline_paint()
         
         for line in self._lines:
-            draw_x_start = get_line_x_position(line.width, block_width, self._style.text_align.get())
+            draw_x_start = self._text_bounds.x() + get_line_x_position(line.width, block_width, self._style.text_align.get())
             current_x = draw_x_start
             
             for run in line.runs:

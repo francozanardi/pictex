@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field, fields
-from typing import Optional, Any
+from typing import Optional
 from .effects import Shadow, OutlineStroke
+from .layout import Margin, Padding
 from .position import Position
 from .style_property import StyleProperty
 from .typography import TextAlign, FontWeight, FontStyle
@@ -32,7 +33,8 @@ class Style:
     # Properties that cannot be inherited.
     box_shadows: StyleProperty[list[Shadow]] = field(default_factory=lambda: StyleProperty([], inheritable=False))
     outline_stroke: StyleProperty[Optional[OutlineStroke]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
-    padding: StyleProperty[tuple[float, float, float, float]] = field(default_factory=lambda: StyleProperty((0, 0, 0, 0), inheritable=False)) # Top, Right, Bottom, Left. TODO: create padding class
+    padding: StyleProperty[Padding] = field(default_factory=lambda: StyleProperty(Padding(), inheritable=False))
+    margin: StyleProperty[Margin] = field(default_factory=lambda: StyleProperty(Margin(), inheritable=False))
     background_color: StyleProperty[PaintSource] = field(default_factory=lambda: StyleProperty(SolidColor(0, 0, 0, 0), inheritable=False))
     box_radius: StyleProperty[float] = field(default_factory=lambda: StyleProperty(0.0, inheritable=False))
     position: StyleProperty[Optional[Position]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))

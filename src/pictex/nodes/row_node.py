@@ -2,6 +2,7 @@ import skia
 from .node import Node
 from ..painters import Painter, BackgroundPainter
 from ..models import Style
+from ..utils import clone_skia_rect
 
 class RowNode(Node):
 
@@ -17,7 +18,7 @@ class RowNode(Node):
             if child.computed_styles.position.get() is not None:
                 continue
 
-            child_bounds_shifted = child.content_bounds.makeOffset(content_bounds.width(), 0)
+            child_bounds_shifted = child.layout_bounds.makeOffset(content_bounds.width(), 0)
             content_bounds.join(child_bounds_shifted)
 
         size = self.computed_styles.size.get()
@@ -28,7 +29,7 @@ class RowNode(Node):
         return skia.Rect.MakeWH(width, height)
 
     def _compute_paint_bounds(self) -> skia.Rect:
-        paint_bounds = skia.Rect.MakeEmpty()
+        paint_bounds = clone_skia_rect(self.layout_bounds)
 
         for child in self.children:
             if child.computed_styles.position.get() is not None:
@@ -55,4 +56,4 @@ class RowNode(Node):
                 continue
 
             child._set_absolute_position(current_x, current_y)
-            current_x += child.box_bounds.width()
+            current_x += child.layout_bounds.width()
