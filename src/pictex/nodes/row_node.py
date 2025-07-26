@@ -10,7 +10,7 @@ class RowNode(Node):
         self._set_children(children)
         self.clear()
 
-    def _compute_content_bounds(self) -> skia.Rect:
+    def _compute_implicit_content_bounds(self) -> skia.Rect:
         content_bounds = skia.Rect.MakeEmpty()
 
         for child in self.children:

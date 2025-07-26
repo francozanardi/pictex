@@ -7,6 +7,8 @@ from .typography import TextAlign, FontWeight, FontStyle
 from .paint_source import PaintSource
 from .decoration import TextDecoration
 from .color import SolidColor
+from .size import Size
+
 
 @dataclass
 class Style:
@@ -31,9 +33,10 @@ class Style:
     box_shadows: StyleProperty[list[Shadow]] = field(default_factory=lambda: StyleProperty([], inheritable=False))
     outline_stroke: StyleProperty[Optional[OutlineStroke]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     padding: StyleProperty[tuple[float, float, float, float]] = field(default_factory=lambda: StyleProperty((0, 0, 0, 0), inheritable=False)) # Top, Right, Bottom, Left. TODO: create padding class
-    background_color: StyleProperty[PaintSource] = field(default_factory=lambda: StyleProperty(SolidColor(0, 0, 0), inheritable=False))
+    background_color: StyleProperty[PaintSource] = field(default_factory=lambda: StyleProperty(SolidColor(0, 0, 0, 0), inheritable=False))
     box_radius: StyleProperty[float] = field(default_factory=lambda: StyleProperty(0.0, inheritable=False))
     position: StyleProperty[Optional[Position]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
+    size: StyleProperty[Optional[Size]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
 
     def is_explicit(self, field_name: str) -> bool:
         property: Optional[StyleProperty] = getattr(self, field_name)

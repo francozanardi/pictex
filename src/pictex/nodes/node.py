@@ -16,6 +16,7 @@ class Node:
         self._computed_styles: Optional[Style] = None
         self._size: Optional[Tuple[int, int]] = None
         self._content_bounds: Optional[skia.Rect] = None
+        self._implicit_content_bounds: Optional[skia.Rect] = None
         self._box_bounds: Optional[skia.Rect] = None
         self._paint_bounds: Optional[skia.Rect] = None
         self._render_props: Optional[RenderProps] = None
@@ -60,8 +61,14 @@ class Node:
     @property
     def content_bounds(self) -> skia.Rect:
         if self._content_bounds is None:
-            self._content_bounds = self._compute_content_bounds()
+            self._content_bounds = self._compute_final_content_bounds()
         return self._content_bounds
+
+    @property
+    def implicit_content_bounds(self) -> skia.Rect:
+        if self._implicit_content_bounds is None:
+            self._implicit_content_bounds = self._compute_implicit_content_bounds()
+        return self._implicit_content_bounds
 
     @property
     def paint_bounds(self) -> skia.Rect:
@@ -82,11 +89,29 @@ class Node:
             content_bounds.bottom() + bottom_pad
         )
 
-    def _compute_content_bounds(self) -> skia.Rect:
+    def _compute_final_content_bounds(self) -> skia.Rect:
+        implicit_content_bounds = self._compute_implicit_content_bounds()
+        size = self.computed_styles.size.get()
+        if not size:
+            return implicit_content_bounds
+
+        parent_bounds = self._parent.box_bounds if self._parent else None
+        parent_width = parent_bounds.width() if parent_bounds else None
+        parent_height = parent_bounds.height() if parent_bounds else None
+        width, height = size.get_final_size(
+            implicit_content_bounds.width(),
+            implicit_content_bounds.height(),
+            parent_width,
+            parent_height
+        )
+        return skia.Rect.MakeWH(width, height)
+
+    def _compute_implicit_content_bounds(self) -> skia.Rect:
         """
-        Compute the inner content bounds, relative to the node box size, (0, 0).
+        Compute the inner content bounds (implicit), relative to the node box size, (0, 0).
+        Implicit means that it ignores the explicit size set from the styles for the node.
         """
-        raise NotImplementedError("_compute_content_bounds() is not implemented")
+        raise NotImplementedError("_compute_implicit_content_bounds() is not implemented")
 
     def _compute_paint_bounds(self) -> skia.Rect:
         """
@@ -152,6 +177,7 @@ class Node:
         self._computed_styles = None
         self._size = None
         self._content_bounds = None
+        self._implicit_content_bounds = None
         self._box_bounds = None
         self._paint_bounds = None
         self._render_props = None
