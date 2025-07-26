@@ -10,7 +10,7 @@ class RowNode(Node):
         self._set_children(children)
         self.clear()
 
-    def _compute_implicit_content_bounds(self) -> skia.Rect:
+    def _compute_content_bounds(self) -> skia.Rect:
         content_bounds = skia.Rect.MakeEmpty()
 
         for child in self.children:
@@ -20,7 +20,12 @@ class RowNode(Node):
             child_bounds_shifted = child.content_bounds.makeOffset(content_bounds.width(), 0)
             content_bounds.join(child_bounds_shifted)
 
-        return content_bounds
+        size = self.computed_styles.size.get()
+        if not size:
+            return content_bounds
+
+        width, height = size.get_final_size(content_bounds.width(), content_bounds.height())
+        return skia.Rect.MakeWH(width, height)
 
     def _compute_paint_bounds(self) -> skia.Rect:
         paint_bounds = skia.Rect.MakeEmpty()

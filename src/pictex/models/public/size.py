@@ -14,8 +14,8 @@ class Size:
             self,
             content_width: float,
             content_height: float,
-            container_width: Optional[float],
-            container_height: Optional[float],
+            container_width: Optional[float] = None,
+            container_height: Optional[float] = None,
     ) -> Tuple[float, float]:
         final_width, final_height = None, None
 

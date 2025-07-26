@@ -12,8 +12,9 @@ class SizableMixin:
         if isinstance(value, (int, float)):
             return SizeValue(mode='absolute', value=float(value))
 
-        if isinstance(value, str) and value.endswith('%'):
-            return SizeValue(mode='percent', value=float(value.rstrip('%')))
+        # TODO: This is not supported yet. It requires big changes.
+        # if isinstance(value, str) and value.endswith('%'):
+        #     return SizeValue(mode='percent', value=float(value.rstrip('%')))
 
         raise TypeError(f"Unsupported type for size: '{value}' ({type(value).__name__}). "
                         "Expected float, int, or 'number%'.")
@@ -33,22 +34,18 @@ class SizableMixin:
           dimension to a fixed size.
             `size(width=200, height=150)`
 
-        - **Percentage**: A `str` ending with `%` that sets the dimension
-          relative to the parent container's size.
-            `size(width="50%", height="75%")`
-
         - **None**: The dimension is automatically adjusted the
           based on the size of its internal content (fit-content mode).
-            `size(width="fit-content")`
+            `size(width=None)`
 
-        These modes can be mixed, for example: `size(width=100, height="fit-content")`.
+        These modes can be mixed, for example: `size(width=100, height=None)`.
 
         Args:
             width (Optional[Union[float, int, str]]): The horizontal size value.
-                Can be an absolute pixel value, a percentage string, or `None`.
+                Can be an absolute pixel value or `None`.
                 If `None`, the width will change depending on the content.
             height (Optional[Union[float, int, str]]): The vertical size value.
-                Can be an absolute pixel value, a percentage string, or `None`.
+                Can be an absolute pixel value or `None`.
                 If `None`, the height will change depending on the content.
 
         Returns:
