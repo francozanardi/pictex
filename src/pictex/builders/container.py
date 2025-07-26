@@ -3,9 +3,9 @@ from .element import Element
 from .text import Text
 from copy import deepcopy
 from ..nodes import Node
-from .sizable import SizableMixin
+from .with_size_mixin import WithSizeMixin
 
-class Container(Element, SizableMixin):
+class Container(Element, WithSizeMixin):
 
     def __init__(self, *children: Union[Element, str]):
         super().__init__()

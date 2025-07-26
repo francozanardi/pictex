@@ -1,7 +1,7 @@
 from typing import Self, Union, Tuple
 from ..models import Position, Style
 
-class PositionableMixin:
+class WithPositionMixin:
 
     _style: Style
 

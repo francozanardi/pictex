@@ -2,7 +2,7 @@ from typing import Self, Union, Optional
 
 from ..models import Style, Size, SizeValue
 
-class SizableMixin:
+class WithSizeMixin:
     _style: Style
 
     def _parse_size_value(self, value: Optional[Union[float, int, str]]) -> SizeValue:

@@ -7,9 +7,9 @@ from ..models import *
 from ..image import Image
 from ..vector_image import VectorImage
 from ..renderer import Renderer
-from .sizable import SizableMixin
+from .with_size_mixin import WithSizeMixin
 
-class Canvas(Stylable, SizableMixin):
+class Canvas(Stylable, WithSizeMixin):
     """The main user-facing class for creating stylized text images.
 
     This class implements a fluent builder pattern to define a builders template,

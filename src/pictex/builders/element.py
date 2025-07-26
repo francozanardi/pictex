@@ -1,8 +1,8 @@
 from .stylable import Stylable
-from .positionable import PositionableMixin
+from .with_position_mixin import WithPositionMixin
 from ..nodes import Node
 
-class Element(Stylable, PositionableMixin):
+class Element(Stylable, WithPositionMixin):
 
     def _to_node(self) -> Node:
         raise NotImplementedError()
