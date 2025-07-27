@@ -1,7 +1,7 @@
 import skia
 from .painter import Painter
 from ..utils import create_composite_shadow_filter
-from ..models import Style
+from ..models import Style, BackgroundImageSizeMode
 
 class BackgroundPainter(Painter):
 
@@ -11,16 +11,108 @@ class BackgroundPainter(Painter):
         self._is_svg = is_svg
 
     def paint(self, canvas: skia.Canvas) -> None:
-        bg_paint = skia.Paint(AntiAlias=True)
-        self._style.background_color.get().apply_to_paint(bg_paint, self._box_bounds)
+        paint = skia.Paint(AntiAlias=True)
 
-        if not self._is_svg:
-            shadow_filter = create_composite_shadow_filter(self._style.box_shadows.get())
-            if shadow_filter:
-                bg_paint.setImageFilter(shadow_filter)
+        self._paint_box_shadows(paint)
+        self._paint_background_color(canvas, paint)
+        self._paint_background_image(canvas)
 
+    def _paint_box_shadows(self, paint):
+        if self._is_svg:
+            return
+
+        shadow_filter = create_composite_shadow_filter(self._style.box_shadows.get())
+        if shadow_filter:
+            paint.setImageFilter(shadow_filter)
+
+    def _paint_background_color(self, canvas: skia.Canvas, paint: skia.Paint) -> None:
+        background_color = self._style.background_color.get()
+        if not background_color:
+            return
+
+        background_color.apply_to_paint(paint, self._box_bounds)
         radius = self._style.box_radius.get()
         if radius > 0:
-            canvas.drawRoundRect(self._box_bounds, radius, radius, bg_paint)
+            canvas.drawRoundRect(self._box_bounds, radius, radius, paint)
         else:
-            canvas.drawRect(self._box_bounds, bg_paint)
+            canvas.drawRect(self._box_bounds, paint)
+
+    def _paint_background_image(self, canvas: skia.Canvas):
+        background_image_info = self._style.background_image.get()
+        if not background_image_info:
+            return
+        image = background_image_info.get_skia_image()
+        if not image:
+            return
+
+        canvas.save()
+        radius = self._style.box_radius.get()
+        rounded_rect = skia.RRect.MakeRectXY(self._box_bounds, radius, radius)
+        canvas.clipRRect(rounded_rect, doAntiAlias=True)
+
+        paint = skia.Paint(AntiAlias=True)
+        if background_image_info.size_mode == BackgroundImageSizeMode.TILE:
+            shader = image.makeShader(
+                skia.TileMode.kRepeat,
+                skia.TileMode.kRepeat,
+                skia.SamplingOptions(skia.FilterMode.kLinear)
+            )
+            paint.setShader(shader)
+            canvas.drawRect(self._box_bounds, paint)
+            canvas.restore()
+            return
+
+        src_rect, dst_rect = self._calculate_cover_contain_rects(
+            image_width=image.width(),
+            image_height=image.height(),
+            box_rect=self._box_bounds,
+            mode=background_image_info.size_mode
+        )
+        sampling_options = skia.SamplingOptions(skia.FilterMode.kLinear)
+        constraint = skia.Canvas.kStrict_SrcRectConstraint
+
+        canvas.drawImageRect(
+            image,
+            src_rect,
+            dst_rect,
+            sampling_options,
+            paint,
+            constraint
+        )
+
+        canvas.restore()
+
+    def _calculate_cover_contain_rects(
+            self, image_width: float, image_height: float, box_rect: skia.Rect, mode: BackgroundImageSizeMode):
+
+        box_width = box_rect.width()
+        box_height = box_rect.height()
+        img_aspect = image_width / image_height
+        box_aspect = box_width / box_height
+
+        if mode == BackgroundImageSizeMode.COVER:
+            if img_aspect > box_aspect:
+                new_src_width = image_height * box_aspect
+                src_x_offset = (image_width - new_src_width) / 2
+                src_rect = skia.Rect.MakeXYWH(src_x_offset, 0, new_src_width, image_height)
+                return src_rect, box_rect
+
+            new_src_height = image_width / box_aspect
+            src_y_offset = (image_height - new_src_height) / 2
+            src_rect = skia.Rect.MakeXYWH(0, src_y_offset, image_width, new_src_height)
+            return src_rect, box_rect
+
+        elif mode == BackgroundImageSizeMode.CONTAIN:
+            src_rect = skia.Rect.MakeWH(image_width, image_height)
+            if img_aspect > box_aspect:
+                new_dst_height = box_width / img_aspect
+                dst_y_offset = (box_height - new_dst_height) / 2
+                dst_rect = skia.Rect.MakeXYWH(box_rect.left(), box_rect.top() + dst_y_offset, box_width, new_dst_height)
+                return src_rect, dst_rect
+
+            new_dst_width = box_height * img_aspect
+            dst_x_offset = (box_width - new_dst_width) / 2
+            dst_rect = skia.Rect.MakeXYWH(box_rect.left() + dst_x_offset, box_rect.top(), new_dst_width, box_height)
+            return src_rect, dst_rect
+
+        raise ValueError(f"Unknown mode: {mode}")

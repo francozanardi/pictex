@@ -10,3 +10,4 @@ from .box import Box
 from .position import Position
 from .size import Size, SizeValue
 from .layout import Margin, Padding
+from .background import BackgroundImage, BackgroundImageSizeMode

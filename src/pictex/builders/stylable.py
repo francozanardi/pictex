@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional, Union, overload, Self
+from typing import Optional, Union, overload, Self, Literal
 from pathlib import Path
 from ..models import *
 
@@ -298,6 +298,34 @@ class Stylable:
             The `Self` instance for chaining.
         """
         self._style.background_color.set(self._build_color(color))
+        return self
+
+    def background_image(
+        self,
+        path: str,
+        size_mode: Union[BackgroundImageSizeMode, Literal["cover", "contain", "tile"]] = BackgroundImageSizeMode.COVER
+    ) -> Self:
+        """Sets a background image for the element.
+
+        Args:
+            path (str): The path to the image file.
+            size_mode (Union[BackgroundImageSizeMode, str]): The fitting strategy.
+                Can be 'cover', 'contain', or 'tile'.
+                - 'cover': The image is resized to completely cover the element's box,
+                  maintaining its aspect ratio. The image may be cropped.
+                - 'contain': The image is resized to fit entirely within the box,
+                  maintaining its aspect ratio. This may leave empty space.
+                - 'tile': The image is tiled at its original size without resizing.
+
+        Returns:
+            Self: The instance for method chaining.
+        """
+        if isinstance(size_mode, str):
+            size_mode = BackgroundImageSizeMode(size_mode.lower())
+
+        self._style.background_image.set(
+            BackgroundImage(path=path, size_mode=size_mode)
+        )
         return self
 
     # TODO: review this when border gets supported
