@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field, fields
 from typing import Optional
-
-from .background import BackgroundImage, BorderRadius
+from .border import Border, BorderRadius
+from .background import BackgroundImage
 from .effects import Shadow, OutlineStroke
 from .layout import Margin, Padding
 from .position import Position
@@ -39,6 +39,7 @@ class Style:
     margin: StyleProperty[Margin] = field(default_factory=lambda: StyleProperty(Margin(), inheritable=False))
     background_color: StyleProperty[Optional[PaintSource]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     background_image: StyleProperty[Optional[BackgroundImage]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
+    border: StyleProperty[Optional[Border]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     border_radius: StyleProperty[Optional[BorderRadius]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     position: StyleProperty[Optional[Position]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     size: StyleProperty[Optional[Size]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))

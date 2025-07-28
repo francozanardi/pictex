@@ -1,6 +1,6 @@
 import skia
 from .node import Node
-from ..painters import Painter, BackgroundPainter
+from ..painters import Painter, BackgroundPainter, BorderPainter
 from ..models import Style
 from ..utils import clone_skia_rect
 
@@ -45,6 +45,7 @@ class RowNode(Node):
     def _get_painters(self) -> list[Painter]:
         return [
             BackgroundPainter(self.computed_styles, self.box_bounds, self._render_props.is_svg),
+            BorderPainter(self.computed_styles, self.box_bounds),
         ]
 
     def _set_absolute_position(self, x: float, y: float) -> None:

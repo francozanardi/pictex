@@ -4,7 +4,7 @@ from .node import Node
 from ..models import TextDecoration, Style, RenderProps, Line
 from ..font_manager import FontManager
 from ..text_shaper import TextShaper
-from ..painters import Painter, BackgroundPainter, TextPainter, DecorationPainter
+from ..painters import Painter, BackgroundPainter, TextPainter, DecorationPainter, BorderPainter
 from .. import utils
 
 class TextNode(Node):
@@ -48,6 +48,7 @@ class TextNode(Node):
     def _get_painters(self) -> list[Painter]:
         return [
             BackgroundPainter(self.computed_styles, self.box_bounds, self._render_props.is_svg),
+            BorderPainter(self.computed_styles, self.box_bounds),
             TextPainter(self.computed_styles, self._font_manager, self.text_bounds, self.shaped_lines, self._render_props.is_svg),
             DecorationPainter(self.computed_styles, self._font_manager, self.text_bounds, self.shaped_lines),
         ]

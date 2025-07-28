@@ -328,6 +328,32 @@ class Stylable:
         )
         return self
 
+    def border(
+        self,
+        width: float,
+        color: Union[str, PaintSource],
+        style: Union[str, BorderStyle] = BorderStyle.SOLID
+    ) -> Self:
+        """
+        Sets the border for the element.
+
+        Args:
+            width: The width of the border in pixels.
+            color: The color of the border (e.g., "red", "#FF0000") or a PaintSource object.
+            style: The style of the borderline. Can be 'solid', 'dashed', or 'dotted'.
+
+        Returns:
+            The `Self` instance for method chaining.
+        """
+        border_color = self._build_color(color)
+        if isinstance(style, str):
+            style = BorderStyle(style.lower())
+
+        self._style.border.set(
+            Border(width=width, color=border_color, style=style)
+        )
+        return self
+
     @overload
     def border_radius(self, all: Union[float, str]) -> Self: ...
     @overload

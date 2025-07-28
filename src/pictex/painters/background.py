@@ -23,13 +23,7 @@ class BackgroundPainter(Painter):
         if not box_radius:
             return skia.RRect.MakeRect(self._box_bounds)
 
-        rounded_rect = skia.RRect()
-        radii_tuples = box_radius.get_absolute_radii(
-            self._box_bounds.width(),
-            self._box_bounds.height()
-        )
-        rounded_rect.setRectRadii(self._box_bounds, radii_tuples)
-        return rounded_rect
+        return box_radius.apply_corner_radius(self._box_bounds)
 
     def _paint_box_shadows(self, paint):
         if self._is_svg:
