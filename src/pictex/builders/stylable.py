@@ -328,17 +328,40 @@ class Stylable:
         )
         return self
 
-    # TODO: review this when border gets supported
-    def background_radius(self, radius: float) -> Self:
-        """Sets the corner radius for the background.
+    @overload
+    def border_radius(self, all: Union[float, str]) -> Self: ...
+    @overload
+    def border_radius(self, top_bottom: Union[float, str], left_right: Union[float, str]) -> Self: ...
+    @overload
+    def border_radius(self, top_left: Union[float, str], top_right: Union[float, str], bottom_right: Union[float, str], bottom_left: Union[float, str]) -> Self: ...
+
+    def border_radius(self, *args: Union[float, str]) -> Self:
+        """
+        Sets the corner radius for the background, similar to CSS border-radius.
+        Accepts absolute values (pixels) or percentages as strings (e.g., "50%").
 
         Args:
-            radius: The corner radius value.
+            *args:
+                - One value: all four corners.
+                - Two values: [top-left, bottom-right], [top-right, bottom-left].
+                - Four values: [top-left], [top-right], [bottom-right], [bottom-left].
 
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.box_radius.set(radius)
+        if len(args) == 1:
+            val = self._parse_radius_value(args[0])
+            self._style.border_radius.set(BorderRadius(val, val, val, val))
+        elif len(args) == 2:
+            val1 = self._parse_radius_value(args[0])
+            val2 = self._parse_radius_value(args[1])
+            self._style.border_radius.set(BorderRadius(val1, val2, val1, val2))
+        elif len(args) == 4:
+            tl, tr, br, bl = map(self._parse_radius_value, args)
+            self._style.border_radius.set(BorderRadius(tl, tr, br, bl))
+        else:
+            raise TypeError(f"border_radius() takes 1, 2, or 4 arguments but got {len(args)}")
+
         return self
 
     def text_align(self, alignment: Union[TextAlign, str]) -> Self:
@@ -363,3 +386,10 @@ class Stylable:
             A `PaintSource` object.
         """
         return SolidColor.from_str(color) if isinstance(color, str) else color
+
+    def _parse_radius_value(self, value: Union[float, int, str]) -> BorderRadiusValue:
+        if isinstance(value, str) and value.endswith('%'):
+            return BorderRadiusValue(value=float(value.rstrip('%')), mode='percent')
+        elif isinstance(value, (int, float)):
+            return BorderRadiusValue(value=float(value), mode='absolute')
+        raise TypeError(f"Unsupported type for radius: {type(value).__name__}")

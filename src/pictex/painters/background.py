@@ -13,9 +13,23 @@ class BackgroundPainter(Painter):
     def paint(self, canvas: skia.Canvas) -> None:
         paint = skia.Paint(AntiAlias=True)
 
+        rounded_box_rect = self._build_rounded_box_rect()
         self._paint_box_shadows(paint)
-        self._paint_background_color(canvas, paint)
-        self._paint_background_image(canvas)
+        self._paint_background_color(canvas, paint, rounded_box_rect)
+        self._paint_background_image(canvas, rounded_box_rect)
+
+    def _build_rounded_box_rect(self) -> skia.RRect:
+        box_radius = self._style.border_radius.get()
+        if not box_radius:
+            return skia.RRect.MakeRect(self._box_bounds)
+
+        rounded_rect = skia.RRect()
+        radii_tuples = box_radius.get_absolute_radii(
+            self._box_bounds.width(),
+            self._box_bounds.height()
+        )
+        rounded_rect.setRectRadii(self._box_bounds, radii_tuples)
+        return rounded_rect
 
     def _paint_box_shadows(self, paint):
         if self._is_svg:
@@ -25,19 +39,15 @@ class BackgroundPainter(Painter):
         if shadow_filter:
             paint.setImageFilter(shadow_filter)
 
-    def _paint_background_color(self, canvas: skia.Canvas, paint: skia.Paint) -> None:
+    def _paint_background_color(self, canvas: skia.Canvas, paint: skia.Paint, box_rect: skia.RRect) -> None:
         background_color = self._style.background_color.get()
         if not background_color:
             return
 
         background_color.apply_to_paint(paint, self._box_bounds)
-        radius = self._style.box_radius.get()
-        if radius > 0:
-            canvas.drawRoundRect(self._box_bounds, radius, radius, paint)
-        else:
-            canvas.drawRect(self._box_bounds, paint)
+        canvas.drawRRect(box_rect, paint)
 
-    def _paint_background_image(self, canvas: skia.Canvas):
+    def _paint_background_image(self, canvas: skia.Canvas, box_rect: skia.RRect):
         background_image_info = self._style.background_image.get()
         if not background_image_info:
             return
@@ -46,9 +56,7 @@ class BackgroundPainter(Painter):
             return
 
         canvas.save()
-        radius = self._style.box_radius.get()
-        rounded_rect = skia.RRect.MakeRectXY(self._box_bounds, radius, radius)
-        canvas.clipRRect(rounded_rect, doAntiAlias=True)
+        canvas.clipRRect(box_rect, doAntiAlias=True)
 
         paint = skia.Paint(AntiAlias=True)
         if background_image_info.size_mode == BackgroundImageSizeMode.TILE:
