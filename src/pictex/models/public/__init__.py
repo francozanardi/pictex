@@ -9,6 +9,6 @@ from .crop import CropMode
 from .box import Box
 from .position import Position, PositionMode
 from .size import Size, SizeValue, SizeValueMode
-from .layout import Margin, Padding
+from .layout import Margin, Padding, HorizontalDistribution, VerticalAlignment, HorizontalAlignment, VerticalDistribution
 from .background import BackgroundImage, BackgroundImageSizeMode
 from .border import Border, BorderStyle, BorderRadiusValue, BorderRadius

@@ -1,6 +1,7 @@
+from typing import Tuple
 from .node import Node
 from ..painters import Painter, BackgroundPainter, BorderPainter
-from ..models import Style
+from ..models import Style, HorizontalAlignment, VerticalDistribution
 import skia
 
 class ColumnNode(Node):
@@ -44,12 +45,47 @@ class ColumnNode(Node):
 
     def _set_absolute_position(self, x: float, y: float) -> None:
         self._absolute_position = (x, y)
-        current_x = x + self.content_bounds.left()
-        current_y = y + self.content_bounds.top()
 
-        for child in self.children:
-            if child.computed_styles.position.get():
-                continue
+        user_gap = self.computed_styles.gap.get()
+        alignment = self.computed_styles.horizontal_alignment.get()
+        visible_children = [child for child in self.children if child.computed_styles.position.get() is None]
+        start_y, distribution_gap = self._distribute_vertically(user_gap, visible_children)
 
-            child._set_absolute_position(current_x, current_y)
-            current_y += child.layout_bounds.height()
+        final_gap = user_gap + distribution_gap
+        current_y = start_y
+        for child in visible_children:
+            child_width = child.layout_bounds.width()
+            container_width = self.content_bounds.width()
+            child_x = self.content_bounds.left()
+
+            if alignment == HorizontalAlignment.CENTER:
+                child_x += (container_width - child_width) / 2
+            elif alignment == HorizontalAlignment.RIGHT:
+                child_x += container_width - child_width
+
+            child._set_absolute_position(x + child_x, y + current_y)
+            current_y += child.layout_bounds.height() + final_gap
+
+    def _distribute_vertically(self, user_gap: float, visible_children: list[Node]) -> Tuple[float, float]:
+        distribution = self.computed_styles.vertical_distribution.get()
+        container_height = self.content_bounds.height()
+        children_total_height = sum(child.layout_bounds.height() for child in visible_children)
+        total_gap_space = user_gap * (len(visible_children) - 1)
+        extra_space = container_height - children_total_height - total_gap_space
+
+        start_y = self.content_bounds.top()
+        distribution_gap = 0
+        if distribution == VerticalDistribution.BOTTOM:
+            start_y += extra_space
+        elif distribution == VerticalDistribution.CENTER:
+            start_y += extra_space / 2
+        elif distribution == VerticalDistribution.SPACE_BETWEEN and len(visible_children) > 1:
+            distribution_gap = extra_space / (len(visible_children) - 1)
+        elif distribution == VerticalDistribution.SPACE_AROUND:
+            distribution_gap = extra_space / len(visible_children)
+            start_y += distribution_gap / 2
+        elif distribution == VerticalDistribution.SPACE_EVENLY:
+            distribution_gap = extra_space / (len(visible_children) + 1)
+            start_y += distribution_gap
+
+        return start_y, distribution_gap

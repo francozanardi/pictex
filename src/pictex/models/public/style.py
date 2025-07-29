@@ -3,7 +3,7 @@ from typing import Optional
 from .border import Border, BorderRadius
 from .background import BackgroundImage
 from .effects import Shadow, OutlineStroke
-from .layout import Margin, Padding
+from .layout import Margin, Padding, HorizontalDistribution, VerticalAlignment, HorizontalAlignment, VerticalDistribution
 from .position import Position
 from .style_property import StyleProperty
 from .typography import TextAlign, FontWeight, FontStyle
@@ -43,6 +43,19 @@ class Style:
     border_radius: StyleProperty[Optional[BorderRadius]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     position: StyleProperty[Optional[Position]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     size: StyleProperty[Optional[Size]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
+    horizontal_distribution: StyleProperty[HorizontalDistribution] = field(
+        default_factory=lambda: StyleProperty(HorizontalDistribution.LEFT, inheritable=False)
+    )
+    vertical_alignment: StyleProperty[VerticalAlignment] = field(
+        default_factory=lambda: StyleProperty(VerticalAlignment.TOP, inheritable=False)
+    )
+    vertical_distribution: StyleProperty[VerticalDistribution] = field(
+        default_factory=lambda: StyleProperty(VerticalDistribution.TOP, inheritable=False)
+    )
+    horizontal_alignment: StyleProperty[HorizontalAlignment] = field(
+        default_factory=lambda: StyleProperty(HorizontalAlignment.LEFT, inheritable=False)
+    )
+    gap: StyleProperty[float] = field(default_factory=lambda: StyleProperty(0.0, inheritable=False))
 
     def is_explicit(self, field_name: str) -> bool:
         property: Optional[StyleProperty] = getattr(self, field_name)

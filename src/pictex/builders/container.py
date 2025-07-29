@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Self
 from .element import Element
 from .text import Text
 from copy import deepcopy
@@ -9,6 +9,21 @@ class Container(Element):
     def __init__(self, *children: Union[Element, str]):
         super().__init__()
         self._children: list[Element] = self._parse_children(*children)
+
+    def gap(self, value: float) -> Self:
+        """
+        Sets a fixed space between each child element along the main axis.
+
+        This is often simpler than adding margins to each child individually.
+
+        Args:
+            value: The space, in pixels, to add between children.
+
+        Returns:
+            The `Self` instance for chaining.
+        """
+        self._style.gap.set(value)
+        return self
 
     def _to_node(self) -> Node:
         children_nodes = []
