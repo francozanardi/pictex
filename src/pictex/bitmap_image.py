@@ -4,7 +4,7 @@ import numpy as np
 from .models import Box
 import os
 
-class Image:
+class BitmapImage:
     """A wrapper around a rendered raster image.
 
     This class holds the pixel data from a rendered image and provides

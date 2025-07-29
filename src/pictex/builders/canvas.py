@@ -4,7 +4,7 @@ from .element import Element
 from .row import Row
 from .stylable import Stylable
 from ..models import *
-from ..image import Image
+from ..bitmap_image import BitmapImage
 from ..vector_image import VectorImage
 from ..renderer import Renderer
 from .with_size_mixin import WithSizeMixin
@@ -35,7 +35,7 @@ class Canvas(Stylable, WithSizeMixin):
             *elements: Union[Element, str],
             crop_mode: CropMode = CropMode.NONE,
             font_smoothing: Union[FontSmoothing, str] = FontSmoothing.SUBPIXEL,
-    ) -> Image:
+    ) -> BitmapImage:
         """Renders an image from the given elements using the configured builders.
 
         Args:

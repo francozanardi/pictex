@@ -1,3 +1,4 @@
+from copy import deepcopy
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Optional
@@ -22,3 +23,9 @@ class BackgroundImage:
             except Exception:
                 raise ValueError(f"Could not load background image from: {self.path}")
         return self._skia_image
+
+    def __deepcopy__(self, memo):
+        return BackgroundImage(
+            path=deepcopy(self.path, memo),
+            size_mode=deepcopy(self.size_mode, memo)
+        )

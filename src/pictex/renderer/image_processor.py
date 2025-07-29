@@ -2,13 +2,13 @@ import skia
 from ..models import CropMode, Box
 from typing import Optional
 import numpy as np
-from ..image import Image
+from ..bitmap_image import BitmapImage
 from ..nodes import Node
 from .. import utils
 
 class ImageProcessor:
 
-    def process(self, root: Node, image: skia.Image, crop_mode: CropMode) -> Image:
+    def process(self, root: Node, image: skia.Image, crop_mode: CropMode) -> BitmapImage:
         content_rect = utils.clone_skia_rect(root.box_bounds)
         content_rect.offset(-root.paint_bounds.left(), -root.paint_bounds.top())
         if crop_mode == CropMode.SMART:
@@ -24,7 +24,7 @@ class ImageProcessor:
             height=int(content_rect.height())
         )
 
-        return Image(skia_image=image, content_box=content_box)
+        return BitmapImage(skia_image=image, content_box=content_box)
 
     def _get_trim_rect(self, image: skia.Image) -> Optional[skia.Rect]:
         """

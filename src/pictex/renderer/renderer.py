@@ -3,7 +3,7 @@ from ..models import FontSmoothing
 from ..models import Style, CropMode
 from .image_processor import ImageProcessor
 from ..models import RenderProps
-from ..image import Image
+from ..bitmap_image import BitmapImage
 from ..nodes import Node
 
 
@@ -11,7 +11,7 @@ class Renderer:
     # def __init__(self, style: Style):
     #     self._style = style
 
-    def render_as_bitmap(self, root: Node, crop_mode: CropMode, font_smoothing: FontSmoothing) -> Image:
+    def render_as_bitmap(self, root: Node, crop_mode: CropMode, font_smoothing: FontSmoothing) -> BitmapImage:
         """Renders the nodes with the given builders, generating a bitmap image."""
         root.prepare_tree_for_rendering(RenderProps(False, crop_mode, font_smoothing))
 
