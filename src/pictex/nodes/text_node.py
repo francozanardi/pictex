@@ -49,10 +49,12 @@ class TextNode(Node):
         return [
             BackgroundPainter(self.computed_styles, self.box_bounds, self._render_props.is_svg),
             BorderPainter(self.computed_styles, self.box_bounds),
-            TextPainter(self.computed_styles, self._font_manager, self.text_bounds, self.shaped_lines, self._render_props.is_svg),
+            TextPainter(self.computed_styles, self._font_manager, self.text_bounds, self.content_bounds, self.shaped_lines, self._render_props.is_svg),
             DecorationPainter(self.computed_styles, self._font_manager, self.text_bounds, self.shaped_lines),
         ]
 
+    # We are including the decorations as part of the TextNode content.
+    #  However, we could include them only in paint bounds, remove them from here.
     def _compute_intrinsic_content_bounds(self) -> skia.Rect:
         line_gap = self.computed_styles.line_height.get() * self.computed_styles.font_size.get()
         current_y = 0

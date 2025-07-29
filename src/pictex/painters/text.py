@@ -12,12 +12,14 @@ class TextPainter(Painter):
             style: Style,
             font_manager: FontManager,
             text_bounds: skia.Rect,
+            parent_bounds: skia.Rect,
             lines: list[Line],
             is_svg: bool
     ):
         super().__init__(style)
         self._font_manager = font_manager
         self._text_bounds = text_bounds
+        self._parent_bounds = parent_bounds
         self._is_svg = is_svg
         self._lines: list[Line] = lines
 
@@ -39,7 +41,7 @@ class TextPainter(Painter):
     def _draw_text(self, canvas: skia.Canvas, paint: skia.Paint) -> None:
         line_gap = self._style.line_height.get() * self._style.font_size.get()
         current_y = self._text_bounds.top() + self._style.font_size.get()
-        block_width = self._text_bounds.width()
+        block_width = self._parent_bounds.width()
         outline_paint = self._build_outline_paint()
         
         for line in self._lines:
