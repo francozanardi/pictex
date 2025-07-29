@@ -1,5 +1,10 @@
 from dataclasses import dataclass
+from enum import Enum
 from typing import Tuple
+
+class PositionMode(str, Enum):
+    ABSOLUTE = 'absolute'
+    RELATIVE = 'relative'
 
 @dataclass
 class Position:
@@ -12,7 +17,9 @@ class Position:
     x_offset: float = 0.0
     y_offset: float = 0.0
 
-    def get_absolute_position(self, content_width: int, content_height: int, container_width: int, container_height: int) -> Tuple[float, float]:
+    mode: PositionMode = PositionMode.ABSOLUTE
+
+    def get_relative_position(self, content_width: int, content_height: int, container_width: int, container_height: int) -> Tuple[float, float]:
         container_point_x = container_width * self.container_anchor_x
         container_point_y = container_height * self.container_anchor_y
 

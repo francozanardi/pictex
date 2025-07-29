@@ -7,7 +7,7 @@ from .linear_gradient import LinearGradient
 from .decoration import TextDecoration
 from .crop import CropMode
 from .box import Box
-from .position import Position
+from .position import Position, PositionMode
 from .size import Size, SizeValue, SizeValueMode
 from .layout import Margin, Padding
 from .background import BackgroundImage, BackgroundImageSizeMode

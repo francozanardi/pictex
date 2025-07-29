@@ -2,10 +2,9 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Optional, Tuple
 import skia
-from ..models import Style, Shadow
+from ..models import Style, Shadow, PositionMode, RenderProps
 from ..painters import Painter
 from ..utils import create_composite_shadow_filter
-from ..models import RenderProps
 from ..layout import SizeResolver
 
 class Node:
@@ -45,13 +44,28 @@ class Node:
 
     @property
     def absolute_position(self) -> Optional[Tuple[float, float]]:
-        position = self.computed_styles.position.get()
-        if not position or not self._parent:
+        if self._absolute_position:
             return self._absolute_position
 
-        parent_width, parent_height = self._parent.size
+        position = self.computed_styles.position.get()
+        if not position or not self._parent:
+            return None
+
         self_width, self_height = self.size
-        return position.get_absolute_position(self_width, self_height, parent_width, parent_height)
+        if position.mode == PositionMode.RELATIVE:
+            parent_width, parent_height = self._parent.size
+            parent_position = self._parent.absolute_position
+            self_position = position.get_relative_position(self_width, self_height, parent_width, parent_height)
+            self._absolute_position = (
+                parent_position[0] + self_position[0],
+                parent_position[1] + self_position[1]
+            )
+            return self._absolute_position
+
+        root = self._get_root()
+        root_width, root_height = root.size
+        self._absolute_position = position.get_relative_position(self_width, self_height, root_width, root_height)
+        return self._absolute_position
 
     @property
     def box_bounds(self):
@@ -160,7 +174,10 @@ class Node:
         ]
 
     def _set_absolute_position(self, x: float, y: float) -> None:
-        self._absolute_position = (x, y)
+        has_position = self.computed_styles.position.get() is not None
+        has_parent = self._parent is not None
+        if not has_position or not has_parent:
+            self._absolute_position = (x, y)
 
     def paint(self, canvas: skia.Canvas) -> None:
         canvas.save()
@@ -216,3 +233,9 @@ class Node:
         for node in nodes:
             node._parent = self
         self._children = nodes
+
+    def _get_root(self) -> Optional[Node]:
+        root = self
+        while root._parent:
+            root = root._parent
+        return root
