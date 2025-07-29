@@ -5,3 +5,4 @@ from .row import Row
 from .stylable import Stylable
 from .text import Text
 from .image import Image
+from .column import Column

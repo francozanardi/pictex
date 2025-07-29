@@ -3,7 +3,7 @@ from ..painters import Painter, BackgroundPainter, BorderPainter
 from ..models import Style
 import skia
 
-class RowNode(Node):
+class ColumnNode(Node):
 
     def __init__(self, style: Style, children: list[Node]) -> None:
         super().__init__(style)
@@ -17,7 +17,7 @@ class RowNode(Node):
             if child.computed_styles.position.get() is not None:
                 continue
 
-            child_bounds_shifted = child.layout_bounds.makeOffset(content_bounds.width(), 0)
+            child_bounds_shifted = child.layout_bounds.makeOffset(0, content_bounds.height())
             content_bounds.join(child_bounds_shifted)
 
         return content_bounds
@@ -29,7 +29,7 @@ class RowNode(Node):
             if child.computed_styles.position.get() is not None:
                 continue
 
-            child_bounds_shifted = child.paint_bounds.makeOffset(paint_bounds.width(), 0)
+            child_bounds_shifted = child.paint_bounds.makeOffset(0, paint_bounds.height())
             paint_bounds.join(child_bounds_shifted)
 
         paint_bounds.join(self._compute_shadow_bounds(self.box_bounds, self.computed_styles.box_shadows.get()))
@@ -52,4 +52,4 @@ class RowNode(Node):
                 continue
 
             child._set_absolute_position(current_x, current_y)
-            current_x += child.layout_bounds.width()
+            current_y += child.layout_bounds.height()
