@@ -53,7 +53,7 @@ class TextNode(Node):
             DecorationPainter(self.computed_styles, self._font_manager, self.text_bounds, self.shaped_lines),
         ]
 
-    def _compute_content_bounds(self) -> skia.Rect:
+    def _compute_intrinsic_content_bounds(self) -> skia.Rect:
         line_gap = self.computed_styles.line_height.get() * self.computed_styles.font_size.get()
         current_y = 0
         content_bounds = skia.Rect.MakeEmpty()

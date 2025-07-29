@@ -1,8 +1,8 @@
-import skia
+from typing import Optional, Callable
 from .node import Node
 from ..painters import Painter, BackgroundPainter, BorderPainter
-from ..models import Style
-from ..utils import clone_skia_rect
+from ..models import Style, SizeValue
+import skia
 
 class RowNode(Node):
 
@@ -11,7 +11,7 @@ class RowNode(Node):
         self._set_children(children)
         self.clear()
 
-    def _compute_content_bounds(self) -> skia.Rect:
+    def _compute_intrinsic_content_bounds(self) -> skia.Rect:
         content_bounds = skia.Rect.MakeEmpty()
 
         for child in self.children:
@@ -21,12 +21,7 @@ class RowNode(Node):
             child_bounds_shifted = child.layout_bounds.makeOffset(content_bounds.width(), 0)
             content_bounds.join(child_bounds_shifted)
 
-        size = self.computed_styles.size.get()
-        if not size:
-            return content_bounds
-
-        width, height = size.get_final_size(content_bounds.width(), content_bounds.height())
-        return skia.Rect.MakeWH(width, height)
+        return content_bounds
 
     def _compute_paint_bounds(self) -> skia.Rect:
         paint_bounds = skia.Rect.MakeEmpty()

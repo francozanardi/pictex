@@ -8,7 +8,7 @@ from .decoration import TextDecoration
 from .crop import CropMode
 from .box import Box
 from .position import Position
-from .size import Size, SizeValue
+from .size import Size, SizeValue, SizeValueMode
 from .layout import Margin, Padding
 from .background import BackgroundImage, BackgroundImageSizeMode
 from .border import Border, BorderStyle, BorderRadiusValue, BorderRadius

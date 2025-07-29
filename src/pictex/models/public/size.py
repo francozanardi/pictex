@@ -1,8 +1,15 @@
 from dataclasses import dataclass
-from typing import Tuple, Optional, NamedTuple, Literal
+from enum import Enum
+from typing import Tuple, Optional, NamedTuple
+
+class SizeValueMode(str, Enum):
+    ABSOLUTE = 'absolute'
+    PERCENT = 'percent'
+    FIT_CONTENT = 'fit-content'
+    FIT_BACKGROUND_IMAGE = 'fit-background-image'
 
 class SizeValue(NamedTuple):
-    mode: Literal['absolute', 'percent', 'fit-content']
+    mode: SizeValueMode
     value: float = 0
 
 @dataclass
@@ -17,31 +24,24 @@ class Size:
             container_width: Optional[float] = None,
             container_height: Optional[float] = None,
     ) -> Tuple[float, float]:
-        final_width, final_height = None, None
-
-        if self.width.mode == 'absolute':
-            final_width = self.width.value
-        elif self.width.mode == 'percent':
-            if container_width is None:
-                raise ValueError(
-                    "Container width is required for percentage-based width but was not provided."
-                )
-            final_width = container_width * (self.width.value / 100.0)
-        elif self.width.mode == 'fit-content':
-            final_width = content_width
-
-        if self.height.mode == 'absolute':
-            final_height = self.height.value
-        elif self.height.mode == 'percent':
-            if container_height is None:
-                raise ValueError(
-                    "Container height is required for percentage-based height but was not provided."
-                )
-            final_height = container_height * (self.height.value / 100.0)
-        elif self.height.mode == 'fit-content':
-            final_height = content_height
+        final_width = self._get_axis_size(self.width, content_width, container_width)
+        final_height = self._get_axis_size(self.height, content_height, container_height)
 
         if final_width is None or final_height is None:
             raise ValueError(f"Unable to calculate size ({final_width}, {final_height}).)")
 
         return final_width, final_height
+
+    def _get_axis_size(self, value: SizeValue, content_value: float, container_value: float) -> Optional[float]:
+        if value.mode == 'absolute':
+            return value.value
+        if value.mode == 'percent':
+            if container_value is None:
+                raise ValueError(
+                    "Container size is required for percentage-based size but was not provided."
+                )
+            return container_value * (value.value / 100.0)
+        if value.mode == 'fit-content':
+            return content_value
+
+        return None

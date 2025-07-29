@@ -6,6 +6,7 @@ from ..models import Style, Shadow
 from ..painters import Painter
 from ..utils import create_composite_shadow_filter
 from ..models import RenderProps
+from ..layout import SizeResolver
 
 class Node:
 
@@ -106,6 +107,13 @@ class Node:
         """
         Compute the inner content bounds (implicit), relative to the node box size, (0, 0).
         Implicit means that it ignores the explicit size set from the styles for the node.
+        """
+        return SizeResolver(self).resolve()
+
+    def _compute_intrinsic_content_bounds(self) -> skia.Rect:
+        """
+        Compute the intrinsic content bounds. That is, ignoring any size strategy set.
+        It measures the actual content (if the strategy is 'fit-content', then it's the same that _compute_content_bounds())
         """
         raise NotImplementedError("_compute_implicit_content_bounds() is not implemented")
 
