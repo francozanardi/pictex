@@ -7,7 +7,7 @@
 
 A powerful Python library to create beautifully styled text images with a simple, fluent API. Powered by Skia.
 
-![PicTex](docs/assets/readme-1.png)
+![PicTex](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831765/readme-1_vqnohh.png)
 
 **`PicTex`** makes it easy to generate styled text images for social media, video overlays, digital art, or any application where stylized text is needed. It abstracts away the complexity of graphics libraries, offering a declarative and chainable interface inspired by CSS.
 
@@ -55,7 +55,7 @@ image.save("hello.png")
 
 ```
 
-![Quickstart result](docs/assets/readme-2.png)
+![Quickstart result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831766/readme-2_mlgq31.png)
 
 ## 📚 Dive Deeper
 
