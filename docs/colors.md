@@ -58,7 +58,7 @@ canvas = (
 canvas.render("Gradient BG").save("gradient_bg.png")
 ```
 
-![Background gradient result](assets/colors-1.png)
+![Background gradient result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831764/colors-1_xjwcp3.png)
 
 ### Showcase: Gradients Everywhere
 
@@ -87,4 +87,4 @@ canvas = (
 canvas.render("GRADIENTS!").save("gradients_everywhere.png")
 ```
 
-![Gradients everywhere result](assets/colors-2.png)
+![Gradients everywhere result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831764/colors-2_usxxzb.png)

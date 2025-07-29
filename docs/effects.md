@@ -40,7 +40,7 @@ canvas = (
 canvas.render("Layered").save("layered_shadow.png")
 ```
 
-![Text shadow result](assets/effects-1.png)
+![Text shadow result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831765/effects-1_t8gpbu.png)
 
 ### Box Shadow (`.add_box_shadow()`)
 
@@ -61,7 +61,7 @@ canvas = (
 canvas.render("Floating").save("box_shadow.png")
 ```
 
-![Box shadow result](assets/effects-2.png)
+![Box shadow result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831764/effects-2_ztruwc.png)
 
 ## Outline Stroke
 
@@ -81,4 +81,4 @@ canvas = (
 canvas.render("COMIC").save("comic_style.png")
 ```
 
-![Outline stroke result](assets/effects-3.png)
+![Outline stroke result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831764/effects-3_l4mzu2.png)

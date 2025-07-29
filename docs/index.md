@@ -1,6 +1,6 @@
 # Welcome to PicTex
 
-![PicTex](https://raw.githubusercontent.com/francozanardi/pictex/main/docs/assets/readme-1.png)
+![PicTex](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831765/readme-1_vqnohh.png)
 
 **`PicTex` is a Python library for creating beautifully styled text images with a simple, fluent API.**
 

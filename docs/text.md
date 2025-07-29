@@ -63,7 +63,7 @@ text = "Hello, 世界 ✨"
 canvas.render(text).save("font_fallback_example.png")
 ```
 
-![Font fallback result](assets/text-0.png)
+![Font fallback result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831766/text-0_nxafcr.png)
 
 ## Variable Fonts
 
@@ -85,7 +85,7 @@ canvas = (
 canvas.render("Variable Font").save("variable_font.png")
 ```
 
-![Variable font result](assets/text-1.png)
+![Variable font result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831766/text-1_grcdal.png)
 
 `FontWeight` can be an enum member (e.g., `FontWeight.BOLD`) or an integer from 100 to 900.
 
@@ -114,7 +114,7 @@ text = "This is an example of centered,\nmulti-line text\nwith custom line spaci
 canvas.render(text).save("alignment_example.png")
 ```
 
-![Multiline result](assets/text-2.png)
+![Multiline result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831767/text-2_tvcdeh.png)
 
 ## Text Decorations
 
@@ -134,7 +134,7 @@ canvas2 = Canvas().font_size(80).color("blue").strikethrough(thickness=10, color
 canvas2.render("Strikethrough").save("strikethrough.png")
 ```
 
-![Underline result](assets/text-3-u.png)
+![Underline result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831766/text-3-u_fviyjk.png)
 
 
-![Strikethrough result](assets/text-3-s.png)
+![Strikethrough result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831766/text-3-s_kkvrl8.png)

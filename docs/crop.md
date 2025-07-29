@@ -25,12 +25,12 @@ img_content_box.save("test_content_box.jpg")
 
 **`CropMode.NONE`** (default):
 
-![None crop result](assets/crop-1-none.jpg)
+![None crop result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831765/crop-1-none_uqcff2.jpg)
 
 **`CropMode.SMART`**:
 
-![Smart crop result](assets/crop-1-smart.jpg)
+![Smart crop result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831764/crop-1-smart_skfini.jpg)
 
 **`CropMode.CONTENT_BOX`**:
 
-![Content-box crop result](assets/crop-1-cb.jpg)
+![Content-box crop result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831764/crop-1-cb_tsmb9v.jpg)
