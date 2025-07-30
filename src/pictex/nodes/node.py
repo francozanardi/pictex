@@ -182,7 +182,6 @@ class Node:
     def paint(self, canvas: skia.Canvas) -> None:
         canvas.save()
         x, y = self.absolute_position
-        print("self.absolute_position", self.absolute_position)
         canvas.translate(x, y)
         for painter in self._get_painters():
             painter.paint(canvas)
@@ -239,3 +238,6 @@ class Node:
         while root._parent:
             root = root._parent
         return root
+
+    def _get_visible_children(self) -> list[Node]:
+        return [child for child in self.children if child.computed_styles.position.get() is None]

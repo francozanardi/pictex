@@ -16,7 +16,6 @@ class Renderer:
         root.prepare_tree_for_rendering(RenderProps(False, crop_mode, font_smoothing))
 
         canvas_bounds = root.paint_bounds
-        print("canvas_bounds:", canvas_bounds)
         image_info = skia.ImageInfo.MakeN32Premul(int(canvas_bounds.width()), int(canvas_bounds.height()))
         surface = skia.Surface(image_info)
         canvas = surface.getCanvas()

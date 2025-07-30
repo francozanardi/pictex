@@ -12,16 +12,16 @@ class RowNode(Node):
         self.clear()
 
     def _compute_intrinsic_content_bounds(self) -> skia.Rect:
-        content_bounds = skia.Rect.MakeEmpty()
+        visible_children = self._get_visible_children()
+        if not visible_children:
+            return skia.Rect.MakeEmpty()
 
-        for child in self.children:
-            if child.computed_styles.position.get() is not None:
-                continue
-
-            child_bounds_shifted = child.layout_bounds.makeOffset(content_bounds.width(), 0)
-            content_bounds.join(child_bounds_shifted)
-
-        return content_bounds
+        gap = self.computed_styles.gap.get()
+        total_gap = gap * (len(visible_children) - 1)
+        total_children_width = sum(child.layout_bounds.width() for child in visible_children)
+        total_intrinsic_width = total_children_width + total_gap
+        max_child_height = max(child.layout_bounds.height() for child in visible_children)
+        return skia.Rect.MakeWH(total_intrinsic_width, max_child_height)
 
     def _compute_paint_bounds(self) -> skia.Rect:
         paint_bounds = skia.Rect.MakeEmpty()
@@ -48,7 +48,7 @@ class RowNode(Node):
 
         alignment = self.computed_styles.vertical_alignment.get()
         user_gap = self.computed_styles.gap.get()
-        visible_children = [child for child in self.children if child.computed_styles.position.get() is None]
+        visible_children = self._get_visible_children()
         distribution_gap, start_x = self._distribute_horizontally(user_gap, visible_children)
 
         final_gap = user_gap + distribution_gap
