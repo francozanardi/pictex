@@ -8,7 +8,7 @@ def create_composite_shadow_filter(shadows: list[Shadow]) -> Optional[skia.Image
 
     skia_shadow_filters = []
     for shadow in shadows:
-        skia_shadow_filters.append(skia.ImageFilters.DropShadow(
+        skia_shadow_filters.append(skia.ImageFilters.DropShadowOnly(
             dx=shadow.offset[0], dy=shadow.offset[1],
             sigmaX=shadow.blur_radius, sigmaY=shadow.blur_radius,
             color=skia.Color(

@@ -11,11 +11,9 @@ class BackgroundPainter(Painter):
         self._is_svg = is_svg
 
     def paint(self, canvas: skia.Canvas) -> None:
-        paint = skia.Paint(AntiAlias=True)
-
         rounded_box_rect = self._build_rounded_box_rect()
-        self._paint_box_shadows(paint)
-        self._paint_background_color(canvas, paint, rounded_box_rect)
+        self._paint_box_shadows(canvas, rounded_box_rect)
+        self._paint_background_color(canvas, rounded_box_rect)
         self._paint_background_image(canvas, rounded_box_rect)
 
     def _build_rounded_box_rect(self) -> skia.RRect:
@@ -25,19 +23,22 @@ class BackgroundPainter(Painter):
 
         return box_radius.apply_corner_radius(self._box_bounds)
 
-    def _paint_box_shadows(self, paint):
+    def _paint_box_shadows(self, canvas: skia.Canvas, box_rect: skia.RRect):
         if self._is_svg:
             return
 
+        paint = skia.Paint(AntiAlias=True)
         shadow_filter = create_composite_shadow_filter(self._style.box_shadows.get())
         if shadow_filter:
             paint.setImageFilter(shadow_filter)
+            canvas.drawRRect(box_rect, paint)
 
-    def _paint_background_color(self, canvas: skia.Canvas, paint: skia.Paint, box_rect: skia.RRect) -> None:
+    def _paint_background_color(self, canvas: skia.Canvas, box_rect: skia.RRect) -> None:
         background_color = self._style.background_color.get()
         if not background_color:
             return
 
+        paint = skia.Paint(AntiAlias=True)
         background_color.apply_to_paint(paint, self._box_bounds)
         canvas.drawRRect(box_rect, paint)
 
