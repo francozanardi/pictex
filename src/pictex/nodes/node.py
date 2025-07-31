@@ -2,7 +2,7 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Optional, Tuple
 import skia
-from ..models import Style, Shadow, PositionMode, RenderProps
+from ..models import Style, Shadow, PositionMode, RenderProps, CropMode
 from ..painters import Painter
 from ..utils import create_composite_shadow_filter
 from ..layout import SizeResolver
@@ -223,9 +223,14 @@ class Node:
         return computed_styles
 
     def _compute_shadow_bounds(self, source_bounds: skia.Rect, shadows: list[Shadow]) -> skia.Rect:
-        box_shadow_filter = create_composite_shadow_filter(shadows)
-        if box_shadow_filter:
-            return box_shadow_filter.computeFastBounds(source_bounds)
+        # I don't like this. It only makes sense because it is only being used by paint bounds calculation
+        #  However, that responsibility is not clear by the method name.
+        #  I mean, if you want to get the shadow bounds in another scenario, this "if" statement don't make any sense.
+        if self._render_props.crop_mode == CropMode.CONTENT_BOX:
+            return source_bounds
+        filter = create_composite_shadow_filter(shadows)
+        if filter:
+            return filter.computeFastBounds(source_bounds)
         return source_bounds
 
     def _set_children(self, nodes: list[Node]):

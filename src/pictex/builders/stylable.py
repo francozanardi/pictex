@@ -84,7 +84,6 @@ class Stylable:
         self._style.line_height.set(multiplier)
         return self
 
-    # TODO: rename to text_color?
     def color(self, color: Union[str, PaintSource]) -> Self:
         """Sets the text color or gradient.
 

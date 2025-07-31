@@ -1,15 +1,12 @@
 import skia
 from ..models import FontSmoothing
-from ..models import Style, CropMode
+from ..models import CropMode
 from .image_processor import ImageProcessor
 from ..models import RenderProps
 from ..bitmap_image import BitmapImage
 from ..nodes import Node
 
-
 class Renderer:
-    # def __init__(self, style: Style):
-    #     self._style = style
 
     def render_as_bitmap(self, root: Node, crop_mode: CropMode, font_smoothing: FontSmoothing) -> BitmapImage:
         """Renders the nodes with the given builders, generating a bitmap image."""
