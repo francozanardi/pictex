@@ -12,7 +12,7 @@ def test_render_with_solid_background(file_regression, render_engine):
         .color("white")
         .padding(30, 60)
         .background_color("#34495e")
-        .background_radius(20)
+        .border_radius(20)
     )
     render_func, check_func = render_engine
     image = render_func(canvas, "Solid Background")
@@ -35,7 +35,7 @@ def test_render_with_gradient_background(file_regression, render_engine):
         .color("white")
         .padding(30, 60)
         .background_color(gradient)
-        .background_radius(20)
+        .border_radius(20)
     )
     render_func, check_func = render_engine
     image = render_func(canvas, "Gradient BG")

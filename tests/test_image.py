@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 import skia
-from pictex import Image, Box
+from pictex import BitmapImage, Box
 
 @pytest.fixture
 def dummy_skia_image():
@@ -16,17 +16,17 @@ def dummy_skia_image():
 def test_image_properties(dummy_skia_image):
     """Tests the basic properties of the Image class."""
     content_box = Box(x=10, y=20, width=30, height=40)
-    image = Image(skia_image=dummy_skia_image, content_box=content_box)
+    image = BitmapImage(skia_image=dummy_skia_image, content_box=content_box)
 
     assert image.width == 2
     assert image.height == 2
     assert image.content_box == content_box
     assert image.skia_image is dummy_skia_image
-    assert isinstance(image, Image)
+    assert isinstance(image, BitmapImage)
 
 def test_image_to_numpy(dummy_skia_image):
     """Tests the to_numpy() conversion method."""
-    image = Image(skia_image=dummy_skia_image, content_box=Box(0, 0, 0, 0))
+    image = BitmapImage(skia_image=dummy_skia_image, content_box=Box(0, 0, 0, 0))
 
     numpy_bgra = image.to_numpy(rgba=False)
     assert numpy_bgra.shape == (2, 2, 4)
@@ -37,7 +37,7 @@ def test_image_to_numpy(dummy_skia_image):
 
 def test_image_to_bytes(dummy_skia_image):
     """Tests that to_bytes returns the expected raw bytes."""
-    image = Image(skia_image=dummy_skia_image, content_box=Box(0, 0, 0, 0))
+    image = BitmapImage(skia_image=dummy_skia_image, content_box=Box(0, 0, 0, 0))
 
     expected_bytes = bytes([0, 0, 255, 255] * 4)
     assert image.to_bytes() == expected_bytes
@@ -46,7 +46,7 @@ def test_image_to_pillow(dummy_skia_image):
     """Tests conversion to a Pillow image."""
     from PIL import Image as PillowImage
 
-    image = Image(skia_image=dummy_skia_image, content_box=Box(0, 0, 0, 0))
+    image = BitmapImage(skia_image=dummy_skia_image, content_box=Box(0, 0, 0, 0))
     pillow_image = image.to_pillow()
 
     assert isinstance(pillow_image, PillowImage.Image)

@@ -5,6 +5,7 @@ import numpy as np
 from ..bitmap_image import BitmapImage
 from ..nodes import Node
 from .. import utils
+from math import ceil
 
 class ImageProcessor:
 
@@ -20,8 +21,8 @@ class ImageProcessor:
         content_box = Box(
             x=int(content_rect.left()),
             y=int(content_rect.top()),
-            width=int(content_rect.width()),
-            height=int(content_rect.height())
+            width=int(ceil(content_rect.width())),
+            height=int(ceil(content_rect.height()))
         )
 
         return BitmapImage(skia_image=image, content_box=content_box)
