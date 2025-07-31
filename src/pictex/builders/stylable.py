@@ -97,50 +97,36 @@ class Stylable:
         self._style.color.set(self._build_color(color))
         return self
 
-    # TODO: rename to text_shadow() and support multiple Shadow objects.
-    def add_shadow(
-        self,
-        offset: tuple[float, float],
-        blur_radius: float = 0,
-        color: Union[str, SolidColor] = 'black'
-    ) -> Self:
-        """Adds a text shadow effect.
+    def text_shadows(self, *shadows: Shadow) -> Self:
+        """Sets the shadow effects for the text. This style is inherited.
 
-        This method can be called multiple times to add multiple shadows.
+        This method applies one or more shadows to the text, replacing any
+        previously set text shadows.
 
         Args:
-            offset: A tuple `(dx, dy)` for the shadow's offset.
-            blur_radius: The blur radius of the shadow.
-            color: The color of the shadow.
+            *shadows: A sequence of one or more `Shadow` objects to be
+                applied to the text.
 
         Returns:
-            The `Self` instance for chaining.
+            The `Self` instance for method chaining.
         """
-        shadow_color = self._build_color(color)
-        self._style.text_shadows.set([Shadow(offset, blur_radius, shadow_color)])
+        self._style.text_shadows.set(list(shadows))
         return self
 
-    # TODO: rename to box_shadow() and support multiple Shadow objects.
-    def add_box_shadow(
-        self,
-        offset: tuple[float, float],
-        blur_radius: float = 0,
-        color: Union[str, SolidColor] = 'black'
-    ) -> Self:
-        """Adds a background box shadow.
+    def box_shadows(self, *shadows: Shadow) -> Self:
+        """Sets the shadow effects for the element box. This style is not inherited.
 
-        This method can be called multiple times to add multiple shadows.
+        This method applies one or more shadows to the box, replacing any
+        previously set box shadows.
 
         Args:
-            offset: A tuple `(dx, dy)` for the shadow's offset.
-            blur_radius: The blur radius of the shadow.
-            color: The color of the shadow.
+            *shadows: A sequence of one or more `Shadow` objects to be
+                applied to the box.
 
         Returns:
-            The `Self` instance for chaining.
+            The `Self` instance for method chaining.
         """
-        shadow_color = self._build_color(color)
-        self._style.box_shadows.set([Shadow(offset, blur_radius, shadow_color)])
+        self._style.box_shadows.set(list(shadows))
         return self
 
     def outline_stroke(self, width: float, color: Union[str, PaintSource]) -> Self:
