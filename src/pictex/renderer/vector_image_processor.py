@@ -4,7 +4,7 @@ import re
 from ..models import Line, TypefaceSource, TypefaceLoadingInfo
 import warnings
 from ..exceptions import SystemFontCanNotBeEmbeddedInSvgWarning
-from ..typeface_loader import TypefaceLoader
+from ..text import TypefaceLoader
 import xml.etree.ElementTree as ET
 from ..vector_image import VectorImage
 from ..models import Shadow, Style

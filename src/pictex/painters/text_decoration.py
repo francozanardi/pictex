@@ -1,6 +1,6 @@
 from typing import Optional
 from .painter import Painter
-from ..font_manager import FontManager
+from ..text import FontManager
 from ..utils import get_line_x_position
 from ..models import TextDecoration, Style, Line
 import skia

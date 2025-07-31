@@ -1,5 +1,5 @@
 from .painter import Painter
-from ..font_manager import FontManager
+from ..text import FontManager
 from ..utils import create_composite_shadow_filter, get_line_x_position
 from typing import Optional
 import skia

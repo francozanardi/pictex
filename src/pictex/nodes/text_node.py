@@ -2,8 +2,7 @@ from typing import Optional
 import skia
 from .node import Node
 from ..models import TextDecoration, Style, RenderProps, Line
-from ..font_manager import FontManager
-from ..text_shaper import TextShaper
+from ..text import FontManager, TextShaper
 from ..painters import Painter, BackgroundPainter, TextPainter, DecorationPainter, BorderPainter
 from .. import utils
 

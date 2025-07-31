@@ -3,8 +3,8 @@ import os
 import struct
 from typing import List, Optional
 import warnings
-from .models import Style, FontStyle, FontSmoothing
-from .exceptions import FontNotFoundWarning
+from ..models import Style, FontStyle, FontSmoothing
+from ..exceptions import FontNotFoundWarning
 from .typeface_loader import TypefaceLoader
 
 class FontManager:

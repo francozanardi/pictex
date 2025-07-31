@@ -1,8 +1,8 @@
 import skia
 from typing import List
 from .typeface_loader import TypefaceLoader
-from .models import Style, Line, TextRun
 from .font_manager import FontManager
+from ..models import Style, Line, TextRun
 
 class TextShaper:
     def __init__(self, style: Style, font_manager: FontManager):
