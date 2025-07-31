@@ -1,9 +1,10 @@
 import skia
 import base64
 import re
-from ..models import Line, TypefaceSource, TypefaceLoadingInfo
+from ..models import TypefaceSource, TypefaceLoadingInfo
 import warnings
 from ..exceptions import SystemFontCanNotBeEmbeddedInSvgWarning
+from ..nodes import Node, TextNode
 from ..text import TypefaceLoader
 import xml.etree.ElementTree as ET
 from ..vector_image import VectorImage
@@ -13,22 +14,27 @@ import os
 
 class VectorImageProcessor:
     
-    def process(self, stream: skia.DynamicMemoryWStream, embed_fonts: bool, lines: list[Line], style: Style) -> VectorImage:
+    def process(self, stream: skia.DynamicMemoryWStream, embed_fonts: bool, root: Node) -> VectorImage:
         data = stream.detachAsData()
         svg = bytes(data).decode("utf-8")
-        fonts = self._get_used_fonts(lines)
+        fonts = self._get_used_fonts(root)
         typefaces = self._map_to_file_typefaces(fonts, embed_fonts)
         svg = self._fix_text_attributes(svg, typefaces)
-        svg = self._add_shadows(svg, style)
+        # svg = self._add_shadows(svg, root.computed_styles)
         svg = self._embed_fonts_in_svg(svg, typefaces, embed_fonts)
         return VectorImage(svg)
     
-    def _get_used_fonts(self, lines: list[Line]) -> list[skia.Font]:
+    def _get_used_fonts(self, root: Node) -> list[skia.Font]:
         fonts = []
-        for line in lines:
-            for run in line.runs:
-                if run.font not in fonts:
-                    fonts.append(run.font)
+        for child in root.children:
+            if not isinstance(child, TextNode):
+                fonts.extend(self._get_used_fonts(child))
+                continue
+
+            for line in child.shaped_lines:
+                for run in line.runs:
+                    if run.font not in fonts:
+                        fonts.append(run.font)
 
         return fonts
     
@@ -161,16 +167,20 @@ class VectorImageProcessor:
 
         return ET.tostring(root, encoding="unicode")
 
+    '''
+    This is the basic idea to support shadows, however we should do something like this for each text/box.
+    This work fine in version 0.3, since we always have one single Node.
+    '''
     def _add_shadows(self, svg: str, style: Style):
         ET.register_namespace("", "http://www.w3.org/2000/svg")
         root = ET.fromstring(svg)
 
-        filter = self._build_shadow_svg_filter(root, style.text_shadows, "text-shadow")
+        filter = self._build_shadow_svg_filter(root, style.text_shadows.get(), "text-shadow")
         if filter:
             for text_element in root.findall(".//{http://www.w3.org/2000/svg}text"):
                 text_element.set("filter", filter)
 
-        filter = self._build_shadow_svg_filter(root, style.box_shadows, "box-shadow")
+        filter = self._build_shadow_svg_filter(root, style.box_shadows.get(), "box-shadow")
         if filter:
             background = self._get_background_element(root)
             if background is not None:

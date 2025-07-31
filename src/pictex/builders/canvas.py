@@ -57,25 +57,27 @@ class Canvas(Stylable, WithSizeMixin):
         root = element._to_node()
         return renderer.render_as_bitmap(root, crop_mode, font_smoothing)
 
-    # def render_as_svg(self, *elements: Union[Element, str], embed_font: bool = True) -> VectorImage:
-    #     """Renders the given elements as a scalable vector graphic (SVG).
-    #
-    #     This method produces a vector-based image, ideal for web use and
-    #     applications requiring resolution independence.
-    #
-    #     Args:
-    #         elements: The elements to be rendered. The strings received are converted to Text elements.
-    #         embed_font: If `True` (default), any custom font files (`.ttf`/`.otf`)
-    #             provided will be embedded directly into the SVG. This
-    #             ensures perfect visual fidelity across all devices but
-    #             increases file size. A warning will be issued if a system
-    #             font is used with this option enabled. If `False`, the SVG will
-    #             reference the font by name, relying on the viewing system to
-    #             have the font installed.
-    #
-    #     Returns:
-    #         A `VectorImage` object containing the SVG data.
-    #     """
-    #     renderer = Renderer()
-    #     root = Row(*elements)._to_node()
-    #     return renderer.render_as_svg(root, embed_font)
+    def render_as_svg(self, *elements: Union[Element, str], embed_font: bool = True) -> VectorImage:
+        """Renders the given elements as a scalable vector graphic (SVG).
+
+        This method produces a vector-based image, ideal for web use and
+        applications requiring resolution independence.
+
+        Args:
+            elements: The elements to be rendered. The strings received are converted to Text elements.
+            embed_font: If `True` (default), any custom font files (`.ttf`/`.otf`)
+                provided will be embedded directly into the SVG. This
+                ensures perfect visual fidelity across all devices but
+                increases file size. A warning will be issued if a system
+                font is used with this option enabled. If `False`, the SVG will
+                reference the font by name, relying on the viewing system to
+                have the font installed.
+
+        Returns:
+            A `VectorImage` object containing the SVG data.
+        """
+        renderer = Renderer()
+        element = Row(*elements)
+        element._style = self._style
+        root = element._to_node()
+        return renderer.render_as_svg(root, embed_font)
