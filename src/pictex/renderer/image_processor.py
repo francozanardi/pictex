@@ -9,7 +9,7 @@ from .. import utils
 class ImageProcessor:
 
     def process(self, root: Node, image: skia.Image, crop_mode: CropMode) -> BitmapImage:
-        content_rect = utils.clone_skia_rect(root.box_bounds)
+        content_rect = utils.clone_skia_rect(root.border_bounds)
         content_rect.offset(-root.paint_bounds.left(), -root.paint_bounds.top())
         if crop_mode == CropMode.SMART:
             crop_rect = self._get_trim_rect(image)

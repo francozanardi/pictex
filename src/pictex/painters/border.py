@@ -32,14 +32,11 @@ class BorderPainter(Painter):
         #  Then, we noticed some pixels between the borderline and the edge of the box background.
         #  For that reason, we made an outset with 0.5. This is not perfect, probably some border pixels are drawn outside the final box.
         inset = border.width / 2
-        stroke_bounds = self._box_bounds.makeInset(inset, inset).makeOutset(0.5, 0.5)
+        stroke_bounds = self._box_bounds.makeInset(inset, inset)
         rrect = box_radius.apply_corner_radius(stroke_bounds, inset) if box_radius else skia.RRect.MakeRect(stroke_bounds)
         canvas.drawRRect(rrect, paint)
 
     def _create_path_effect(self, border: Border, paint: skia.Paint) -> Optional[skia.PathEffect]:
-        if border.style == BorderStyle.SOLID:
-            return None
-
         if border.style == BorderStyle.DASHED:
             dash_length = border.width * 2
             gap_length = border.width * 1.5

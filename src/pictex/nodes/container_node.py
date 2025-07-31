@@ -24,14 +24,14 @@ class ContainerNode(Node):
             child_bounds_shifted = child.paint_bounds.makeOffset(position[0], position[1])
             paint_bounds.join(child_bounds_shifted)
 
-        paint_bounds.join(self._compute_shadow_bounds(self.box_bounds, self.computed_styles.box_shadows.get()))
+        paint_bounds.join(self._compute_shadow_bounds(self.border_bounds, self.computed_styles.box_shadows.get()))
         paint_bounds.join(self.margin_bounds)
         return paint_bounds
 
     def _get_painters(self) -> list[Painter]:
         return [
-            BackgroundPainter(self.computed_styles, self.box_bounds, self._render_props.is_svg),
-            BorderPainter(self.computed_styles, self.box_bounds),
+            BackgroundPainter(self.computed_styles, self.border_bounds, self._render_props.is_svg),
+            BorderPainter(self.computed_styles, self.border_bounds),
         ]
 
     def _set_absolute_position(self, x: float, y: float) -> None:

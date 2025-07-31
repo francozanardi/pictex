@@ -46,8 +46,8 @@ class TextNode(Node):
 
     def _get_painters(self) -> list[Painter]:
         return [
-            BackgroundPainter(self.computed_styles, self.box_bounds, self._render_props.is_svg),
-            BorderPainter(self.computed_styles, self.box_bounds),
+            BackgroundPainter(self.computed_styles, self.border_bounds, self._render_props.is_svg),
+            BorderPainter(self.computed_styles, self.border_bounds),
             TextPainter(self.computed_styles, self._font_manager, self.text_bounds, self.content_bounds, self.shaped_lines, self._render_props.is_svg),
             DecorationPainter(self.computed_styles, self._font_manager, self.text_bounds, self.shaped_lines),
         ]
@@ -95,7 +95,7 @@ class TextNode(Node):
         paint_bounds = utils.clone_skia_rect(self.margin_bounds)
         paint_bounds.join(self.content_bounds)
         paint_bounds.join(self._compute_shadow_bounds(self.text_bounds, self.computed_styles.text_shadows.get()))
-        paint_bounds.join(self._compute_shadow_bounds(self.box_bounds, self.computed_styles.box_shadows.get()))
+        paint_bounds.join(self._compute_shadow_bounds(self.border_bounds, self.computed_styles.box_shadows.get()))
         return paint_bounds
 
     def _compute_text_bounds(self) -> skia.Rect:

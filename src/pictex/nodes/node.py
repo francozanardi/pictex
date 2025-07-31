@@ -16,7 +16,8 @@ class Node:
         self._computed_styles: Optional[Style] = None
         self._size: Optional[Tuple[int, int]] = None
         self._content_bounds: Optional[skia.Rect] = None
-        self._box_bounds: Optional[skia.Rect] = None
+        self._padding_bounds: Optional[skia.Rect] = None
+        self._border_bounds: Optional[skia.Rect] = None
         self._margin_bounds: Optional[skia.Rect] = None
         self._paint_bounds: Optional[skia.Rect] = None
         self._render_props: Optional[RenderProps] = None
@@ -39,7 +40,7 @@ class Node:
     @property
     def size(self) -> Tuple[int, int]:
         if self._size is None:
-            self._size = (self.box_bounds.width(), self.box_bounds.height())
+            self._size = (self.border_bounds.width(), self.border_bounds.height())
         return self._size
 
     @property
@@ -68,10 +69,16 @@ class Node:
         return self._absolute_position
 
     @property
-    def box_bounds(self):
-        if self._box_bounds is None:
-            self._box_bounds = self._compute_box_bounds()
-        return self._box_bounds
+    def padding_bounds(self):
+        if self._padding_bounds is None:
+            self._padding_bounds = self._compute_padding_bounds()
+        return self._padding_bounds
+
+    @property
+    def border_bounds(self):
+        if self._border_bounds is None:
+            self._border_bounds = self._compute_border_bounds()
+        return self._border_bounds
 
     @property
     def margin_bounds(self):
@@ -91,7 +98,7 @@ class Node:
             self._paint_bounds = self._compute_paint_bounds()
         return self._paint_bounds
 
-    def _compute_box_bounds(self) -> skia.Rect:
+    def _compute_padding_bounds(self) -> skia.Rect:
         """
         Compute the box bounds, relative to the node box size, (0, 0).
         """
@@ -104,17 +111,33 @@ class Node:
             content_bounds.bottom() + padding.bottom
         )
 
+    def _compute_border_bounds(self) -> skia.Rect:
+        """
+        Compute the box bounds, relative to the node box size, (0, 0).
+        """
+        padding_bounds = self.padding_bounds
+        border = self.computed_styles.border.get()
+        if not border:
+            return padding_bounds
+
+        return skia.Rect.MakeLTRB(
+            padding_bounds.left() - border.width,
+            padding_bounds.top() - border.width,
+            padding_bounds.right() + border.width,
+            padding_bounds.bottom() + border.width
+        )
+
     def _compute_margin_bounds(self) -> skia.Rect:
         """
         Compute the layout bounds (box + margin), relative to the node box size, (0, 0).
         """
-        box_bounds = self.box_bounds
+        border_bounds = self.border_bounds
         margin = self.computed_styles.margin.get()
         return skia.Rect.MakeLTRB(
-            box_bounds.left() - margin.left,
-            box_bounds.top() - margin.top,
-            box_bounds.right() + margin.right,
-            box_bounds.bottom() + margin.bottom
+            border_bounds.left() - margin.left,
+            border_bounds.top() - margin.top,
+            border_bounds.right() + margin.right,
+            border_bounds.bottom() + margin.bottom
         )
 
     def _compute_content_bounds(self) -> skia.Rect:
@@ -168,7 +191,8 @@ class Node:
     def _get_all_bounds(self) -> list[skia.Rect]:
         return [
             self.content_bounds,
-            self.box_bounds,
+            self.padding_bounds,
+            self.border_bounds,
             self.margin_bounds,
             self.paint_bounds,
         ]
@@ -198,7 +222,8 @@ class Node:
         self._computed_styles = None
         self._size = None
         self._content_bounds = None
-        self._box_bounds = None
+        self._padding_bounds = None
+        self._border_bounds = None
         self._margin_bounds = None
         self._paint_bounds = None
         self._render_props = None
