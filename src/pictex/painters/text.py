@@ -39,8 +39,10 @@ class TextPainter(Painter):
         paint.setImageFilter(filter)
 
     def _draw_text(self, canvas: skia.Canvas, paint: skia.Paint) -> None:
+        primary_font = self._font_manager.get_primary_font()
+        font_metrics = primary_font.getMetrics()
+        current_y = self._text_bounds.top() - font_metrics.fAscent
         line_gap = self._style.line_height.get() * self._style.font_size.get()
-        current_y = self._text_bounds.top() + self._style.font_size.get()
         block_width = self._parent_bounds.width()
         outline_paint = self._build_outline_paint()
         
