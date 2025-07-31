@@ -17,7 +17,7 @@ class DecorationPainter(Painter):
         primary_font = self._font_manager.get_primary_font()
         font_metrics = primary_font.getMetrics()
         line_gap = self._style.line_height.get() * self._style.font_size.get()
-        current_y = 0
+        current_y = self._text_bounds.top() - font_metrics.fAscent
         block_width = self._text_bounds.width()
         
         for line in self._lines:
@@ -25,7 +25,7 @@ class DecorationPainter(Painter):
                 current_y += line_gap
                 continue
 
-            line_x_start = get_line_x_position(line.width, block_width, self._style.text_align.get())
+            line_x_start = self._text_bounds.x() + get_line_x_position(line.width, block_width, self._style.text_align.get())
             self._draw_decoration(canvas, self._style.underline.get(), line_x_start, current_y + font_metrics.fUnderlinePosition, line.width)
             self._draw_decoration(canvas, self._style.strikethrough.get(), line_x_start, current_y + font_metrics.fStrikeoutPosition, line.width)
 
