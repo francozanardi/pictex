@@ -128,7 +128,7 @@ class Stylable:
         self._style.box_shadows.set(list(shadows))
         return self
 
-    def outline_stroke(self, width: float, color: Union[str, PaintSource]) -> Self:
+    def text_stroke(self, width: float, color: Union[str, PaintSource]) -> Self:
         """Adds an outline stroke to the text.
 
         Args:
@@ -138,7 +138,7 @@ class Stylable:
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.outline_stroke.set(OutlineStroke(width=width, color=self._build_color(color)))
+        self._style.text_stroke.set(OutlineStroke(width=width, color=self._build_color(color)))
         return self
 
     def underline(

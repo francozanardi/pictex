@@ -29,12 +29,12 @@ class Style:
     text_align: StyleProperty[TextAlign] = field(default_factory=lambda: StyleProperty(TextAlign.LEFT))
     color: StyleProperty[PaintSource] = field(default_factory=lambda: StyleProperty(SolidColor(0, 0, 0)))
     text_shadows: StyleProperty[list[Shadow]] = field(default_factory=lambda: StyleProperty([]))
+    text_stroke: StyleProperty[Optional[OutlineStroke]] = field(default_factory=lambda: StyleProperty(None))
     underline: StyleProperty[Optional[TextDecoration]] = field(default_factory=lambda: StyleProperty(None))
     strikethrough: StyleProperty[Optional[TextDecoration]] = field(default_factory=lambda: StyleProperty(None))
 
     # Properties that cannot be inherited.
     box_shadows: StyleProperty[list[Shadow]] = field(default_factory=lambda: StyleProperty([], inheritable=False))
-    outline_stroke: StyleProperty[Optional[OutlineStroke]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     padding: StyleProperty[Padding] = field(default_factory=lambda: StyleProperty(Padding(), inheritable=False))
     margin: StyleProperty[Margin] = field(default_factory=lambda: StyleProperty(Margin(), inheritable=False))
     background_color: StyleProperty[Optional[PaintSource]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))

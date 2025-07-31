@@ -59,13 +59,14 @@ class TextPainter(Painter):
             current_y += line_gap
 
     def _build_outline_paint(self) -> Optional[skia.Paint]:
-        if not self._style.outline_stroke.get():
+        outline = self._style.text_stroke.get()
+        if not outline:
             return None
         
         paint = skia.Paint(
             AntiAlias=True,
             Style=skia.Paint.kStroke_Style,
-            StrokeWidth=self._style.outline_stroke.get().width
+            StrokeWidth=outline.width
         )
-        self._style.outline_stroke.get().color.apply_to_paint(paint, self._text_bounds)
+        outline.color.apply_to_paint(paint, self._text_bounds)
         return paint

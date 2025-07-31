@@ -33,4 +33,8 @@ __all__ = [
     "VectorImage",
     "CropMode",
     "Box",
+    "Padding",
+    "Margin",
+    "BorderRadius",
+    "BorderRadiusValue"
 ]
