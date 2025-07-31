@@ -4,7 +4,7 @@ from typing import Optional, Tuple
 import skia
 from ..models import Style, Shadow, PositionMode, RenderProps, CropMode
 from ..painters import Painter
-from ..utils import create_composite_shadow_filter
+from ..utils import create_composite_shadow_filter, clone_skia_rect
 from ..layout import SizeResolver
 
 class Node:
@@ -118,7 +118,7 @@ class Node:
         padding_bounds = self.padding_bounds
         border = self.computed_styles.border.get()
         if not border:
-            return padding_bounds
+            return clone_skia_rect(padding_bounds)
 
         return skia.Rect.MakeLTRB(
             padding_bounds.left() - border.width,
