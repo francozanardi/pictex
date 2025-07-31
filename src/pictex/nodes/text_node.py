@@ -92,7 +92,7 @@ class TextNode(Node):
         dest_bounds.join(decoration_bounds)
 
     def _compute_paint_bounds(self) -> skia.Rect:
-        paint_bounds = utils.clone_skia_rect(self.layout_bounds)
+        paint_bounds = utils.clone_skia_rect(self.margin_bounds)
         paint_bounds.join(self.content_bounds)
         paint_bounds.join(self._compute_shadow_bounds(self.text_bounds, self.computed_styles.text_shadows.get()))
         paint_bounds.join(self._compute_shadow_bounds(self.box_bounds, self.computed_styles.box_shadows.get()))

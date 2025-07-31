@@ -17,7 +17,7 @@ class Node:
         self._size: Optional[Tuple[int, int]] = None
         self._content_bounds: Optional[skia.Rect] = None
         self._box_bounds: Optional[skia.Rect] = None
-        self._layout_bounds: Optional[skia.Rect] = None
+        self._margin_bounds: Optional[skia.Rect] = None
         self._paint_bounds: Optional[skia.Rect] = None
         self._render_props: Optional[RenderProps] = None
         self._absolute_position: Optional[Tuple[float, float]] = None
@@ -74,10 +74,10 @@ class Node:
         return self._box_bounds
 
     @property
-    def layout_bounds(self):
-        if self._layout_bounds is None:
-            self._layout_bounds = self._compute_layout_bounds()
-        return self._layout_bounds
+    def margin_bounds(self):
+        if self._margin_bounds is None:
+            self._margin_bounds = self._compute_margin_bounds()
+        return self._margin_bounds
 
     @property
     def content_bounds(self) -> skia.Rect:
@@ -104,7 +104,7 @@ class Node:
             content_bounds.bottom() + padding.bottom
         )
 
-    def _compute_layout_bounds(self) -> skia.Rect:
+    def _compute_margin_bounds(self) -> skia.Rect:
         """
         Compute the layout bounds (box + margin), relative to the node box size, (0, 0).
         """
@@ -161,7 +161,7 @@ class Node:
             child._calculate_bounds()
 
         bounds = self._get_all_bounds()
-        offset_x, offset_y = -self.layout_bounds.left(), -self.layout_bounds.top()
+        offset_x, offset_y = -self.margin_bounds.left(), -self.margin_bounds.top()
         for bound in bounds:
             bound.offset(offset_x, offset_y)
 
@@ -169,7 +169,7 @@ class Node:
         return [
             self.content_bounds,
             self.box_bounds,
-            self.layout_bounds,
+            self.margin_bounds,
             self.paint_bounds,
         ]
 
@@ -199,7 +199,7 @@ class Node:
         self._size = None
         self._content_bounds = None
         self._box_bounds = None
-        self._layout_bounds = None
+        self._margin_bounds = None
         self._paint_bounds = None
         self._render_props = None
         self._absolute_position = None

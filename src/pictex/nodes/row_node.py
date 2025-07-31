@@ -13,9 +13,9 @@ class RowNode(ContainerNode):
 
         gap = self.computed_styles.gap.get()
         total_gap = gap * (len(visible_children) - 1)
-        total_children_width = sum(child.layout_bounds.width() for child in visible_children)
+        total_children_width = sum(child.margin_bounds.width() for child in visible_children)
         total_intrinsic_width = total_children_width + total_gap
-        max_child_height = max(child.layout_bounds.height() for child in visible_children)
+        max_child_height = max(child.margin_bounds.height() for child in visible_children)
         return skia.Rect.MakeWH(total_intrinsic_width, max_child_height)
 
     def _calculate_children_relative_positions(self, children: list[Node], get_child_bounds: Callable[[Node], skia.Rect]) -> list[Tuple[float, float]]:
@@ -45,7 +45,7 @@ class RowNode(ContainerNode):
     def _distribute_horizontally(self, user_gap: float, children: list[Node]) -> Tuple[float, float]:
         distribution = self.computed_styles.horizontal_distribution.get()
         container_width = self.content_bounds.width()
-        children_total_width = sum(child.layout_bounds.width() for child in children)
+        children_total_width = sum(child.margin_bounds.width() for child in children)
         total_gap_space = user_gap * (len(children) - 1)
         extra_space = container_width - children_total_width - total_gap_space
 

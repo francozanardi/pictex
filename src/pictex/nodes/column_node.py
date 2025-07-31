@@ -13,9 +13,9 @@ class ColumnNode(ContainerNode):
 
         gap = self.computed_styles.gap.get()
         total_gap = gap * (len(visible_children) - 1)
-        total_children_height = sum(child.layout_bounds.height() for child in visible_children)
+        total_children_height = sum(child.margin_bounds.height() for child in visible_children)
         total_intrinsic_height = total_children_height + total_gap
-        max_child_width = max(child.layout_bounds.width() for child in visible_children)
+        max_child_width = max(child.margin_bounds.width() for child in visible_children)
         return skia.Rect.MakeWH(max_child_width, total_intrinsic_height)
 
     def _calculate_children_relative_positions(self, children: list[Node], get_child_bounds: Callable[[Node], skia.Rect]) -> list[Tuple[float, float]]:
@@ -45,7 +45,7 @@ class ColumnNode(ContainerNode):
     def _distribute_vertically(self, user_gap: float, children: list[Node]) -> Tuple[float, float]:
         distribution = self.computed_styles.vertical_distribution.get()
         container_height = self.content_bounds.height()
-        children_total_height = sum(child.layout_bounds.height() for child in children)
+        children_total_height = sum(child.margin_bounds.height() for child in children)
         total_gap_space = user_gap * (len(children) - 1)
         extra_space = container_height - children_total_height - total_gap_space
 

@@ -25,7 +25,7 @@ class ContainerNode(Node):
             paint_bounds.join(child_bounds_shifted)
 
         paint_bounds.join(self._compute_shadow_bounds(self.box_bounds, self.computed_styles.box_shadows.get()))
-        paint_bounds.join(self.layout_bounds)
+        paint_bounds.join(self.margin_bounds)
         return paint_bounds
 
     def _get_painters(self) -> list[Painter]:
@@ -37,7 +37,7 @@ class ContainerNode(Node):
     def _set_absolute_position(self, x: float, y: float) -> None:
         self._absolute_position = (x, y)
         children = self._get_visible_children()
-        positions = self._calculate_children_relative_positions(children, lambda node: node.layout_bounds)
+        positions = self._calculate_children_relative_positions(children, lambda node: node.margin_bounds)
         for i, child in enumerate(children):
             position = positions[i]
             child._set_absolute_position(x + position[0], y + position[1])
