@@ -171,97 +171,97 @@ class VectorImageProcessor:
     This is the basic idea to support shadows, however we should do something like this for each text/box.
     This work fine in version 0.3, since we always have one single Node.
     '''
-    def _add_shadows(self, svg: str, style: Style):
-        ET.register_namespace("", "http://www.w3.org/2000/svg")
-        root = ET.fromstring(svg)
-
-        filter = self._build_shadow_svg_filter(root, style.text_shadows.get(), "text-shadow")
-        if filter:
-            for text_element in root.findall(".//{http://www.w3.org/2000/svg}text"):
-                text_element.set("filter", filter)
-
-        filter = self._build_shadow_svg_filter(root, style.box_shadows.get(), "box-shadow")
-        if filter:
-            background = self._get_background_element(root)
-            if background is not None:
-                background.set("filter", filter)
-
-        return ET.tostring(root, encoding="unicode")
-
-    def _build_shadow_svg_filter(self, root: ET.Element, shadows: list[Shadow], prefix: str) -> Optional[str]:
-        if not shadows:
-            return None
-
-        defs_element = ET.Element("defs")
-        root.insert(0, defs_element)
-
-        filter_urls = []
-        for i, shadow in enumerate(shadows):
-            filter_id = f"{prefix}-{i}"
-            filter_urls.append(f"url(#{filter_id})")
-
-            filter_element = ET.Element("filter", {
-                "id": filter_id,
-                "x": "-50%", "y": "-50%", "width": "200%", "height": "200%"
-            })
-
-            ET.SubElement(filter_element, "feOffset", {
-                "dx": str(shadow.offset[0]),
-                "dy": str(shadow.offset[1]),
-                "in": "SourceAlpha",
-                "result": "offset"
-            })
-
-            input_for_composite = "offset"
-            if hasattr(shadow, 'blur_radius') and shadow.blur_radius > 0:
-                ET.SubElement(filter_element, "feGaussianBlur", {
-                    "in": "offset",
-                    "stdDeviation": str(shadow.blur_radius),
-                    "result": "blurred"
-                })
-                input_for_composite = "blurred"
-
-            shadow_color = f"#{shadow.color.r:02x}{shadow.color.g:02x}{shadow.color.b:02x}"
-            shadow_opacity = str(shadow.color.a / 255.0)
-            ET.SubElement(filter_element, "feFlood", {
-                "flood-color": shadow_color,
-                "flood-opacity": shadow_opacity,
-                "result": "color"
-            })
-
-            ET.SubElement(filter_element, "feComposite", {
-                "in": "color",
-                "in2": input_for_composite,
-                "operator": "in",
-                "result": "shadow"
-            })
-
-            merge_element = ET.SubElement(filter_element, "feMerge")
-            ET.SubElement(merge_element, "feMergeNode", {"in": "shadow"})
-            ET.SubElement(merge_element, "feMergeNode", {"in": "SourceGraphic"})
-
-            defs_element.append(filter_element)
-
-        return " ".join(filter_urls)
-
-    def _get_background_element(self, root: ET.Element) -> Optional[ET.Element]:
-        """
-            Skia uses <rect> to represent the background when it doesn't have radius corner
-            When it has radius corner, it uses <path> (and a very complex one)
-            For this reason, we can't be sure what element is the background
-            The fix we decided to use an invisible <rect> that Skia is always generating before the background
-            This is something fragile, but it's the fix for now.
-            Another fix could be adding a custom invisible marker element before drawing the background,
-            then we would use that element to find the background.
-        """
-
-        first_rect = root.find("{http://www.w3.org/2000/svg}rect")
-        if first_rect is None:
-            return None
-
-        siblings = list(root)
-        first_rect_index = siblings.index(first_rect)
-        if first_rect_index + 1 < len(siblings):
-            return siblings[first_rect_index + 1]
-
-        return None
+    # def _add_shadows(self, svg: str, style: Style):
+    #     ET.register_namespace("", "http://www.w3.org/2000/svg")
+    #     root = ET.fromstring(svg)
+    #
+    #     filter = self._build_shadow_svg_filter(root, style.text_shadows.get(), "text-shadow")
+    #     if filter:
+    #         for text_element in root.findall(".//{http://www.w3.org/2000/svg}text"):
+    #             text_element.set("filter", filter)
+    #
+    #     filter = self._build_shadow_svg_filter(root, style.box_shadows.get(), "box-shadow")
+    #     if filter:
+    #         background = self._get_background_element(root)
+    #         if background is not None:
+    #             background.set("filter", filter)
+    #
+    #     return ET.tostring(root, encoding="unicode")
+    #
+    # def _build_shadow_svg_filter(self, root: ET.Element, shadows: list[Shadow], prefix: str) -> Optional[str]:
+    #     if not shadows:
+    #         return None
+    #
+    #     defs_element = ET.Element("defs")
+    #     root.insert(0, defs_element)
+    #
+    #     filter_urls = []
+    #     for i, shadow in enumerate(shadows):
+    #         filter_id = f"{prefix}-{i}"
+    #         filter_urls.append(f"url(#{filter_id})")
+    #
+    #         filter_element = ET.Element("filter", {
+    #             "id": filter_id,
+    #             "x": "-50%", "y": "-50%", "width": "200%", "height": "200%"
+    #         })
+    #
+    #         ET.SubElement(filter_element, "feOffset", {
+    #             "dx": str(shadow.offset[0]),
+    #             "dy": str(shadow.offset[1]),
+    #             "in": "SourceAlpha",
+    #             "result": "offset"
+    #         })
+    #
+    #         input_for_composite = "offset"
+    #         if hasattr(shadow, 'blur_radius') and shadow.blur_radius > 0:
+    #             ET.SubElement(filter_element, "feGaussianBlur", {
+    #                 "in": "offset",
+    #                 "stdDeviation": str(shadow.blur_radius),
+    #                 "result": "blurred"
+    #             })
+    #             input_for_composite = "blurred"
+    #
+    #         shadow_color = f"#{shadow.color.r:02x}{shadow.color.g:02x}{shadow.color.b:02x}"
+    #         shadow_opacity = str(shadow.color.a / 255.0)
+    #         ET.SubElement(filter_element, "feFlood", {
+    #             "flood-color": shadow_color,
+    #             "flood-opacity": shadow_opacity,
+    #             "result": "color"
+    #         })
+    #
+    #         ET.SubElement(filter_element, "feComposite", {
+    #             "in": "color",
+    #             "in2": input_for_composite,
+    #             "operator": "in",
+    #             "result": "shadow"
+    #         })
+    #
+    #         merge_element = ET.SubElement(filter_element, "feMerge")
+    #         ET.SubElement(merge_element, "feMergeNode", {"in": "shadow"})
+    #         ET.SubElement(merge_element, "feMergeNode", {"in": "SourceGraphic"})
+    #
+    #         defs_element.append(filter_element)
+    #
+    #     return " ".join(filter_urls)
+    #
+    # def _get_background_element(self, root: ET.Element) -> Optional[ET.Element]:
+    #     """
+    #         Skia uses <rect> to represent the background when it doesn't have radius corner
+    #         When it has radius corner, it uses <path> (and a very complex one)
+    #         For this reason, we can't be sure what element is the background
+    #         The fix we decided to use an invisible <rect> that Skia is always generating before the background
+    #         This is something fragile, but it's the fix for now.
+    #         Another fix could be adding a custom invisible marker element before drawing the background,
+    #         then we would use that element to find the background.
+    #     """
+    #
+    #     first_rect = root.find("{http://www.w3.org/2000/svg}rect")
+    #     if first_rect is None:
+    #         return None
+    #
+    #     siblings = list(root)
+    #     first_rect_index = siblings.index(first_rect)
+    #     if first_rect_index + 1 < len(siblings):
+    #         return siblings[first_rect_index + 1]
+    #
+    #     return None
