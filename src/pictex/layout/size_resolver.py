@@ -17,20 +17,30 @@ class SizeResolver:
         if not size:
             return self._get_intrinsic_bounds()
 
-        width = self._get_axis_size(
+        padding = self._node.computed_styles.padding.get()
+        border = self._node.computed_styles.border.get()
+        border_width = border.width if border else 0
+
+        horizontal_spacing = padding.left + padding.right + (border_width * 2)
+        vertical_spacing = padding.top + padding.bottom + (border_width * 2)
+
+        box_width = self._get_axis_size(
             size.width,
-            lambda: self._get_intrinsic_bounds().width(),
+            lambda: self._get_intrinsic_bounds().width() + horizontal_spacing,
             lambda: self._get_background_value("width"),
             lambda: self._get_container_value("width")
         )
-        height = self._get_axis_size(
+        box_height = self._get_axis_size(
             size.height,
-            lambda: self._get_intrinsic_bounds().height(),
+            lambda: self._get_intrinsic_bounds().height() + vertical_spacing,
             lambda: self._get_background_value("height"),
             lambda: self._get_container_value("height")
         )
 
-        return skia.Rect.MakeWH(width, height)
+        content_width = max(0, box_width - horizontal_spacing)
+        content_height = max(0, box_height - vertical_spacing)
+
+        return skia.Rect.MakeWH(content_width, content_height)
 
     def _get_intrinsic_bounds(self) -> skia.Rect:
         if self._intrinsic_bounds is None:
