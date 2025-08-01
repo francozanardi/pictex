@@ -1,12 +1,10 @@
-from typing import Union, Optional, Literal, TypeAlias
+from typing import Union, Optional, Literal
 from ..models import Style, Size, SizeValue, SizeValueMode
 
 try:
     from typing import Self
 except ImportError:
     from typing_extensions import Self
-
-AutomaticSizeType: TypeAlias = Literal['fit-content', 'fit-background-image']
 
 class WithSizeMixin:
     _style: Style
@@ -26,8 +24,8 @@ class WithSizeMixin:
 
     def size(
             self,
-            width: Union[float, int, AutomaticSizeType] = "fit-content",
-            height: Union[float, int, AutomaticSizeType] = "fit-content",
+            width: Union[float, int, Literal['fit-content', 'fit-background-image']] = "fit-content",
+            height: Union[float, int, Literal['fit-content', 'fit-background-image']] = "fit-content",
     ) -> Self:
         """Sets the explicit size of the element.
 
