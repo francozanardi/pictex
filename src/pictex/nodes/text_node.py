@@ -56,14 +56,15 @@ class TextNode(Node):
     #  However, we could include them only in paint bounds, remove them from here.
     def _compute_intrinsic_content_bounds(self) -> skia.Rect:
         line_gap = self.computed_styles.line_height.get() * self.computed_styles.font_size.get()
-        current_y = 0
         content_bounds = skia.Rect.MakeEmpty()
         primary_font = self._font_manager.get_primary_font()
         font_metrics = primary_font.getMetrics()
+        current_y = self.text_bounds.top() - font_metrics.fAscent
 
         for line in self.shaped_lines:
-            line_bounds = skia.Rect.MakeLTRB(line.bounds.left(), line.bounds.top(), line.bounds.right(), line.bounds.bottom())
-            line_bounds.offset(0, current_y)
+            # This is not correct actually... the X position should be also calculated, doing something similar that the DecorationPainter
+            #  However... I think it shouldn't cause any issue
+            line_bounds = line.bounds.makeOffset(0, current_y)
 
             self._add_decoration_bounds(content_bounds, self.computed_styles.underline.get(), line_bounds, current_y + font_metrics.fUnderlinePosition)
             self._add_decoration_bounds(content_bounds, self.computed_styles.strikethrough.get(), line_bounds, current_y + font_metrics.fStrikeoutPosition)
