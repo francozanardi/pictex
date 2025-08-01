@@ -1,6 +1,6 @@
 from pictex import *
 from pathlib import Path
-from .conftest import BACKGROUND_IMAGE
+from .conftest import IMAGE_PATH
 
 def test_builders_fluent_api_and_style_building():
     """
@@ -9,7 +9,7 @@ def test_builders_fluent_api_and_style_building():
     canvas = Canvas()
     row = Row()
     column = Column()
-    image = Image(BACKGROUND_IMAGE)
+    image = Image(IMAGE_PATH)
     text = Text("test")
     with_position_builders = {row, column, image, text}
     container_builders = {row, column}
@@ -33,7 +33,7 @@ def test_builders_fluent_api_and_style_building():
             .padding(10, 20)
             .margin(30, 40)
             .background_color('olive')
-            .background_image(BACKGROUND_IMAGE)
+            .background_image(IMAGE_PATH)
             .border(3, "red")
             .border_radius(15.5)
             .size(300, 300)
@@ -59,7 +59,7 @@ def test_builders_fluent_api_and_style_building():
         assert style.padding == Padding(10, 20, 10, 20)
         assert style.margin == Margin(30, 40, 30, 40)
         assert style.background_color == SolidColor.from_str('olive')
-        assert style.background_image == BackgroundImage(BACKGROUND_IMAGE)
+        assert style.background_image == BackgroundImage(IMAGE_PATH)
         assert style.border == Border(3, SolidColor.from_str('red'))
         assert style.border_radius == BorderRadius(BorderRadiusValue(15.5), BorderRadiusValue(15.5),
                                                    BorderRadiusValue(15.5), BorderRadiusValue(15.5))

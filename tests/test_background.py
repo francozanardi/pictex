@@ -1,5 +1,5 @@
-from pictex import Canvas, LinearGradient
-from .conftest import VARIABLE_WGHT_FONT_PATH
+from pictex import Canvas, LinearGradient, Row
+from .conftest import VARIABLE_WGHT_FONT_PATH, IMAGE_PATH
 
 def test_render_with_solid_background(file_regression, render_engine):
     """
@@ -56,4 +56,38 @@ def test_background_without_padding(file_regression, render_engine):
     )
     render_func, check_func = render_engine
     image = render_func(canvas, "No Padding")
+    check_func(file_regression, image)
+
+def test_background_image_with_contain_mode(file_regression, render_engine):
+    """
+    Tests that the 'contain' size mode fits the entire image inside the
+    container, potentially leaving empty space (letterboxing).
+    """
+    render_func, check_func = render_engine
+
+    element = (
+        Row()
+        .size(400, 400)
+        .background_image(IMAGE_PATH, size_mode='contain')
+        .background_color("#333")
+    )
+
+    image = render_func(Canvas(), element)
+    check_func(file_regression, image)
+
+
+def test_background_image_with_tile_mode(file_regression, render_engine):
+    """
+    Tests that the 'tile' size mode repeats the background image at its
+    original size without scaling it.
+    """
+    render_func, check_func = render_engine
+
+    element = (
+        Row()
+        .size(500, 500) # Larger than our test image
+        .background_image(IMAGE_PATH, size_mode='tile')
+    )
+
+    image = render_func(Canvas(), element)
     check_func(file_regression, image)

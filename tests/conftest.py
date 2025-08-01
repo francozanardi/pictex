@@ -1,6 +1,7 @@
 import tempfile
 import os
-from pictex import Image, VectorImage, Canvas
+from typing import List, Union
+from pictex import Image, VectorImage, Canvas, Element
 from pathlib import Path
 import pytest
 
@@ -8,7 +9,7 @@ ASSETS_DIR = Path(__file__).parent / "assets"
 STATIC_FONT_PATH = str(ASSETS_DIR / "Lato-BoldItalic.ttf") # No emojies and japanese support
 VARIABLE_WGHT_FONT_PATH = str(ASSETS_DIR / "Oswald-VariableFont_wght.ttf")
 JAPANESE_FONT_PATH = str(ASSETS_DIR / "NotoSansJP-Regular.ttf")
-BACKGROUND_IMAGE = str(ASSETS_DIR / "background.png")
+IMAGE_PATH = str(ASSETS_DIR / "image.png")
 
 def check_images_match(image_regression, image: Image):
     """
@@ -39,13 +40,17 @@ def render_engine(request):
     render_mode = request.param
 
     if render_mode == "raster":
-        def render_func(canvas: Canvas, text: str):
-            return canvas.render(text)
+        def render_func(canvas: Canvas, elements: List[Union[Element, str]]):
+            if not isinstance(elements, list):
+                elements = [elements]
+            return canvas.render(*elements)
 
         yield render_func, check_images_match
 
     elif render_mode == "vector":
-        def render_func(canvas: Canvas, text: str):
-            return canvas.render_as_svg(text, embed_font=False)
+        def render_func(canvas: Canvas, elements: List[Union[Element, str]]):
+            if not isinstance(elements, list):
+                elements = [elements]
+            return canvas.render_as_svg(*elements, embed_font=False)
 
         yield render_func, check_svgs_match
