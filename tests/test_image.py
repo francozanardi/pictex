@@ -28,12 +28,21 @@ def test_image_to_numpy(dummy_skia_image):
     """Tests the to_numpy() conversion method."""
     image = BitmapImage(skia_image=dummy_skia_image, content_box=Box(0, 0, 0, 0))
 
-    numpy_bgra = image.to_numpy(rgba=False)
+    numpy_bgra = image.to_numpy(mode='BGRA')
     assert numpy_bgra.shape == (2, 2, 4)
     assert np.array_equal(numpy_bgra[0, 0], [0, 0, 255, 255])
-    numpy_rgba = image.to_numpy(rgba=True)
+    numpy_rgba = image.to_numpy()
     assert numpy_rgba.shape == (2, 2, 4)
     assert np.array_equal(numpy_rgba[0, 0], [255, 0, 0, 255])
+    numpy_rgb = image.to_numpy(mode='RGB')
+    assert numpy_rgb.shape == (2, 2, 3)
+    assert np.array_equal(numpy_rgb[0, 0], [255, 0, 0])
+    numpy_grayscale = image.to_numpy(mode='Grayscale')
+    assert numpy_grayscale.shape == (2, 2)
+    assert np.array_equal(numpy_grayscale[0, 0], 76)
+
+    with pytest.raises(ValueError):
+        image.to_numpy(mode='invalid')
 
 def test_image_to_bytes(dummy_skia_image):
     """Tests that to_bytes returns the expected raw bytes."""
