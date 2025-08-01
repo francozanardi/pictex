@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="404" height="104">
+<defs>
+    <builders type="text/css">
+        
+@font-face {
+    font-family: 'pictex-Oswald';
+    src: url('/home/runner/work/pictex/pictex/tests/assets/Oswald-VariableFont_wght.ttf');
+}
+            
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="404" height="104" />
+	<text font-size="70" font-family="pictex-Oswald" x="0, 51, 80, 96, 127, 158, 180, 194, 210, 246, 275, 306, 337, 353, 382, " y="83.509995, ">
+			Weight: Regular
+	</text>
+</svg>

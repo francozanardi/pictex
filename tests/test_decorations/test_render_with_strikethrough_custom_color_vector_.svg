@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="463" height="96">
+<defs>
+    <builders type="text/css">
+        
+@font-face {
+    font-family: 'pictex-Lato';
+    src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
+}
+            
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="463" height="96" />
+	<text font-size="80" font-style="italic" font-family="pictex-Lato" x="0, 40, 68, 97, 118, 159, 197, 225, 268, 297, 338, 381, 420, " y="78.959999, ">
+			Strikethrough
+	</text>
+	<path fill="none" stroke="#E74C3C" stroke-width="5" stroke-miterlimit="4" d="M0 58.959999L463 58.959999" />
+</svg>
