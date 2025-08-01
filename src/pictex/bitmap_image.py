@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Literal
 import skia
 import numpy as np
 from .models import Box
@@ -82,24 +83,42 @@ class BitmapImage:
         """
         return self._skia_image.tobytes()
 
-    def to_numpy(self, rgba: bool = False) -> np.ndarray:
-        """Converts the image to a NumPy array.
+    def to_numpy(self, mode: Literal['RGBA', 'BGRA', 'RGB', 'Grayscale'] = 'RGBA') -> np.ndarray:
+        """Converts the image to a NumPy array in the specified channel order.
 
         Args:
-            rgba: If `True`, returns the array in RGBA channel order.
-                  If `False` (default), returns in BGRA order, which is
-                  directly compatible with libraries like OpenCV.
+            mode (Literal['RGBA', 'BGRA', 'RGB', 'Grayscale'], optional):
+                The desired channel order or format for the output array.
+                Defaults to 'RGBA', the most common format for image processing.
+                - 'RGBA': Red, Green, Blue, Alpha.
+                - 'BGRA': Blue, Green, Red, Alpha. Compatible with OpenCV.
+                - 'RGB': Red, Green, Blue. Alpha channel is discarded.
+                - 'Grayscale': Converts the image to a single-channel grayscale.
 
         Returns:
-            A NumPy array of shape (height, width, 4) representing the image.
+            A NumPy array representing the image. The shape will be
+            (height, width, 4) for RGBA/BGRA, (height, width, 3) for RGB,
+            and (height, width) for Grayscale.
         """
-        array = np.frombuffer(self.to_bytes(), dtype=np.uint8).reshape(
+        bgra_array = np.frombuffer(self.to_bytes(), dtype=np.uint8).reshape(
             (self.height, self.width, 4)
         )
-        if rgba:
-            # Swap Blue and Red channels to convert BGRA to RGBA
-            return array[:, :, [2, 1, 0, 3]]
-        return array
+        mode = mode.lower()
+
+        if mode == 'rgba':
+            return bgra_array[:, :, [2, 1, 0, 3]]  # Swap R and B channels
+
+        if mode == 'bgra':
+            return bgra_array
+
+        if mode == 'rgb':
+            return bgra_array[:, :, [2, 1, 0]]
+
+        if mode == 'grayscale':
+            rgb_array = bgra_array[:, :, [2, 1, 0]]
+            return np.dot(rgb_array[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
+
+        raise ValueError(f"Unsupported mode: '{mode}'. Expected 'RGBA', 'BGRA', 'RGB', or 'Grayscale'.")
 
     def to_pillow(self) -> "PillowImage":
         """Converts the image to a Pillow (PIL) Image object.
@@ -119,7 +138,7 @@ class BitmapImage:
                 "Pillow is not installed. Please install it with 'pip install Pillow'."
             )
 
-        return PillowImage.fromarray(self.to_numpy(rgba=True), mode='RGBA')
+        return PillowImage.fromarray(self.to_numpy(), mode='RGBA')
 
     def save(self, output_path: str, quality: int = 100) -> None:
         """Saves the image to a file.
