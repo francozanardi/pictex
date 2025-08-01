@@ -49,14 +49,15 @@ class SizeResolver:
         return getattr(image, axis)()
 
     def _get_container_value(self, axis: str) -> float:
-        parent_size = self._node.parent.computed_styles.size.get()
+        parent = self._node.parent
+        if not parent:
+            raise ValueError("Cannot use 'percent' size on a root element without a parent.")
+
+        parent_size = parent.computed_styles.size.get()
         if not parent_size or parent_size.width.mode == 'fit-content' or parent_size.height.mode == 'fit-content':
             raise ValueError("Cannot use 'percent' size if parent element has 'fit-content' size.")
 
-        if not self._node.parent:
-            raise ValueError("Cannot use 'percent' size on a root element without a parent.")
-
-        return getattr(self._node.parent.content_bounds, axis)()
+        return getattr(parent.content_bounds, axis)()
 
     def _get_axis_size(
             self,
