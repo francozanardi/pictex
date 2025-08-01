@@ -269,5 +269,5 @@ class Node:
             root = root._parent
         return root
 
-    def _get_visible_children(self) -> list[Node]:
+    def _get_positionable_children(self) -> list[Node]:
         return [child for child in self.children if child.computed_styles.position.get() is None]
