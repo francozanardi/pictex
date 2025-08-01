@@ -115,6 +115,8 @@ class WithPositionMixin:
     ) -> Self:
         container_ax, content_ax = self._parse_anchor(x, axis='x')
         container_ay, content_ay = self._parse_anchor(y, axis='y')
+        x_offset = x + x_offset if isinstance(x, Union[float, int]) else x_offset
+        y_offset = y + y_offset if isinstance(y, Union[float, int]) else y_offset
 
         self._style.position.set(Position(
             container_anchor_x=container_ax,

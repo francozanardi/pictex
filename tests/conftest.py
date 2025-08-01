@@ -8,6 +8,7 @@ ASSETS_DIR = Path(__file__).parent / "assets"
 STATIC_FONT_PATH = str(ASSETS_DIR / "Lato-BoldItalic.ttf") # No emojies and japanese support
 VARIABLE_WGHT_FONT_PATH = str(ASSETS_DIR / "Oswald-VariableFont_wght.ttf")
 JAPANESE_FONT_PATH = str(ASSETS_DIR / "NotoSansJP-Regular.ttf")
+BACKGROUND_IMAGE = str(ASSETS_DIR / "background.png")
 
 def check_images_match(image_regression, image: Image):
     """
