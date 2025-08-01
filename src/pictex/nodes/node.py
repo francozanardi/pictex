@@ -54,12 +54,12 @@ class Node:
 
         self_width, self_height = self.size
         if position.mode == PositionMode.RELATIVE:
-            parent_width, parent_height = self._parent.size
+            parent_content_bounds = self._parent.content_bounds
             parent_position = self._parent.absolute_position
-            self_position = position.get_relative_position(self_width, self_height, parent_width, parent_height)
+            self_position = position.get_relative_position(self_width, self_height, parent_content_bounds.width(), parent_content_bounds.height())
             self._absolute_position = (
-                parent_position[0] + self_position[0],
-                parent_position[1] + self_position[1]
+                parent_position[0] + parent_content_bounds.left() + self_position[0],
+                parent_position[1] + parent_content_bounds.top() + self_position[1]
             )
             return self._absolute_position
 
