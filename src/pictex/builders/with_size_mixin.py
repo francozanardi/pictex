@@ -1,5 +1,10 @@
-from typing import Self, Union, Optional, Literal, TypeAlias
+from typing import Union, Optional, Literal, TypeAlias
 from ..models import Style, Size, SizeValue, SizeValueMode
+
+try:
+    from typing import Self
+except ImportError:
+    from typing_extensions import Self
 
 AutomaticSizeType: TypeAlias = Literal['fit-content', 'fit-background-image']
 

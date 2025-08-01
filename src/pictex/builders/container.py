@@ -1,8 +1,13 @@
-from typing import Union, Self
+from typing import Union
 from .element import Element
 from .text import Text
 from copy import deepcopy
 from ..nodes import Node
+
+try:
+    from typing import Self
+except ImportError:
+    from typing_extensions import Self
 
 class Container(Element):
 

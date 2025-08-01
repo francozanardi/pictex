@@ -1,7 +1,11 @@
-from typing import Self
 from .element import Element
 from .with_size_mixin import WithSizeMixin
 from ..nodes import Node, RowNode
+
+try:
+    from typing import Self
+except ImportError:
+    from typing_extensions import Self
 
 class Image(Element, WithSizeMixin):
 

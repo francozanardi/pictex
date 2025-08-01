@@ -26,9 +26,9 @@ classifiers = [
     "Typing :: Typed"
 ]
 
-dependencies = [
-    "skia-python",
-]
+[project.dependencies]
+skia-python = "*"
+typing_extensions = { version = ">=4.0", markers = "python_version < '3.11'" }
 
 [project.urls]
 Homepage = "https://github.com/francozanardi/pictex"

@@ -1,5 +1,10 @@
-from typing import Self, Union, Tuple
+from typing import Union, Tuple
 from ..models import Position, Style, PositionMode
+
+try:
+    from typing import Self
+except ImportError:
+    from typing_extensions import Self
 
 class WithPositionMixin:
 

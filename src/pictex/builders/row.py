@@ -1,7 +1,12 @@
-from typing import Union, Self
+from typing import Union
 from .container import Container
 from ..nodes import Node, RowNode
 from ..models import HorizontalDistribution, VerticalAlignment
+
+try:
+    from typing import Self
+except ImportError:
+    from typing_extensions import Self
 
 class Row(Container):
 

@@ -1,7 +1,12 @@
 from __future__ import annotations
-from typing import Optional, Union, overload, Self, Literal
+from typing import Optional, Union, overload, Literal
 from pathlib import Path
 from ..models import *
+
+try:
+    from typing import Self
+except ImportError:
+    from typing_extensions import Self
 
 class Stylable:
 
