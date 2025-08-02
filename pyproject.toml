@@ -27,7 +27,8 @@ classifiers = [
 ]
 
 dependencies = [
-    "skia-python",
+  "skia-python",
+  "typing_extensions >=4.0; python_version < '3.11'"
 ]
 
 [project.urls]

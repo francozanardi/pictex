@@ -65,7 +65,7 @@ def test_render_with_system_font_fallback(file_regression, render_engine):
 ])
 def test_render_basic_text_and_alignment(file_regression, render_engine, text, align):
     """Tests basic rendering and alignment."""
-    canvas = Canvas().font_family("Arial").alignment(align)
+    canvas = Canvas().font_family("Arial").text_align(align)
     render_func, check_func = render_engine
     image = render_func(canvas, text)
     check_func(file_regression, image)

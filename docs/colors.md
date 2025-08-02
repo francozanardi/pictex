@@ -80,7 +80,7 @@ canvas = (
     .font_family("Impact")
     .font_size(150)
     .color(text_gradient)
-    .outline_stroke(width=10, color=stroke_gradient)
+    .text_stroke(width=10, color=stroke_gradient)
     .underline(thickness=15, color=underline_gradient)
 )
 

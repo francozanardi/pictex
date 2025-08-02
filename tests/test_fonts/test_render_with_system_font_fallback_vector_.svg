@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="882" height="103">
+<svg xmlns="http://www.w3.org/2000/svg" width="869" height="84">
 <defs>
-    <style type="text/css">
+    <builders type="text/css">
         
 @font-face {
     font-family: 'pictex-Lato';
@@ -12,23 +12,23 @@
     src: url('/home/runner/work/pictex/pictex/tests/assets/NotoSansJP-Regular.ttf');
 }
             
-    </style>
+    </builders>
 </defs>
             
-	<rect fill-opacity="0" width="882" height="103" />
-	<text transform="translate(8 75)" font-size="70" font-family="pictex-Lato" x="0, 40, 76, 90, 111, " y="0, ">
+	<rect fill-opacity="0" width="869" height="84" />
+	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="0, 40, 76, 90, 111, " y="69.089996, ">
 			PF | 
 	</text>
-	<text transform="translate(8 75)" font-size="70" font-family="pictex-Noto Sans JP" x="125, 195, " y="0, ">
+	<text font-size="70" font-family="pictex-Noto Sans JP" x="125, 195, " y="69.089996, ">
 			世界
 	</text>
-	<text transform="translate(8 75)" font-size="70" font-family="pictex-Lato" x="279, 300, 314, 359, 393, 429, 447, 485, 501, 515, 555, 591, 605, 626, " y="0, ">
+	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="279, 300, 314, 359, 393, 429, 447, 485, 501, 515, 555, 591, 605, 626, " y="69.089996, ">
 			| Again, PF | 
 	</text>
-	<text transform="translate(8 75)" font-size="70" font-family="Noto Color Emoji" x="640, " y="0, ">
+	<text font-size="70" font-family="Noto Color Emoji" x="640, " y="69.089996, ">
 			✨
 	</text>
-	<text transform="translate(8 75)" font-size="70" font-family="pictex-Lato" x="741.34375, 762.34375, 776.34375, 816.34375, 852.34375, " y="0, ">
+	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="741.34375, 762.34375, 776.34375, 816.34375, 852.34375, " y="69.089996, ">
 			| PF.
 	</text>
 </svg>

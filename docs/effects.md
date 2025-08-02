@@ -75,7 +75,7 @@ canvas = (
     .font_size(150)
     .font_family("Impact")
     .color("yellow")
-    .outline_stroke(width=14, color="black")
+    .text_stroke(width=14, color="black")
 )
 
 canvas.render("COMIC").save("comic_style.png")

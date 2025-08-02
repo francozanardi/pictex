@@ -1,4 +1,4 @@
-from pictex import Canvas
+from pictex import Canvas, Shadow
 
 def test_render_with_simple_text_shadow(file_regression, render_engine):
     """
@@ -10,7 +10,7 @@ def test_render_with_simple_text_shadow(file_regression, render_engine):
         .font_size(120)
         .color("white")
         .padding(20)
-        .add_shadow(offset=(5, 5), blur_radius=10, color="#000000A0")
+        .text_shadows(Shadow(offset=(5, 5), blur_radius=10, color="#000000A0"))
     )
     render_func, check_func = render_engine
     image = render_func(canvas, "Text Shadow")
@@ -27,8 +27,8 @@ def test_render_with_simple_box_shadow(file_regression, render_engine):
         .color("black")
         .padding(30)
         .background_color("white")
-        .background_radius(15)
-        .add_box_shadow(offset=(10, 10), blur_radius=20, color="#00000060")
+        .border_radius(15)
+        .box_shadows(Shadow(offset=(10, 10), blur_radius=20, color="#00000060"))
     )
     render_func, check_func = render_engine
     image = render_func(canvas, "Box Shadow")
@@ -46,8 +46,10 @@ def test_render_with_multiple_text_shadows(file_regression, render_engine):
         .padding(20)
         .background_color("#AAA")
         .color("gray")
-        .add_shadow(offset=(3, 3), blur_radius=3, color="black")
-        .add_shadow(offset=(-3, -3), blur_radius=0, color="white")
+        .text_shadows(
+            Shadow(offset=(3, 3), blur_radius=3, color="black"),
+            Shadow(offset=(-3, -3), blur_radius=0, color="white")
+        )
     )
     render_func, check_func = render_engine
     image = render_func(canvas, "INSET")
@@ -64,9 +66,11 @@ def test_render_with_multiple_box_shadows(file_regression, render_engine):
         .font_size(80)
         .padding(40)
         .background_color("white")
-        .background_radius(15)
-        .add_box_shadow(offset=(5, 5), blur_radius=5, color="#00000040")
-        .add_box_shadow(offset=(0, 0), blur_radius=25, color="#3498DB80")
+        .border_radius(15)
+        .box_shadows(
+            Shadow(offset=(5, 5), blur_radius=5, color="#00000040"),
+            Shadow(offset=(0, 0), blur_radius=25, color="#3498DB80")
+        )
     )
     render_func, check_func = render_engine
     image = render_func(canvas, "Layered Box")
@@ -83,10 +87,10 @@ def test_text_and_box_shadows_together(file_regression, render_engine):
         .font_size(100)
         .padding(40)
         .background_color("#EEEEEE")
-        .background_radius(20)
+        .border_radius(20)
         .color("#2c3e50")
-        .add_shadow(offset=(2, 2), blur_radius=2, color="red")
-        .add_box_shadow(offset=(5, 5), blur_radius=3, color="#00000050")
+        .text_shadows(Shadow(offset=(2, 2), blur_radius=2, color="red"))
+        .box_shadows(Shadow(offset=(5, 5), blur_radius=3, color="#00000050"))
     )
     render_func, check_func = render_engine
     image = render_func(canvas, "Combined")
@@ -103,8 +107,10 @@ def test_hard_shadow_without_blur(file_regression, render_engine):
         .font_size(120)
         .color("#e74c3c")
         .padding(20)
-        .add_shadow(offset=(4, 4), blur_radius=0, color="#2980b9")
-        .add_shadow(offset=(8, 8), blur_radius=0, color="#8e44ad")
+        .text_shadows(
+            Shadow(offset=(4, 4), blur_radius=0, color="#2980b9"),
+            Shadow(offset=(8, 8), blur_radius=0, color="#8e44ad")
+        )
     )
     render_func, check_func = render_engine
     image = render_func(canvas, "RETRO")
