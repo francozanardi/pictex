@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="490" height="144">
+<defs>
+    <builders type="text/css">
+        
+@font-face {
+    font-family: 'pictex-Lato';
+    src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
+}
+            
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="490" height="144" />
+	<text fill="none" stroke="black" stroke-width="5" stroke-miterlimit="4" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 84, 172, 229, 286, 374, " y="118.44, ">
+			HOLLOW
+	</text>
+</svg>

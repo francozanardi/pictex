@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="869" height="84">
+<defs>
+    <builders type="text/css">
+        
+@font-face {
+    font-family: 'pictex-Lato';
+    src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
+}
+            
+@font-face {
+    font-family: 'pictex-Noto Sans JP';
+    src: url('/home/runner/work/pictex/pictex/tests/assets/NotoSansJP-Regular.ttf');
+}
+            
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="869" height="84" />
+	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="0, 40, 76, 90, 111, " y="69.089996, ">
+			PF | 
+	</text>
+	<text font-size="70" font-family="pictex-Noto Sans JP" x="125, 195, " y="69.089996, ">
+			世界
+	</text>
+	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="279, 300, 314, 359, 393, 429, 447, 485, 501, 515, 555, 591, 605, 626, " y="69.089996, ">
+			| Again, PF | 
+	</text>
+	<text font-size="70" font-family="Noto Color Emoji" x="640, " y="69.089996, ">
+			✨
+	</text>
+	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="741.34375, 762.34375, 776.34375, 816.34375, 852.34375, " y="69.089996, ">
+			| PF.
+	</text>
+</svg>
