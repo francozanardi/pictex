@@ -46,19 +46,21 @@ class BackgroundPainter(Painter):
         background_image_info = self._style.background_image.get()
         if not background_image_info:
             return
-        image = background_image_info.get_skia_image()
-        if not image:
+
+        original_image = background_image_info.get_skia_image()
+        if not original_image:
             return
 
+        sampling_options = skia.SamplingOptions(skia.FilterMode.kLinear, skia.MipmapMode.kLinear)
         canvas.save()
         canvas.clipRRect(box_rect, doAntiAlias=True)
 
         paint = skia.Paint(AntiAlias=True)
         if background_image_info.size_mode == BackgroundImageSizeMode.TILE:
-            shader = image.makeShader(
+            shader = original_image.makeShader(
                 skia.TileMode.kRepeat,
                 skia.TileMode.kRepeat,
-                skia.SamplingOptions(skia.FilterMode.kLinear)
+                sampling_options
             )
             paint.setShader(shader)
             canvas.drawRect(self._box_bounds, paint)
@@ -66,21 +68,28 @@ class BackgroundPainter(Painter):
             return
 
         src_rect, dst_rect = self._calculate_cover_contain_rects(
-            image_width=image.width(),
-            image_height=image.height(),
+            image_width=original_image.width(),
+            image_height=original_image.height(),
             box_rect=self._box_bounds,
             mode=background_image_info.size_mode
         )
-        sampling_options = skia.SamplingOptions(skia.FilterMode.kLinear)
-        constraint = skia.Canvas.kStrict_SrcRectConstraint
 
-        canvas.drawImageRect(
-            image,
-            src_rect,
-            dst_rect,
+        image_to_resize = original_image.makeSubset(src_rect.roundOut())
+        resized_image = image_to_resize.resize(
+            width=int(dst_rect.width()),
+            height=int(dst_rect.height()),
+            options=sampling_options
+        )
+
+        if not resized_image:
+            return
+
+        canvas.drawImage(
+            resized_image,
+            dst_rect.left(),
+            dst_rect.top(),
             sampling_options,
-            paint,
-            constraint
+            paint
         )
 
         canvas.restore()
