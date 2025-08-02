@@ -97,7 +97,7 @@ class TextNode(Node):
         paint_bounds.join(self.content_bounds)
         paint_bounds.join(self._compute_shadow_bounds(self.text_bounds, self.computed_styles.text_shadows.get()))
         paint_bounds.join(self._compute_shadow_bounds(self.border_bounds, self.computed_styles.box_shadows.get()))
-        return utils.to_int_skia_rect(paint_bounds)
+        return paint_bounds
 
     def _compute_text_bounds(self) -> skia.Rect:
         line_gap = self.computed_styles.line_height.get() * self.computed_styles.font_size.get()

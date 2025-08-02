@@ -3,7 +3,6 @@ from .node import Node
 from ..painters import Painter, BackgroundPainter, BorderPainter
 from ..models import Style
 import skia
-from .. import utils
 
 class ContainerNode(Node):
 
@@ -27,7 +26,7 @@ class ContainerNode(Node):
 
         paint_bounds.join(self._compute_shadow_bounds(self.border_bounds, self.computed_styles.box_shadows.get()))
         paint_bounds.join(self.margin_bounds)
-        return utils.to_int_skia_rect(paint_bounds)
+        return paint_bounds
 
     def _get_painters(self) -> list[Painter]:
         return [

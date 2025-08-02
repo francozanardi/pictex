@@ -4,7 +4,7 @@ from typing import Optional, Tuple
 import skia
 from ..models import Style, Shadow, PositionMode, RenderProps, CropMode
 from ..painters import Painter
-from ..utils import create_composite_shadow_filter, clone_skia_rect
+from ..utils import create_composite_shadow_filter, clone_skia_rect, to_int_skia_rect
 from ..layout import SizeResolver
 
 class Node:
@@ -71,31 +71,31 @@ class Node:
     @property
     def padding_bounds(self):
         if self._padding_bounds is None:
-            self._padding_bounds = self._compute_padding_bounds()
+            self._padding_bounds = to_int_skia_rect(self._compute_padding_bounds())
         return self._padding_bounds
 
     @property
     def border_bounds(self):
         if self._border_bounds is None:
-            self._border_bounds = self._compute_border_bounds()
+            self._border_bounds = to_int_skia_rect(self._compute_border_bounds())
         return self._border_bounds
 
     @property
     def margin_bounds(self):
         if self._margin_bounds is None:
-            self._margin_bounds = self._compute_margin_bounds()
+            self._margin_bounds = to_int_skia_rect(self._compute_margin_bounds())
         return self._margin_bounds
 
     @property
     def content_bounds(self) -> skia.Rect:
         if self._content_bounds is None:
-            self._content_bounds = self._compute_content_bounds()
+            self._content_bounds = to_int_skia_rect(self._compute_content_bounds())
         return self._content_bounds
 
     @property
     def paint_bounds(self) -> skia.Rect:
         if self._paint_bounds is None:
-            self._paint_bounds = self._compute_paint_bounds()
+            self._paint_bounds = to_int_skia_rect(self._compute_paint_bounds())
         return self._paint_bounds
 
     def _compute_padding_bounds(self) -> skia.Rect:
