@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="150">
+<defs>
+    <builders type="text/css">
+        
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="400" height="150" />
+	<rect fill="#3498DB" width="400" height="150" />
+	<text font-size="50" font-family="DejaVu Sans" x="0, 29, 43, 73, 104, 136, 152, 184, 198, 224, " y="46.411133, ">
+			Fixed Size
+	</text>
+</svg>

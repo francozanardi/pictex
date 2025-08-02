@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="378" height="108">
+<defs>
+    <builders type="text/css">
+        
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="378" height="108" />
+	<text font-size="50" font-family="Arial" x="80, 116, 127, 155, 183, 197, 211, 244, 255, 266, 294, 322, 350, " y="45.263672, ">
+			Right Aligned
+	</text>
+	<text font-size="50" font-family="Arial" x="0, 28, 56, 84, 112, 140, 157, 171, 202, 213, 230, 255, 269, 283, 311, 322, 350, " y="95.263672, ">
+			Longer First Line
+	</text>
+</svg>

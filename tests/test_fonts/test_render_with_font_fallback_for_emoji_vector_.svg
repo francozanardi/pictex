@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="209" height="84">
+<defs>
+    <builders type="text/css">
+        
+@font-face {
+    font-family: 'pictex-Lato';
+    src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
+}
+            
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="209" height="84" />
+	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="0, 36, 72, 107, " y="69.089996, ">
+			Fox 
+	</text>
+	<text font-size="70" font-family="Noto Color Emoji" x="121, " y="69.089996, ">
+			🦊
+	</text>
+</svg>

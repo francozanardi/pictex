@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="144">
+<defs>
+    <builders type="text/css">
+        
+@font-face {
+    font-family: 'pictex-Lato';
+    src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
+}
+            
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="560" height="144" />
+	<defs>
+		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="0" y1="72" x2="560" y2="72">
+			<stop offset="0" stop-color="#4A00E0" />
+			<stop offset="1" stop-color="#8E2DE2" />
+		</linearGradient>
+	</defs>
+	<text fill="none" stroke="url(#gradient_0)" stroke-width="10" stroke-miterlimit="4" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 80, 153, 230, 312, 347, 410, 494, " y="118.44, ">
+			GRADIENT
+	</text>
+	<text fill="white" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 80, 153, 230, 312, 347, 410, 494, " y="118.44, ">
+			GRADIENT
+	</text>
+</svg>

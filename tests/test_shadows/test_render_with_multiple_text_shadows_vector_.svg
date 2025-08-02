@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="393" height="178">
+<defs>
+    <builders type="text/css">
+        
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="393" height="178" />
+	<rect fill="#AAA" width="393" height="178" />
+	<text fill="gray" transform="translate(20 20)" font-size="120" font-family="Arial" x="0, 33, 120, 200, 280, " y="108.63281, ">
+			INSET
+	</text>
+</svg>

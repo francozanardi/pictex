@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="446" height="178">
+<defs>
+    <builders type="text/css">
+        
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="446" height="178" />
+	<rect fill="#222" width="446" height="178" />
+	<defs>
+		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="0" y1="68.994141" x2="406" y2="68.994141">
+			<stop offset="0" stop-color="#E96443" />
+			<stop offset="0.2" stop-color="#E96443" />
+			<stop offset="0.80000001" stop-color="#904E95" />
+			<stop offset="1" stop-color="#904E95" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_0)" transform="translate(20 20)" font-size="120" font-family="Arial" x="0, 80, 153, 246, 326, " y="108.63281, ">
+			STOPS
+	</text>
+</svg>

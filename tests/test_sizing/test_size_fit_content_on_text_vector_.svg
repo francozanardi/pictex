@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="79">
+<defs>
+    <builders type="text/css">
+        
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="300" height="79" />
+	<rect fill="#2ECC71" width="300" height="79" />
+	<text font-size="50" font-family="DejaVu Sans" x="10, 39, 53, 73, 89, 124, 155, 187, 207, 238, 270, " y="56.411133, ">
+			Fit Content
+	</text>
+</svg>
