@@ -28,7 +28,7 @@ Canvas().color(SolidColor(255, 0, 0))
 
 ## Linear Gradients
 
-**You can use a `LinearGradient` object anywhere a color is accepted**: in `.color()`, `.outline_stroke()`, `.background_color()`, and even in text decorations like `.underline()`. Only shadow colors must be solid.
+**You can use a `LinearGradient` object anywhere a color is accepted**: in `.color()`, `.text_stroke()`, `border()`, `.background_color()`, and even in text decorations like `.underline()`. Only shadow colors must be solid.
 
 A `LinearGradient` has a few key parameters:
 -   `colors`: A list of color strings.
@@ -52,13 +52,13 @@ canvas = (
     .color("white")
     .padding(40)
     .background_color(gradient)
-    .background_radius(25)
+    .border_radius(25)
 )
 
 canvas.render("Gradient BG").save("gradient_bg.png")
 ```
 
-![Background gradient result](assets/colors-1.png)
+![Background gradient result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754099560/gradient_bg_d3ivme.png)
 
 ### Showcase: Gradients Everywhere
 
@@ -74,6 +74,7 @@ underline_gradient = LinearGradient(
     start_point=(0.5, 0.0),
     end_point=(0.5, 1.0)
 )
+border_gradient = LinearGradient(colors=["blue", "cyan"])
 
 canvas = (
     Canvas()
@@ -82,9 +83,10 @@ canvas = (
     .color(text_gradient)
     .text_stroke(width=10, color=stroke_gradient)
     .underline(thickness=15, color=underline_gradient)
+    .border(width=5, color=border_gradient)
 )
 
 canvas.render("GRADIENTS!").save("gradients_everywhere.png")
 ```
 
-![Gradients everywhere result](assets/colors-2.png)
+![Gradients everywhere result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754099560/gradients_everywhere_rlk3qo.png)

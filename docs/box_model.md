@@ -1,0 +1,83 @@
+# Styling: The Box Model
+
+Every element in PicTex is treated as a rectangular box. This guide explains how to control the size, spacing, and appearance of these boxes.
+
+## Spacing: `margin` and `padding`
+
+-   `.padding()`: Sets the space **inside** an element's border, between the border and the content. It accepts 1, 2, or 4 values, just like in CSS.
+-   `.margin()`: Sets the space **outside** an element's border, pushing away other elements. It also accepts 1, 2, or 4 values, just like in CSS.
+
+## Borders: `.border()` and `.border_radius()`
+
+-   `.border(width, color, style)`: Adds a border around the element. The `style` can be `'solid'`, `'dashed'`, or `'dotted'`.
+-   `.border_radius()`: Creates rounded corners. It accepts absolute pixels or percentages (`"50%"` to create a circle/ellipse). It also supports 1, 2, or 4 values for individual corner control.
+
+```python
+from pictex import *
+
+Canvas().render(
+    Row()
+    .size(100, 100)
+    .background_color("green")
+    .border(3, "black")
+    .border_radius("50%")
+).save("circle.png")
+```
+
+![Circle Example](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754099219/circle_nmcf9b.png)
+
+## Sizing (`.size()`)
+
+The `.size()` method sets the explicit dimensions of an element's box. It accepts several types of values:
+
+-   **Absolute (pixels)**: An `int` or `float`. `size(width=200)`.
+-   **Fit Content**: `'fit-content'`. The box will grow or shrink to fit its children. This is the default for all elements.
+-   **Fit Background Image**: `'fit-background-image'`. The box will take on the dimensions of its background image.
+-   **Percentage**: A string like `"50%"`. The box size will be a percentage of its parent container's content area.
+
+### The `border-box` Sizing Model
+
+When you set the size of an element in PicTex, you are defining its **total visible dimensions**, including padding and border.
+
+If you create an element with `.size(width=200)` and then add `.padding(20)`, the element will still be **200px wide** on the final image. The padding is applied *inward*, reducing the space available for the content.
+
+This `border-box` model makes layouts incredibly predictable and robust.
+
+```python
+# This element's final width in the layout is exactly 300px.
+box = Row(Text("Content"))
+    .size(width=300)
+    .padding(20)
+    .border(5, "blue")
+
+# The content area inside is now 300 - (2*20 padding) - (2*5 border) = 250px wide.
+```
+
+## Backgrounds
+
+-   `.background_color()`: Sets the background fill (can be a color string or a `LinearGradient`).
+-   `.background_image(path, size_mode)`: Sets a background image. The `size_mode` can be `'cover'`, `'contain'`, or `'tile'`.
+-   `.fit_background_image()`: A convenience method that is a shortcut for `size('fit-background-image', 'fit-background-image')`.
+
+## Box Shadows (`.box_shadows()`)
+
+Applies one or more shadows to the element's box. This method is **declarative**: calling it replaces any previously defined box shadows.
+
+To use it, first import the `Shadow` class.
+
+```python
+from pictex import Canvas, Shadow
+
+canvas = (
+    Canvas()
+    .font_size(100)
+    .padding(40)
+    .background_color("white")
+    .border_radius(20)
+    .box_shadows(Shadow(offset=(10, 10), blur_radius=3, color="black"))
+)
+
+canvas.render("Box Shadow").save("box_shadow.png")
+```
+
+![Box Shadow Example](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754099381/box_shadow_m2xhcq.png)

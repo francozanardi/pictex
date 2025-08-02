@@ -63,7 +63,7 @@ text = "Hello, 世界 ✨"
 canvas.render(text).save("font_fallback_example.png")
 ```
 
-![Font fallback result](assets/text-0.png)
+![Font fallback result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754102756/font_fallback_example_bhrkg1.png)
 
 ## Variable Fonts
 
@@ -75,17 +75,16 @@ from pictex import Canvas, FontWeight, FontStyle
 # Using a variable font file and setting its axes
 canvas = (
     Canvas()
-    .font_family("assets/Variable-Font.ttf")
+    .font_family("Oswald-VariableFont_wght.ttf")
     .font_size(80)
     .font_weight(FontWeight.BLACK) # Sets 'wght' axis to 900
-    .font_style(FontStyle.ITALIC)  # Sets 'ital' axis to 1
     .color("orange")
 )
 
 canvas.render("Variable Font").save("variable_font.png")
 ```
 
-![Variable font result](assets/text-1.png)
+![Variable font result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754102764/variable_font_skmjc6.png)
 
 `FontWeight` can be an enum member (e.g., `FontWeight.BOLD`) or an integer from 100 to 900.
 
@@ -97,7 +96,7 @@ canvas.render("Variable Font").save("variable_font.png")
 -   `.line_height()`: Sets the spacing between lines as a multiplier of the font size. A value of `1.5` means 150% spacing.
 
 ```python
-from pictex import Canvas, Alignment
+from pictex import Canvas, TextAlign
 
 canvas = (
     Canvas()
@@ -105,7 +104,7 @@ canvas = (
     .font_weight(700)
     .font_size(50)
     .color("magenta")
-    .text_align(Alignment.CENTER)  # a string is also accepted ("center")
+    .text_align(TextAlign.CENTER)  # a string is also accepted ("center")
     .line_height(1.2)
     .padding(20)
 )
@@ -114,7 +113,7 @@ text = "This is an example of centered,\nmulti-line text\nwith custom line spaci
 canvas.render(text).save("alignment_example.png")
 ```
 
-![Multiline result](assets/text-2.png)
+![Multiline result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754102754/alignment_example_dnk5t4.png)
 
 ## Text Decorations
 
@@ -134,7 +133,54 @@ canvas2 = Canvas().font_size(80).color("blue").strikethrough(thickness=10, color
 canvas2.render("Strikethrough").save("strikethrough.png")
 ```
 
-![Underline result](assets/text-3-u.png)
+![Underline result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754102761/underline_lqz7fy.png)
 
 
-![Strikethrough result](assets/text-3-s.png)
+![Strikethrough result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754102759/strikethrough_jaofgg.png)
+
+## Text Shadows
+
+Applies one or more shadows directly to the text glyphs. To add multiple shadows, pass multiple `Shadow` objects. This method is declarative and will override any previous text shadows.
+
+A `Shadow` instance has:
+-   `offset`: A tuple `(x, y)` for the shadow's position.
+-   `blur_radius`: The amount of blur to apply.
+-   `color`: The color of the shadow.
+
+```python
+from pictex import Canvas, Text, Shadow
+
+canvas =(
+    Canvas()
+    .font_size(120)
+    .font_family("Impact")
+    .color("#00FFAA")
+    .text_shadows(
+        Shadow(offset=(0, 0), blur_radius=2, color="#00FFAA"),
+        Shadow(offset=(0, 0), blur_radius=5, color="#FFFFFF")
+    )
+)
+canvas.render("NEON").save("neon.png")
+```
+
+![Text shadows result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754102759/neon_w7hnrf.png)
+
+## Outline Stroke
+
+The `.text_stroke()` method adds a contour around the text. This is great for creating impactful, cartoon-style, or sticker-like text.
+
+```python
+from pictex import Canvas
+
+canvas = (
+    Canvas()
+    .font_size(150)
+    .font_family("Impact")
+    .color("yellow")
+    .text_stroke(width=14, color="black")
+)
+
+canvas.render("COMIC").save("comic_style.png")
+```
+
+![Outline stroke result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754102755/comic_style_ysnmlf.png)

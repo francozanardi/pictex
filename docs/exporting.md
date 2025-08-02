@@ -1,21 +1,82 @@
-# Exporting to SVG
+# Exporting Your Image
 
-`PicTex` provides powerful support for exporting your styled text to a Scalable Vector Graphic (SVG) file. This is ideal for web applications, logos, and any use case where resolution-independent images are required.
+Once you have built your visual composition, PicTex provides flexible options for exporting it to both raster (pixel-based) and vector (path-based) formats.
 
-## Basic Usage
+## Exporting to Raster Images (.png, .jpg)
 
-To generate an SVG, simply use the `.render_as_svg()` method on your `Canvas`. This returns a `VectorImage` object.
+To generate a raster image, use the `.render()` method. This returns a `BitmapImage` object, which holds the pixel data and provides helpful methods to save, display, or convert it.
 
 ```python
 from pictex import Canvas
 
-canvas = Canvas().font_size(100).color("purple")
+canvas = Canvas().font_size(80).color("blue")
+image = canvas.render("Hello, World!")
 
+# Save to a file (format is inferred from extension)
+image.save("output.png")
+image.save("output.jpg", quality=90)
+```
+
+### Controlling Raster Size with `crop_mode`
+
+The `.render()` method accepts a `crop_mode` argument to give you full control over the final image dimensions.
+
+-   `CropMode.NONE` (Default): The canvas will be large enough to include all effects, including the full extent of shadows.
+-   `CropMode.CONTENT_BOX`: The canvas will be cropped to the "content box" of the root element. This is useful if you want to ignore shadows for layout purposes.
+-   `CropMode.SMART`: A smart crop that trims all fully transparent pixels from the edges of the image. This is often the best choice for the tightest possible output.
+
+```python
+from pictex import Canvas, CropMode
+
+canvas = Canvas().font_size(100).add_shadow(offset=(10,10), blur_radius=20, color="white")
+canvas.background_color("blue")
+
+# Render with different exporting modes
+img_none = canvas.render("Test", crop_mode=CropMode.NONE)
+img_smart = canvas.render("Test", crop_mode=CropMode.SMART)
+img_content_box = canvas.render("Test", crop_mode=CropMode.CONTENT_BOX)
+
+# We save them as JPG images to force a black background instead of transparent, so it's easier to see the difference
+img_none.save("test_none.jpg")
+img_smart.save("test_smart.jpg")
+img_content_box.save("test_content_box.jpg")
+```
+
+**`CropMode.NONE`** (default):
+
+![None crop result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754099896/test_none_qayqye.jpg)
+
+**`CropMode.SMART`**:
+
+![Smart crop result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754099896/test_smart_c8vl7j.jpg)
+
+**`CropMode.CONTENT_BOX`**:
+
+![Content-box crop result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754099895/test_content_box_eecjyp.jpg)
+
+### Converting to Other Formats
+
+The `Image` object can be easily converted for use with other popular libraries.
+```python
+# Get a Pillow Image object (requires `pip install Pillow`)
+pil_image = image.to_pillow()
+
+# Get a NumPy array for use with OpenCV (BGRA format) or Matplotlib (RGBA).
+numpy_array = image.to_numpy(mode="RGBA")
+```
+
+## Exporting to Vector Images (.svg)
+
+To generate an SVG, use the `.render_as_svg()` method. This returns a `VectorImage` object.
+
+```python
 vector_image = canvas.render_as_svg("Hello, SVG!")
 vector_image.save("output.svg")
 ```
 
-## Understanding Font Handling in SVG
+> Note: Shadows are not supported yet in SVG
+
+### Understanding Font Handling in SVG
 
 Handling fonts is the most critical aspect of creating portable SVGs. `PicTex` gives you precise control over this via the `embed_font` parameter in the `render_as_svg()` method.
 

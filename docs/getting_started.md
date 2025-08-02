@@ -1,80 +1,101 @@
-# Getting Started & Core Concepts
+# Getting Started
 
-Welcome to the `PicTex` documentation! This guide will walk you through the core concepts of the library.
+Welcome to PicTex! This guide will get you from installation to your first composed image in just a few minutes.
 
-## The Core Idea: Canvas and Image
+## The Core Idea: Composing Builders
 
-The two most important classes in `PicTex` are `Canvas` and `Image`.
+The core idea of PicTex is to build complex visuals by **composing simple builders**.
 
-1.  **`Canvas`**: Think of a `Canvas` as a **reusable style template**. You use its fluent methods (`.font_size()`, `.color()`, etc.) to build up a set of styling rules. You create a `Canvas` once and can use it many times.
+1.  **Builders**: These are the fundamental building blocks of your image. You have content builders like `Text` and `Image`, and layout builders like `Row` and `Column` to arrange them.
 
-2.  **`Image`**: An `Image` is the **final rendered product** when you use `Canvas.render(...)`. This object holds the pixel data and provides helpful methods to save, display, or convert it.
+2.  **`Canvas`**: This is the top-level container for your entire image. You can use it to set global styles (like a default font or a background color) and to kick off the final render.
 
-3.  **`VectorImage`**: This is a **vector image** containing SVG data, returned by `Canvas.render_as_svg(...)`.
+The workflow is simple: you create and nest builders to form a tree structure representing your visual, and then you tell the `Canvas` to render it.
 
-This separation allows for clean and efficient code:
+### Quickstart: Creating a User Banner
+
+Let's build a simple user banner to see these concepts in action.
 
 ```python
-# Create one builders template
-my_template = Canvas().font_size(80).color("blue")
+from pictex import Canvas, Row, Column, Text, Image
 
-# Render multiple images from the same template
-raster_image = my_template.render("First Text")
-vector_image = my_template.render_as_svg("Second Text")
+# 1. Create the individual content builders
+avatar = (
+    Image("avatar.jpg")
+    .size(60, 60)
+    .border_radius('50%') # Make it circular
+)
 
-raster_image.save("first.png")
-vector_image.save("second.svg")
+user_info = Column(
+    Text("Alex Doe").font_size(20).font_weight(700),
+    Text("@alexdoe").color("#657786")
+).gap(4) # Add a 4px vertical gap between the texts
+
+# 2. Compose the builders in a layout container
+user_banner = Row(
+    avatar,
+    user_info
+).gap(15).vertical_align('center') # Vertically center the avatar and user info
+
+# 3. Create a Canvas and render the final composition
+canvas = Canvas().padding(20).background_color("#F5F8FA")
+image = canvas.render(user_banner)
+
+# 4. Save the result
+image.save("user_banner.png")
 ```
 
-## Working with the `Image` Object
+![User Banner Example](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754102204/user_banner_ujadrv.png)
+
+This example shows the power of composition: an `Image` and a `Column` are nested inside a `Row` to create a clean, aligned component.
+
+## Working with the `BitmapImage` Object
+
+The `BitmapImage` object is the final rendered product from `canvas.render()`. It holds the pixel data and provides helpful methods.
 
 ```python
-image = canvas.render("Hello")
+# Assuming 'image' is an Image object from the example above
 
-# Save to a file
-image.save("hello.png")
+# Save to a file (format is inferred from extension)
+image.save("output.png")
 
 # Get a Pillow Image object (requires `pip install Pillow`)
 pil_image = image.to_pillow()
 pil_image.show()
 
-# Get a NumPy array for use with OpenCV or other libraries
-# Default is BGRA format for OpenCV
+# Get a NumPy array for use with other libraries
 numpy_array_bgra = image.to_numpy()
-# Get in RGBA format for Matplotlib, etc.
-numpy_array_rgba = image.to_numpy(rgba=True)
 ```
 
 ## Working with the `VectorImage` Object
 
-The `VectorImage` object is simple. It holds the SVG content as a string.
+The `VectorImage` object, returned by `canvas.render_as_svg()`, holds the SVG content as a string.
 
 ```python
-vector_image = canvas.render_as_svg("Hello SVG")
+vector_image = canvas.render_as_svg(user_banner)
 
 # Save to a file
-vector_image.save("hello.svg")
+vector_image.save("output.svg")
 
 # Get the raw SVG string
 svg_string = vector_image.svg
-print(svg_string)
 ```
 
 ## What's Next?
 
-You now understand the basic workflow of `PicTex`. The real power of the library lies in its rich styling capabilities. We recommend you explore the guides in the following order:
+You now understand the basic workflow of PicTex. To master its full potential, explore our detailed guides in the following order:
 
-1.  **[Text & Fonts](./text.md)**
-    *Learn how to use custom fonts, variable fonts, set weights and styles, and master the automatic font fallback system for emojis and special characters.*
+1.  **[Core Concepts: Builders & Layout](./core_concepts.md)**
+    *A deep dive into `Row` and `Column`, and how to control distribution, alignment, and spacing.*
 
-2.  **[Colors & Gradients](./colors.md)**
-    *Discover how to use solid colors and apply beautiful linear gradients to text, backgrounds, and even decorations.*
+2.  **[Styling: The Box Model](./box_model.md)**
+    *Learn how sizing, padding, borders, and backgrounds work with the powerful `border-box` model.*
 
-3.  **[Containers & Effects](./effects.md)**
-    *Dive into creating backgrounds, padding, outlines, and adding depth with multiple text and box shadows.*
+3.  **[Styling: Text & Fonts](./text.md)**
+    *Master custom fonts, variable fonts, text shadows, and decorations.*
 
-4.  **[Smart Sizing & Cropping](./crop.md)**
-    *Take full control over the final image dimensions with different cropping strategies.*
+4.  **[Styling: Colors & Gradients](./colors.md)**
+    *Discover how to apply solid colors and beautiful linear gradients to any part of your composition.*
 
-5.  **[Exporting to SVG](./exporting_svg.md)**
-    *Export your canvas as an SVG image.*
+5.  **[Exporting Your Image](./exporting.md)**
+    *Take full control over the final output, including cropping strategies and SVG font embedding.*
