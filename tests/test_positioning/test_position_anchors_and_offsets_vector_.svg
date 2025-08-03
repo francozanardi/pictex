@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200">
+<defs>
+    <builders type="text/css">
+        
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="300" height="200" />
+	<rect fill="#BDC3C7" width="300" height="200" />
+	<rect fill="#1ABC9C" transform="translate(10 10)" width="59" height="59" />
+	<text transform="translate(10 10)" font-size="50" font-family="DejaVu Sans" x="0, 31, " y="46.411133, ">
+			TL
+	</text>
+	<rect fill="#1ABC9C" transform="translate(224 10)" width="66" height="59" />
+	<text transform="translate(224 10)" font-size="50" font-family="DejaVu Sans" x="0, 31, " y="46.411133, ">
+			TR
+	</text>
+	<rect fill="#1ABC9C" transform="translate(10 131)" width="62" height="59" />
+	<text transform="translate(10 131)" font-size="50" font-family="DejaVu Sans" x="0, 34, " y="46.411133, ">
+			BL
+	</text>
+	<rect fill="#1ABC9C" transform="translate(221 131)" width="69" height="59" />
+	<text transform="translate(221 131)" font-size="50" font-family="DejaVu Sans" x="0, 34, " y="46.411133, ">
+			BR
+	</text>
+	<rect fill="#9B59B6" transform="translate(65 70.5)" width="170" height="59" />
+	<text transform="translate(65 70.5)" font-size="50" font-family="DejaVu Sans" x="0, 35, 66, 98, 118, 149, " y="46.411133, ">
+			Center
+	</text>
+	<rect fill="#F1C40F" transform="translate(60 60)" width="152" height="59" />
+	<text transform="translate(60 60)" font-size="50" font-family="DejaVu Sans" x="0, 39, 57, 75, 101, 132, " y="46.411133, ">
+			Offset
+	</text>
+</svg>
