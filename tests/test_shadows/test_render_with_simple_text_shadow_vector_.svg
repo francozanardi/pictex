@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="758" height="148">
+<svg xmlns="http://www.w3.org/2000/svg" width="741" height="178">
 <defs>
-    <style type="text/css">
+    <builders type="text/css">
         
-    </style>
+    </builders>
 </defs>
             
-	<defs><filter id="text-shadow-0" x="-50%" y="-50%" width="200%" height="200%"><feOffset dx="5" dy="5" in="SourceAlpha" result="offset" /><feGaussianBlur in="offset" stdDeviation="10" result="blurred" /><feFlood flood-color="#000000" flood-opacity="0.6274509803921569" result="color" /><feComposite in="color" in2="blurred" operator="in" result="shadow" /><feMerge><feMergeNode in="shadow" /><feMergeNode in="SourceGraphic" /></feMerge></filter></defs><rect fill-opacity="0" width="758" height="148" />
-	<text fill="white" transform="translate(23 112)" font-size="120" font-family="Arial" x="0, 73, 140, 200, 233, 266, 346, 413, 480, 547, 614, " y="0, " filter="url(#text-shadow-0)">
+	<rect fill-opacity="0" width="741" height="178" />
+	<text fill="white" transform="translate(20 20)" font-size="120" font-family="Arial" x="0, 73, 140, 200, 233, 266, 346, 413, 480, 547, 614, " y="108.63281, ">
 			Text Shadow
 	</text>
 </svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200">
+<defs>
+    <builders type="text/css">
+        
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="400" height="200" />
+	<rect fill="#ECF0F1" width="400" height="200" />
+	<rect fill="#9B59B6" transform="translate(20 20)" width="180" height="50" />
+	<text transform="translate(20 20)" font-size="50" font-family="DejaVu Sans" x="0, 32, 64, 112, 128, 177, 191, 223, 243, " y="46.411133, ">
+			50% Width
+	</text>
+</svg>

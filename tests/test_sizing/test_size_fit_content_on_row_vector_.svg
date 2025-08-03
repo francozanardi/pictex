@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="355" height="79">
+<defs>
+    <builders type="text/css">
+        
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="355" height="79" />
+	<rect fill="#34495E" width="355" height="79" />
+	<rect fill="#F1C40F" width="130" height="79" />
+	<text font-size="50" font-family="DejaVu Sans" x="10, 39, 53, 74, 100, " y="56.411133, ">
+			First
+	</text>
+	<rect fill="#E67E22" transform="translate(130 0)" x="20" width="205" height="79" />
+	<text transform="translate(130 0)" font-size="50" font-family="DejaVu Sans" x="30, 62, 93, 120, 151, 183, " y="56.411133, ">
+			Second
+	</text>
+</svg>

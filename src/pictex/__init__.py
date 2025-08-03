@@ -5,30 +5,48 @@ This package provides a simple, fluent API to generate images from text,
 with powerful styling options like gradients, shadows, and custom fonts.
 """
 
-from .canvas import Canvas
-from .models import *
-from .image import Image
+from .builders import Canvas, Text, Row, Column, Image, Element
+from .models.public import *
+from .bitmap_image import BitmapImage
 from .vector_image import VectorImage
 
 __version__ = "0.3.1"
 
 __all__ = [
     "Canvas",
+    "Text",
+    "Row",
+    "Column",
+    "Image",
+    "Element",
     "Style",
     "SolidColor",
     "LinearGradient",
-    "Background",
     "Shadow",
     "OutlineStroke",
-    "Font",
     "FontSmoothing",
-    "Alignment",
+    "TextAlign",
     "FontStyle",
     "FontWeight",
-    "DecorationLine",
     "TextDecoration",
-    "Image",
+    "BitmapImage",
     "VectorImage",
     "CropMode",
     "Box",
+    "Padding",
+    "Margin",
+    "Border",
+    "BorderRadius",
+    "BorderRadiusValue",
+    "BackgroundImage",
+    "BackgroundImageSizeMode",
+    "Size",
+    "SizeValue",
+    "SizeValueMode",
+    "Position",
+    "PositionMode",
+    "HorizontalDistribution",
+    "HorizontalAlignment",
+    "VerticalDistribution",
+    "VerticalAlignment",
 ]

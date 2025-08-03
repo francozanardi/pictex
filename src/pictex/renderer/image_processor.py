@@ -1,16 +1,17 @@
 import skia
 from ..models import CropMode, Box
-from typing import Tuple, Optional
-from .structs import RenderMetrics
+from typing import Optional
 import numpy as np
-from ..image import Image
+from ..bitmap_image import BitmapImage
+from ..nodes import Node
+from .. import utils
+from math import ceil
 
 class ImageProcessor:
 
-    def process(self, image: skia.Image, metrics: RenderMetrics, crop_mode: CropMode) -> Image:
-        bg_rect = metrics.background_rect
-        content_rect = skia.Rect.MakeLTRB(bg_rect.left(), bg_rect.top(), bg_rect.right(), bg_rect.bottom())
-        content_rect.offset(metrics.draw_origin)
+    def process(self, root: Node, image: skia.Image, crop_mode: CropMode) -> BitmapImage:
+        content_rect = utils.clone_skia_rect(root.border_bounds)
+        content_rect.offset(-root.paint_bounds.left(), -root.paint_bounds.top())
         if crop_mode == CropMode.SMART:
             crop_rect = self._get_trim_rect(image)
             if crop_rect:
@@ -20,11 +21,11 @@ class ImageProcessor:
         content_box = Box(
             x=int(content_rect.left()),
             y=int(content_rect.top()),
-            width=int(content_rect.width()),
-            height=int(content_rect.height())
+            width=int(ceil(content_rect.width())),
+            height=int(ceil(content_rect.height()))
         )
 
-        return Image(skia_image=image, content_box=content_box)
+        return BitmapImage(skia_image=image, content_box=content_box)
 
     def _get_trim_rect(self, image: skia.Image) -> Optional[skia.Rect]:
         """

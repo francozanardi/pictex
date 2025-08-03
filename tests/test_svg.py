@@ -11,7 +11,7 @@ def test_svg_with_embedded_font():
     vector_image = canvas.render_as_svg("Embed Test", embed_font=True)
     svg_content = vector_image.svg
 
-    assert "<style" in svg_content
+    assert "<builders" in svg_content
     assert "@font-face" in svg_content
     assert "font-family: 'pictex-Lato'" in svg_content
     assert "src: url('data:font/ttf;base64," in svg_content
@@ -26,7 +26,7 @@ def test_svg_without_embedded_font():
     vector_image = canvas.render_as_svg("No Embed Test", embed_font=False)
     svg_content = vector_image.svg
 
-    assert "<style" in svg_content
+    assert "<builders" in svg_content
     assert "@font-face" in svg_content
     assert "base64" not in svg_content
     assert "font-family: 'pictex-Lato'" in svg_content

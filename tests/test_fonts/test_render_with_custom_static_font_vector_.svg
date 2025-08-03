@@ -1,17 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="574" height="74">
+<svg xmlns="http://www.w3.org/2000/svg" width="555" height="84">
 <defs>
-    <style type="text/css">
+    <builders type="text/css">
         
 @font-face {
     font-family: 'pictex-Lato';
     src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
 }
             
-    </style>
+    </builders>
 </defs>
             
-	<rect fill-opacity="0" width="574" height="74" />
-	<text transform="translate(8 63)" font-size="70" font-family="pictex-Lato" x="0, 42, 80, 107, 132, 168, 223, 237, 272, 297, 333, 358, 376, 406, 420, 456, 492, 530, " y="0, ">
+	<rect fill-opacity="0" width="555" height="84" />
+	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="0, 42, 80, 107, 132, 168, 223, 237, 272, 297, 333, 358, 376, 406, 420, 456, 492, 530, " y="69.089996, ">
 			Custom Static Font
 	</text>
 </svg>

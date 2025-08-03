@@ -32,12 +32,12 @@ theme:
 nav:
   - 'Home': index.md
   - 'Guides':
-    - 'Getting Started': getting_started.md
-    - 'Colors & Gradients': colors.md
-    - 'Text & Fonts': text.md
-    - 'Containers & Effects': effects.md
-    - 'Sizing & Cropping': crop.md
-    - 'Exporting to SVG': exporting_svg.md
+    - '1. Getting Started': getting_started.md
+    - '2. Core Concepts: Builders & Layout': core_concepts.md
+    - '3. Styling: The Box Model': box_model.md
+    - '4. Styling: Text & Fonts': text.md
+    - '5. Styling: Colors & Gradients': colors.md
+    - '6. Exporting Images': exporting.md
   - 'API Reference': api_reference.md
 
 markdown_extensions:

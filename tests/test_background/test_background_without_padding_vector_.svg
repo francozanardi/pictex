@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="320" height="80">
+<svg xmlns="http://www.w3.org/2000/svg" width="323" height="119">
 <defs>
-    <style type="text/css">
+    <builders type="text/css">
         
 @font-face {
     font-family: 'pictex-Oswald';
     src: url('/home/runner/work/pictex/pictex/tests/assets/Oswald-VariableFont_wght.ttf');
 }
             
-    </style>
+    </builders>
 </defs>
             
-	<rect fill-opacity="0" width="320" height="80" />
-	<rect fill="#C0392B" transform="translate(-5 65)" x="5" y="-65" width="320" height="80" />
-	<text fill="white" transform="translate(-5 65)" font-size="80" font-family="pictex-Oswald" x="0, 42, 76, 94, 132, 165, 200, 235, 253, 288, " y="0, ">
+	<rect fill-opacity="0" width="323" height="119" />
+	<rect fill="#C0392B" width="323" height="119" />
+	<text fill="white" font-size="80" font-family="pictex-Oswald" x="0, 42, 76, 94, 132, 165, 200, 235, 253, 288, " y="95.439995, ">
 			No Padding
 	</text>
 </svg>

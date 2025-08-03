@@ -1,17 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="518" height="114">
+<svg xmlns="http://www.w3.org/2000/svg" width="490" height="144">
 <defs>
-    <style type="text/css">
+    <builders type="text/css">
         
 @font-face {
     font-family: 'pictex-Lato';
     src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
 }
             
-    </style>
+    </builders>
 </defs>
             
-	<rect fill-opacity="0" width="518" height="114" />
-	<text fill="none" stroke="black" stroke-width="5" stroke-miterlimit="4" transform="translate(8.5 100.5)" font-size="120" font-family="pictex-Lato" x="0, 84, 172, 229, 286, 374, " y="0, ">
+	<rect fill-opacity="0" width="490" height="144" />
+	<text fill="none" stroke="black" stroke-width="5" stroke-miterlimit="4" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 84, 172, 229, 286, 374, " y="118.44, ">
 			HOLLOW
 	</text>
 </svg>
