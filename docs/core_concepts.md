@@ -132,7 +132,7 @@ image = Canvas().font_size(80).render(Column(*examples).gap(20))
 image.save("alignment.png")
 ```
 
-![Alignment Example](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754098899/distribution_vr3al5.png)
+![Alignment Example](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754098898/alignment_qbmver.png)
 
 ### Spacing with `.gap()`
 
