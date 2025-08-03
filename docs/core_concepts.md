@@ -147,18 +147,43 @@ card = Column(
 ).gap(20)
 ```
 
-### Breaking the Flow: `.position()`
+### Breaking the Flow: `position()` and `absolute_position()`
 
-Sometimes you need to place an element at a specific coordinate, ignoring the `Row` or `Column` flow. The `.position()` method makes an element "absolute", positioning it relative to its parent container's content area. The other elements in the layout will then behave as if the positioned element doesn't exist.
+Sometimes you need to place an element at a specific coordinate, ignoring the normal `Row` or `Column` flow. PicTex offers two powerful methods for this, each with a different frame of reference. When you use either method, the element is removed from the layout flow, and other elements will behave as if it isn't there.
 
-This is perfect for overlays, like placing a badge on an image.
+#### Relative Positioning with `.position()`
+
+This is the most common method for positioning. It places an element relative to its **direct parent's content area**. This means the `(0, 0)` origin is the corner *inside* the parent's padding and border. This is perfect for overlays within a component, like placing a badge on an image, because the positioned element will move along with its parent.
+
+#### Absolute Positioning with `.absolute_position()`
+
+This method provides an "escape hatch" from all parent containers. It places an element relative to the **root canvas**. The `(0, 0)` origin is the absolute top-left corner of the final rendered image, ignoring any margin, border, or padding on the root container itself. This is best for global elements like watermarks.
+
+#### Visualizing the Difference
+
+The following example makes the distinction clear. We create a `Canvas` with a large margin, border, and padding. Inside, we place two `Text` elements, both at `(0, 0)`—one with `absolute_position` and one with `position`.
 
 ```python
-badge = Text("SALE").position("right", "top", x_offset=-10, y_offset=10)
+from pictex import Canvas, Text
 
-# The Row acts as a positioning context for the badge
-image_with_badge = Row(
-    Image("product.jpg"),
-    badge # This badge will be positioned on top of the image
-)
+(
+    Canvas()
+    .margin(25)
+    .padding(25)
+    .border(25, "red")
+    .background_color("blue")
+    .size(200, 200)
+    .font_size(20)
+    .color("orange")
+    .render(
+        Text("ABSOLUTE").absolute_position(0, 0),
+        Text("RELATIVE").position(0, 0)
+    )
+).save("position.png")
 ```
+
+![Positioning Example](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754260873/position_uxawu1.png)
+
+As you can see:
+-   **`ABSOLUTE`** is rendered at the true `(0, 0)` of the final image, ignoring the canvas's own box model.
+-   **`RELATIVE`** is rendered at `(0, 0)` relative to the parent's **content area**. Its final position is correctly offset by the canvas's 25px margin, 25px border, and 25px padding.

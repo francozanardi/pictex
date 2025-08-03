@@ -17,26 +17,21 @@ class WithPositionMixin:
             x_offset: float = 0,
             y_offset: float = 0
     ) -> Self:
-        """Sets the absolute position of the element using a flexible coordinate system.
+        """Sets the element's position relative to the root canvas.
 
-        This method defines the element's `x` and `y` coordinates. Each coordinate
-        can be specified independently using one of three modes:
+        This method removes the element from the normal layout flow (`Row` or
+        `Column`) and positions it based on the absolute dimensions of the
+        entire canvas. The (0, 0) coordinate is the top-left corner of the
+        final rendered image, ignoring any margin, border, or padding set on
+        the root container.
 
-        - **Absolute (pixels)**: An `int` or `float` value that sets the
-          position directly from the top-left corner.
-            `position(100, 250)`
+        This is ideal for global overlays like watermarks or headers that should
+        be placed at a fixed position on the final image.
 
-        - **Percentage**: A `str` ending with `%` that sets the position
-          relative to the parent container's dimensions.
-            `position("50%", "100%")`
-
-        - **Keyword Alignment**: A `str` keyword to align the element.
-          Valid keywords for `x` are "left", "center", "right".
-          Valid keywords for `y` are "top", "center", "bottom".
-            `position("center", "top")`
-
-        These modes can be mixed, for example: `position(100, "center")`.
-        Additionally, optional offsets can be applied for fine-tuning.
+        The coordinate system (`x`, `y`) supports three modes:
+        - **Absolute (pixels)**: `absolute_position(100, 250)`
+        - **Percentage**: `absolute_position("50%", "100%")`
+        - **Keyword Alignment**: `absolute_position("center", "top")`
 
         Args:
             x (Union[float, int, str]): The horizontal position value. Can be an
@@ -45,18 +40,13 @@ class WithPositionMixin:
             y (Union[float, int, str]): The vertical position value. Can be an
                 absolute pixel value, a percentage string (e.g., "75%"), or an
                 alignment keyword ("top", "center", "bottom").
-            x_offset (float, optional): Apply an
-                additional horizontal offset in pixels. Defaults to 0.
-            y_offset (float, optional): Apply an
-                additional vertical offset in pixels. Defaults to 0.
+            x_offset (float, optional): An additional horizontal offset in
+                pixels. Defaults to 0.
+            y_offset (float, optional): An additional vertical offset in
+                pixels. Defaults to 0.
 
         Returns:
-            Self: The instance for chaining.
-
-        Raises:
-            ValueError: If an invalid keyword is used for `x` or `y` (e.g.,
-                `position("top", "left")`).
-            TypeError: If `x` or `y` are of an unsupported type.
+            Self: The instance for method chaining.
         """
         return self._set_position(x, y, x_offset, y_offset, PositionMode.ABSOLUTE)
 
@@ -67,26 +57,20 @@ class WithPositionMixin:
             x_offset: float = 0,
             y_offset: float = 0
     ) -> Self:
-        """Sets the relative position (to the parent) of the element using a flexible coordinate system.
+        """Sets the element's position relative to its direct parent's content area.
 
-        This method defines the element's `x` and `y` coordinates. Each coordinate
-        can be specified independently using one of three modes:
+        This method removes the element from the normal layout flow (`Row` or
+        `Column`) and positions it relative to its immediate parent. The (0, 0)
+        coordinate is the top-left corner *inside* the parent's padding and
+        border. The element will be correctly offset by its parent's position.
 
-        - **Absolute (pixels)**: An `int` or `float` value that sets the
-          position directly from the top-left corner.
-            `position(100, 250)`
+        This is ideal for creating overlays within a component, such as placing a
+        badge on an image or custom-placing text inside a styled container.
 
-        - **Percentage**: A `str` ending with `%` that sets the position
-          relative to the parent container's dimensions.
-            `position("50%", "100%")`
-
-        - **Keyword Alignment**: A `str` keyword to align the element.
-          Valid keywords for `x` are "left", "center", "right".
-          Valid keywords for `y` are "top", "center", "bottom".
-            `position("center", "top")`
-
-        These modes can be mixed, for example: `position(100, "center")`.
-        Additionally, optional offsets can be applied for fine-tuning.
+        The coordinate system (`x`, `y`) supports three modes:
+        - **Absolute (pixels)**: `position(100, 250)`
+        - **Percentage**: `position("50%", "100%")`
+        - **Keyword Alignment**: `position("center", "top")`
 
         Args:
             x (Union[float, int, str]): The horizontal position value. Can be an
@@ -95,18 +79,13 @@ class WithPositionMixin:
             y (Union[float, int, str]): The vertical position value. Can be an
                 absolute pixel value, a percentage string (e.g., "75%"), or an
                 alignment keyword ("top", "center", "bottom").
-            x_offset (float, optional): Apply an
-                additional horizontal offset in pixels. Defaults to 0.
-            y_offset (float, optional): Apply an
-                additional vertical offset in pixels. Defaults to 0.
+            x_offset (float, optional): An additional horizontal offset in
+                pixels. Defaults to 0.
+            y_offset (float, optional): An additional vertical offset in
+                pixels. Defaults to 0.
 
         Returns:
-            Self: The instance for chaining.
-
-        Raises:
-            ValueError: If an invalid keyword is used for `x` or `y` (e.g.,
-                `position("top", "left")`).
-            TypeError: If `x` or `y` are of an unsupported type.
+            Self: The instance for method chaining.
         """
         return self._set_position(x, y, x_offset, y_offset, PositionMode.RELATIVE)
 
