@@ -40,13 +40,13 @@ from pictex import Canvas, Shadow, LinearGradient
 # 1. Create a style template using the fluent API
 canvas = (
     Canvas()
-    .font_family("path/to/font.ttf")
+    .font_family("Poppins-Bold.ttf")
     .font_size(60)
     .color("white")
-    .padding(10)
+    .padding(20)
     .background_color(LinearGradient(["#2C3E50", "#FD746C"]))
     .border_radius(10)
-    .text_shadows(Shadow(offset=(2, 2), blur_radius=3, color="black")
+    .text_shadows(Shadow(offset=(2, 2), blur_radius=3, color="black"))
 )
 
 # 2. Render some text using the template
@@ -89,11 +89,9 @@ card = (
     .gap(20)
 )
 
-# 3. Render the final image
+# 3. Render and save the final image
 canvas = Canvas().font_family("NataSans.ttf")
 image = canvas.render(card)
-
-# 4. Save or show the result
 image.save("profile_card.png")
 ```
 
