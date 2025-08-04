@@ -5,10 +5,6 @@
 [![Codecov](https://codecov.io/gh/francozanardi/pictex/branch/main/graph/badge.svg)](https://codecov.io/gh/francozanardi/pictex)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **Upgrading to v1.0?**
-> This version includes powerful new features and a breaking changes.
-> Check out the **[CHANGELOG](https://github.com/francozanardi/pictex/blob/main/CHANGELOG.md)** to see what's new.
-
 A powerful Python library for creating complex visual compositions and beautifully styled images. Powered by Skia.
 
 ![PicTex](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831765/readme-1_vqnohh.png)
