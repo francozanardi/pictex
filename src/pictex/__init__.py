@@ -1,8 +1,5 @@
 """
-pictex: A Python library for creating beautifully styled text images.
-
-This package provides a simple, fluent API to generate images from text,
-with powerful styling options like gradients, shadows, and custom fonts.
+pictex: A Python library for creating complex visual compositions and beautifully styled images.
 """
 
 from .builders import Canvas, Text, Row, Column, Image, Element
@@ -10,7 +7,7 @@ from .models.public import *
 from .bitmap_image import BitmapImage
 from .vector_image import VectorImage
 
-__version__ = "0.3.1"
+__version__ = "1.0.0"
 
 __all__ = [
     "Canvas",
