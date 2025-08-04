@@ -26,8 +26,8 @@ These are the data classes and enumerations used for configuration.
       filters:
         - "!apply_to_paint"
         - "!_from_hex"
-#### ::: pictex.models.Shadow
-#### ::: pictex.models.Alignment
-#### ::: pictex.models.FontWeight
-#### ::: pictex.models.FontStyle
-#### ::: pictex.models.CropMode
+#### ::: pictex.Shadow
+#### ::: pictex.TextAlign
+#### ::: pictex.FontWeight
+#### ::: pictex.FontStyle
+#### ::: pictex.CropMode
