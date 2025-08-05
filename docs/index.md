@@ -28,4 +28,4 @@ Whether you're new to `PicTex` or an experienced user, here's where to find what
 
     Need the technical details? Jump straight into the full API reference for all classes, methods, and parameters.
 
-    [Go to the API Reference](./api_reference.md)
+    [Go to the API Reference](./api/builders/canvas.md)

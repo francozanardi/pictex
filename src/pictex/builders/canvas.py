@@ -10,10 +10,10 @@ from ..renderer import Renderer
 from .with_size_mixin import WithSizeMixin
 
 class Canvas(Stylable, WithSizeMixin):
-    """The main user-facing class for creating stylized text images.
+    """The main user-facing class for composing images.
 
     This class implements a fluent builder pattern to define a builders template,
-    which can then be used to render multiple texts. Each styling method returns
+    which can then be used to render multiple elements. Each styling method returns
     the instance of the class, allowing for method chaining.
 
     Example:
@@ -24,7 +24,7 @@ class Canvas(Stylable, WithSizeMixin):
             .font_size(24)
             .color("blue")
             .add_shadow(offset=(2, 2), blur_radius=3, color="black")
-            .render("Hello, World!")
+            .render("Hello, ", Text("World!").color("red"))
         )
         image.save("output.png")
         ```

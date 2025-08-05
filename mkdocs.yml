@@ -38,7 +38,15 @@ nav:
     - '4. Styling: Text & Fonts': text.md
     - '5. Styling: Colors & Gradients': colors.md
     - '6. Exporting Images': exporting.md
-  - 'API Reference': api_reference.md
+  - 'API Reference':
+    - 'Builders':
+      - 'Canvas': 'api/builders/canvas.md'
+      - 'Row': 'api/builders/row.md'
+      - 'Column': 'api/builders/column.md'
+      - 'Text': 'api/builders/text.md'
+      - 'Image': 'api/builders/image.md'
+    - 'Output Classes': 'api/outputs.md'
+    - 'Models & Enums': 'api/models.md'
 
 markdown_extensions:
   - pymdownx.highlight:
@@ -60,5 +68,7 @@ plugins:
             members_order: source
             heading_level: 2
             show_signature_annotations: false
+            inherited_members: true
+            show_bases: false
             filters:
               - "!^_"

@@ -8,6 +8,26 @@ except ImportError:
     from typing_extensions import Self
 
 class Image(Element, WithSizeMixin):
+    """A builder for displaying and styling raster images.
+
+    The `Image` builder is the primary way to include images (like JPG or PNG)
+    in your composition. By default, it sizes itself to the natural dimensions
+    of the image file. You can override this with `.size()` and
+    style it like any other element, applying borders, rounded corners, and shadows.
+
+    Example:
+        ```python
+        from pictex import Image
+
+        # Create a circular avatar from an image file.
+        avatar = (
+            Image("avatar.jpg")
+            .size(100, 100)
+            .border_radius('50%')
+            .border(3, "white")
+        )
+        ```
+    """
 
     def __init__(self, path: str):
         super().__init__()

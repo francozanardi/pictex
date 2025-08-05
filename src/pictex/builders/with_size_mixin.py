@@ -66,7 +66,7 @@ class WithSizeMixin:
         self._style.size.set(Size(width=parsed_width, height=parsed_height))
         return self
 
-    def fit_background_image(self):
+    def fit_background_image(self) -> Self:
         """Adjusts the element's size to match its background image dimensions.
 
         This is a convenience method that sets the element's width and height
