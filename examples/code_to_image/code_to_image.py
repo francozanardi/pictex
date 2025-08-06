@@ -59,6 +59,12 @@ def parse_python_line(line: str) -> Row:
     line_children = []
     for token_type, token_text in tokens:
         color = get_token_color(token_type)
+        # This strip logic is because of an error with empty lines in pictex,
+        # it was already fixed, but not released yet.
+        # We would be able to remove this in next pictex version.
+        token_text = token_text.strip("\n\r")
+        if not token_text:
+            continue
         line_children.append(Text(token_text).color(color))
 
     return Row(*line_children)
