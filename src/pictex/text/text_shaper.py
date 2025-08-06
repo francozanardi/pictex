@@ -36,7 +36,7 @@ class TextShaper:
         """Handle empty lines by creating a placeholder with correct height"""
 
         primary_font = self._font_manager.get_primary_font()
-        line = Line(runs=[], width=0, bounds=skia.Rect.MakeEmpty())
+        line = Line(runs=[], height=0, width=0, bounds=skia.Rect.MakeEmpty())
         font_metrics = primary_font.getMetrics()
         line.bounds = skia.Rect.MakeLTRB(0, font_metrics.fAscent, 0, font_metrics.fDescent)
         return line
