@@ -70,18 +70,11 @@ def parse_python_line(line: str) -> Row:
     return Row(*line_children)
 
 
-title_bar_buttons = Row(
+title_bar = Row(
     Row().size(12, 12).background_color("#FF5F56").border_radius('50%'),
     Row().size(12, 12).background_color("#FFBD2E").border_radius('50%'),
     Row().size(12, 12).background_color("#27C93F").border_radius('50%'),
-).gap(8)
-
-title_bar = (
-    Row(title_bar_buttons)
-    .padding(10)
-    .horizontal_distribution('space-between')
-    .vertical_align('center')
-)
+).gap(8).padding(10)
 
 code_lines = []
 for i, line in enumerate(CODE_SNIPPET.strip().split('\n'), 1):
