@@ -97,6 +97,18 @@ image.save("profile_card.png")
 
 ![Quickstart result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754103067/profile_card_b7ofk7.png)
 
+## More Examples
+
+PicTex 1.0's layout engine unlocks a huge range of possibilities, from social media graphics to data visualizations. We've created a collection of ready-to-run examples to showcase what you can build.
+
+| Preview                                                      | Description                                                                                                                                                                                                                    |
+|:-------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ![Tweet to Image Example](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754446864/tweet_ouzwyf.png)   | **Tweet to Image** <br/> Recreate the look and feel of a tweet, perfect for sharing on other social platforms. <br/> **[View Code »](https://github.com/francozanardi/pictex/blob/main/examples/tweet_card/tweet_card.py)**    |
+| ![Data Table Example](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754446872/table_t8hoyi.png)            | **Data Table** <br/> Generate a clean, styled table from a 2D list. Includes headers, zebra-striping, and shadows. <br/> **[View Code »](https://github.com/francozanardi/pictex/blob/main/examples/table/table.py)**          |
+| ![Code Snippet Example](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754446867/result_exfjqr.png) | **Code Snippet** <br/> Create beautifully syntax-highlighted images of your code snippets for tutorials or social media. <br/> **[View Code »](https://github.com/francozanardi/pictex/blob/main/examples/code_to_image/code_to_image.py)** |
+
+Check out the full [examples](https://github.com/francozanardi/pictex/tree/main/examples) directory for more!
+
 ## 📚 Dive Deeper
 
 For a complete guide on all features, from layout and the box model to advanced styling, check out our full documentation:
