@@ -119,6 +119,12 @@ For a complete guide on all features, from layout and the box model to advanced 
 -   [**Styling Guide: Colors & Gradients**](https://pictex.readthedocs.io/en/latest/colors/)
 -   [**Styling Guide: Text & Fonts**](https://pictex.readthedocs.io/en/latest/text/)
 
+## Roadmap
+
+- [ ] Support `"x%"` size in elements when parent has `"fit-content"` size
+- [ ] Support `"stretch"` distribution for rows and columns
+- [ ] Support wrapping in `Text` element when parent has size different from `"fit-content"`
+
 ## Featured On
 
 [<img alt="Python Weekly Logo" src="https://media.beehiiv.com/cdn-cgi/image/fit=scale-down,format=auto,onerror=redirect,quality=80/uploads/publication/logo/0dfe72e1-380f-4399-a50e-134919512092/Python-Weekly-Square-Logo.jpg" width="80">](https://www.pythonweekly.com/p/python-weekly-issue-707-july-17-2025-0b345aeeec65adb3)
