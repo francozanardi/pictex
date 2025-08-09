@@ -1,6 +1,6 @@
 [project]
 name = "pictex"
-version = "1.1.0"
+version = "1.1.1"
 description = "A library to generate complex visual compositions and beautifully styled images."
 authors = [
     { name = "Franco Zanardi", email = "francozanardi97@gmail.com" },
