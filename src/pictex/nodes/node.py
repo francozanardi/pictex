@@ -219,7 +219,7 @@ class Node(Cacheable):
         This is a more targeted version of clear().
         """
         for child in self._children:
-            child.clear()
+            child.clear_bounds()
 
         self._forced_size = (None, None)
         self.clear_cache('bounds')
