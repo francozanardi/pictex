@@ -61,9 +61,13 @@ class Cacheable:
         self._cache_registry = defaultdict(set)
     
     def clear_cache(self, filter_by_group: Optional[str] = None) -> None:
+        items_to_remove = []
         if filter_by_group is None:
+            items_to_remove = [key for cache_keys in self._cache_registry.values() for key in cache_keys]
             self._cache_registry.clear()
-            return
-
-        if filter_by_group in self._cache_registry:
+        elif filter_by_group in self._cache_registry:
+            items_to_remove = self._cache_registry[filter_by_group]
             del self._cache_registry[filter_by_group]
+
+        for item in items_to_remove:
+            delattr(self, item)
