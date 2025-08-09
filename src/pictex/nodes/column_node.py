@@ -1,7 +1,7 @@
 from typing import Tuple, Callable
 from .node import Node
 from .container_node import ContainerNode
-from ..models import HorizontalAlignment, VerticalDistribution
+from ..models import HorizontalAlignment, VerticalDistribution, SizeValueMode
 import skia
 
 class ColumnNode(ContainerNode):
@@ -11,7 +11,19 @@ class ColumnNode(ContainerNode):
         if not children:
             return 0
 
-        return max(child.margin_bounds.width() for child in children)
+        max_width = max(child.margin_bounds.width() for child in children)
+        alignment = self.computed_styles.horizontal_alignment.get()
+        if alignment == HorizontalAlignment.STRETCH:
+            for child in children:
+                child_width = child.computed_styles.width.get()
+                if child_width and child_width.mode != SizeValueMode.AUTO:
+                    continue
+                
+                child.clear_bounds()
+                child._set_forced_size(width=max_width)
+                child._calculate_bounds()
+
+        return max_width
     
     def compute_intrinsic_height(self) -> int:
         children = self._get_positionable_children()

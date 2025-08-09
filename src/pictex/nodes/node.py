@@ -224,7 +224,7 @@ class Node(Cacheable):
         self._forced_size = (None, None)
         self.clear_cache('bounds')
 
-    def _set_forced_size(self, width: Optional[int], height: Optional[int]) -> None:
+    def _set_forced_size(self, width: Optional[int] = None, height: Optional[int] = None) -> None:
         """Allows a parent to impose a size on this node."""
         self._forced_size = (width, height)
 

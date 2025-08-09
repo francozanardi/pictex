@@ -13,14 +13,16 @@ class SizeResolver:
         self._intrinsic_bounds: skia.Rect | None = None
     
     def resolve_width(self) -> int:
+        if self._node._forced_size[0] is not None:
+            forced_width, _ = self._node._forced_size
+            spacing = self._get_horizontal_spacing()
+            return max(0, forced_width - spacing)
+
         width = self._node.computed_styles.width.get()
         if not width:
             return self._node.compute_intrinsic_width()
 
-        padding = self._node.computed_styles.padding.get()
-        border = self._node.computed_styles.border.get()
-        border_width = border.width if border else 0
-        spacing = padding.left + padding.right + (border_width * 2)
+        spacing = self._get_horizontal_spacing()
         box_width = self._get_axis_size(
             width,
             lambda: self._node.compute_intrinsic_width() + spacing,
@@ -30,14 +32,16 @@ class SizeResolver:
         return max(0, box_width - spacing)
 
     def resolve_height(self) -> int:
+        if self._node._forced_size[1] is not None:
+            _, forced_height = self._node._forced_size
+            spacing = self._get_vertical_spacing()
+            return max(0, forced_height - spacing)
+
         height = self._node.computed_styles.height.get()
         if not height:
             return self._node.compute_intrinsic_height()
 
-        padding = self._node.computed_styles.padding.get()
-        border = self._node.computed_styles.border.get()
-        border_width = border.width if border else 0
-        spacing = padding.top + padding.bottom + (border_width * 2)
+        spacing = self._get_vertical_spacing()
         box_height = self._get_axis_size(
             height,
             lambda: self._node.compute_intrinsic_height() + spacing,
@@ -46,6 +50,18 @@ class SizeResolver:
         )
 
         return max(0, box_height - spacing)
+    
+    def _get_horizontal_spacing(self) -> float:
+        padding = self._node.computed_styles.padding.get()
+        border = self._node.computed_styles.border.get()
+        border_width = border.width if border else 0
+        return padding.left + padding.right + (border_width * 2)
+    
+    def _get_vertical_spacing(self) -> float:
+        padding = self._node.computed_styles.padding.get()
+        border = self._node.computed_styles.border.get()
+        border_width = border.width if border else 0
+        return padding.top + padding.bottom + (border_width * 2)
 
     def _get_background_value(self, axis: str) -> float:
         background_image = self._node.computed_styles.background_image.get()

@@ -1,7 +1,7 @@
 from typing import Tuple, Callable
 from .container_node import ContainerNode
 from .node import Node
-from ..models import VerticalAlignment, HorizontalDistribution
+from ..models import VerticalAlignment, HorizontalDistribution, SizeValueMode
 import skia
 
 class RowNode(ContainerNode):
@@ -21,7 +21,20 @@ class RowNode(ContainerNode):
         if not children:
             return 0
 
-        return max(child.margin_bounds.height() for child in children)
+        max_height = max(child.margin_bounds.height() for child in children)
+        alignment = self.computed_styles.vertical_alignment.get()
+        if alignment == VerticalAlignment.STRETCH:
+            for child in children:
+                child_height = child.computed_styles.height.get()
+                if child_height and child_height.mode != SizeValueMode.AUTO:
+                    continue
+                
+                child.clear_bounds()
+                child._set_forced_size(height=max_height)
+                child._calculate_bounds()
+
+        return max_height
+
 
     def _calculate_children_relative_positions(self, children: list[Node], get_child_bounds: Callable[[Node], skia.Rect]) -> list[Tuple[float, float]]:
         positions = []
