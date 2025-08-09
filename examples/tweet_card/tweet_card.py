@@ -28,7 +28,7 @@ tweet_footer = Row(
     create_stat("💬", REPLIES),
     create_stat("🔁", REPOSTS),
     create_stat("❤", LIKES),
-).size(width=550).horizontal_distribution('space-between')
+).size(width="100%").horizontal_distribution('space-between')
 
 tweet_card = (
     Column(
