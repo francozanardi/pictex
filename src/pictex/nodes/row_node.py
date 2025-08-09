@@ -6,17 +6,22 @@ import skia
 
 class RowNode(ContainerNode):
 
-    def _compute_intrinsic_content_bounds(self) -> skia.Rect:
+    def _compute_intrinsic_width(self) -> int:
         children = self._get_positionable_children()
         if not children:
-            return skia.Rect.MakeEmpty()
+            return 0
 
         gap = self.computed_styles.gap.get()
         total_gap = gap * (len(children) - 1)
         total_children_width = sum(child.margin_bounds.width() for child in children)
-        total_intrinsic_width = total_children_width + total_gap
-        max_child_height = max(child.margin_bounds.height() for child in children)
-        return skia.Rect.MakeWH(total_intrinsic_width, max_child_height)
+        return total_children_width + total_gap
+    
+    def _compute_intrinsic_height(self) -> int:
+        children = self._get_positionable_children()
+        if not children:
+            return 0
+
+        return max(child.margin_bounds.height() for child in children)
 
     def _calculate_children_relative_positions(self, children: list[Node], get_child_bounds: Callable[[Node], skia.Rect]) -> list[Tuple[float, float]]:
         positions = []

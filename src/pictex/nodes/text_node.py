@@ -12,6 +12,7 @@ class TextNode(Node):
         super().__init__(style)
         self._text = text
         self._text_bounds: Optional[skia.Rect] = None
+        self._intrinsic_content_bounds: Optional[skia.Rect] = None
         self._font_manager: Optional[FontManager] = None
         self._text_shaper: Optional[TextShaper] = None
         self._shaped_lines: Optional[list[Line]] = None
@@ -40,9 +41,16 @@ class TextNode(Node):
     def clear(self):
         super().clear()
         self._text_bounds = None
+        self._intrinsic_content_bounds = None
         self._font_manager = None
         self._text_shaper = None
         self._shaped_lines = None
+
+    def clear_bounds(self):
+        super().clear_bounds()
+    
+        self._text_bounds = None
+        self._intrinsic_content_bounds = None
 
     def _get_painters(self) -> list[Painter]:
         return [
@@ -55,6 +63,9 @@ class TextNode(Node):
     # We are including the decorations as part of the TextNode content.
     #  However, we could include them only in paint bounds, remove them from here.
     def _compute_intrinsic_content_bounds(self) -> skia.Rect:
+        if self._intrinsic_content_bounds:
+            return self._intrinsic_content_bounds
+        
         line_gap = self.computed_styles.line_height.get() * self.computed_styles.font_size.get()
         content_bounds = skia.Rect.MakeEmpty()
         primary_font = self._font_manager.get_primary_font()
@@ -72,7 +83,14 @@ class TextNode(Node):
             current_y += line_gap
 
         content_bounds.join(self.text_bounds)
-        return content_bounds
+        self._intrinsic_content_bounds = content_bounds
+        return self._intrinsic_content_bounds
+    
+    def _compute_intrinsic_width(self) -> int:
+        return self._compute_intrinsic_content_bounds().width()
+    
+    def _compute_intrinsic_height(self) -> int:
+        return self._compute_intrinsic_content_bounds().height()
 
     def _add_decoration_bounds(
             self,

@@ -14,6 +14,7 @@ class Node:
         self._parent: Optional[Node] = None
         self._children: list[Node] = []
         self._computed_styles: Optional[Style] = None
+        self._forced_size: Tuple[Optional[int], Optional[int]] = (None, None)
         self._size: Optional[Tuple[int, int]] = None
         self._content_bounds: Optional[skia.Rect] = None
         self._padding_bounds: Optional[skia.Rect] = None
@@ -89,7 +90,7 @@ class Node:
     @property
     def content_bounds(self) -> skia.Rect:
         if self._content_bounds is None:
-            self._content_bounds = to_int_skia_rect(self._compute_content_bounds())
+            self._content_bounds = to_int_skia_rect(skia.Rect.MakeWH(self._compute_content_width(), self._compute_content_height()))
         return self._content_bounds
 
     @property
@@ -139,20 +140,27 @@ class Node:
             border_bounds.right() + margin.right,
             border_bounds.bottom() + margin.bottom
         )
+    
+    # TODO: we should cache this... but we need to do a refactor and using a decorator to avoid creating more attributes just for that
+    def _compute_content_width(self) -> int:
+        return SizeResolver(self).resolve_width()
 
-    def _compute_content_bounds(self) -> skia.Rect:
+    def _compute_content_height(self) -> int:
+        return SizeResolver(self).resolve_height()
+    
+    def _compute_intrinsic_width(self) -> skia.Rect:
         """
-        Compute the inner content bounds (implicit), relative to the node box size, (0, 0).
-        Implicit means that it ignores the explicit size set from the styles for the node.
+        Compute the intrinsic width. That is, ignoring any size strategy set.
+        It measures the actual content (if the strategy is 'fit-content', then it's the same that _compute_content_width())
         """
-        return SizeResolver(self).resolve()
-
-    def _compute_intrinsic_content_bounds(self) -> skia.Rect:
+        raise NotImplementedError("_compute_intrinsic_width() is not implemented")
+    
+    def _compute_intrinsic_height(self) -> skia.Rect:
         """
-        Compute the intrinsic content bounds. That is, ignoring any size strategy set.
-        It measures the actual content (if the strategy is 'fit-content', then it's the same that _compute_content_bounds())
+        Compute the intrinsic height. That is, ignoring any size strategy set.
+        It measures the actual content (if the strategy is 'fit-content', then it's the same that _compute_content_height())
         """
-        raise NotImplementedError("_compute_implicit_content_bounds() is not implemented")
+        raise NotImplementedError("_compute_intrinsic_height() is not implemented")
 
     def _compute_paint_bounds(self) -> skia.Rect:
         """
@@ -220,14 +228,35 @@ class Node:
             child.clear()
 
         self._computed_styles = None
+        self._render_props = None
+        self._absolute_position = None
+        self._forced_size = (None, None)
         self._size = None
         self._content_bounds = None
         self._padding_bounds = None
         self._border_bounds = None
         self._margin_bounds = None
         self._paint_bounds = None
-        self._render_props = None
-        self._absolute_position = None
+
+    def clear_bounds(self):
+        """
+        Resets only the calculated layout and bounds information.
+        This is a more targeted version of clear().
+        """
+        for child in self._children:
+            child.clear()
+
+        self._forced_size = (None, None)
+        self._size = None
+        self._content_bounds = None
+        self._padding_bounds = None
+        self._border_bounds = None
+        self._margin_bounds = None
+        self._paint_bounds = None
+
+    def _set_forced_size(self, width: Optional[int], height: Optional[int]) -> None:
+        """Allows a parent to impose a size on this node."""
+        self._forced_size = (width, height)
 
     def _compute_styles(self) -> Style:
         parent_computed_styles = self._parent.computed_styles if self._parent else None

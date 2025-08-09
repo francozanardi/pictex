@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Tuple, Optional, NamedTuple
+from typing import NamedTuple
 
 class SizeValueMode(str, Enum):
+    AUTO = 'auto'
     ABSOLUTE = 'absolute'
     PERCENT = 'percent'
     FIT_CONTENT = 'fit-content'
