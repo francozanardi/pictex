@@ -10,7 +10,7 @@ from .typography import TextAlign, FontWeight, FontStyle
 from .paint_source import PaintSource
 from .decoration import TextDecoration
 from .color import SolidColor
-from .size import Size
+from .size import SizeValue
 
 
 @dataclass
@@ -42,7 +42,8 @@ class Style:
     border: StyleProperty[Optional[Border]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     border_radius: StyleProperty[Optional[BorderRadius]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     position: StyleProperty[Optional[Position]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
-    size: StyleProperty[Optional[Size]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
+    width: StyleProperty[Optional[SizeValue]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
+    height: StyleProperty[Optional[SizeValue]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     horizontal_distribution: StyleProperty[HorizontalDistribution] = field(
         default_factory=lambda: StyleProperty(HorizontalDistribution.LEFT, inheritable=False)
     )

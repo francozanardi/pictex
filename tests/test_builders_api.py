@@ -63,7 +63,8 @@ def test_builders_fluent_api_and_style_building():
         assert style.border == Border(3, SolidColor.from_str('red'))
         assert style.border_radius == BorderRadius(BorderRadiusValue(15.5), BorderRadiusValue(15.5),
                                                    BorderRadiusValue(15.5), BorderRadiusValue(15.5))
-        assert style.size == Size(SizeValue(SizeValueMode.ABSOLUTE, 300), SizeValue(SizeValueMode.ABSOLUTE, 300))
+        assert style.width == SizeValue(SizeValueMode.ABSOLUTE, 300)
+        assert style.height == SizeValue(SizeValueMode.ABSOLUTE, 300)
 
     for builder in with_position_builders:
         builder.absolute_position("center", "70%")
@@ -169,17 +170,23 @@ def test_border_radius():
 def test_size():
     canvas = Canvas()
     canvas.size()
-    assert canvas._style.size == Size(SizeValue(SizeValueMode.FIT_CONTENT), SizeValue(SizeValueMode.FIT_CONTENT))
+    assert canvas._style.width == None
+    assert canvas._style.height == None
     canvas.size(width=300)
-    assert canvas._style.size == Size(SizeValue(SizeValueMode.ABSOLUTE, 300), SizeValue(SizeValueMode.FIT_CONTENT))
+    assert canvas._style.width == SizeValue(SizeValueMode.ABSOLUTE, 300)
+    assert canvas._style.height == None
     canvas.size(height=300)
-    assert canvas._style.size == Size(SizeValue(SizeValueMode.FIT_CONTENT), SizeValue(SizeValueMode.ABSOLUTE, 300))
+    assert canvas._style.width == SizeValue(SizeValueMode.ABSOLUTE, 300)
+    assert canvas._style.height == SizeValue(SizeValueMode.ABSOLUTE, 300)
     canvas.size("10%", "20%")
-    assert canvas._style.size == Size(SizeValue(SizeValueMode.PERCENT, 10), SizeValue(SizeValueMode.PERCENT, 20))
+    assert canvas._style.width == SizeValue(SizeValueMode.PERCENT, 10)
+    assert canvas._style.height == SizeValue(SizeValueMode.PERCENT, 20)
     canvas.size("fit-background-image", "fit-content")
-    assert canvas._style.size == Size(SizeValue(SizeValueMode.FIT_BACKGROUND_IMAGE), SizeValue(SizeValueMode.FIT_CONTENT))
+    assert canvas._style.width == SizeValue(SizeValueMode.FIT_BACKGROUND_IMAGE)
+    assert canvas._style.height == SizeValue(SizeValueMode.FIT_CONTENT)
     canvas.fit_background_image()
-    assert canvas._style.size == Size(SizeValue(SizeValueMode.FIT_BACKGROUND_IMAGE), SizeValue(SizeValueMode.FIT_BACKGROUND_IMAGE))
+    assert canvas._style.width == SizeValue(SizeValueMode.FIT_BACKGROUND_IMAGE)
+    assert canvas._style.height == SizeValue(SizeValueMode.FIT_BACKGROUND_IMAGE)
 
 def test_position():
     builder = Text("")

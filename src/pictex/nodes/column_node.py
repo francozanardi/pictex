@@ -1,22 +1,46 @@
 from typing import Tuple, Callable
 from .node import Node
 from .container_node import ContainerNode
-from ..models import HorizontalAlignment, VerticalDistribution
+from ..models import HorizontalAlignment, VerticalDistribution, SizeValueMode
+from ..utils import cached_property
 import skia
 
 class ColumnNode(ContainerNode):
 
-    def _compute_intrinsic_content_bounds(self) -> skia.Rect:
+    @cached_property(group='bounds')
+    def content_width(self) -> int:
+        width = super().content_width
+        alignment = self.computed_styles.horizontal_alignment.get()
+        
+        if alignment == HorizontalAlignment.STRETCH:
+            children = self._get_positionable_children()
+            for child in children:
+                child_width = child.computed_styles.width.get()
+                if child_width and child_width.mode != SizeValueMode.AUTO:
+                    continue
+                
+                child.clear_bounds()
+                child._set_forced_size(width=width)
+                child._calculate_bounds()
+
+        return width
+
+    def compute_intrinsic_width(self) -> int:
         children = self._get_positionable_children()
         if not children:
-            return skia.Rect.MakeEmpty()
+            return 0
+
+        return max(child.margin_bounds.width() for child in children)
+    
+    def compute_intrinsic_height(self) -> int:
+        children = self._get_positionable_children()
+        if not children:
+            return 0
 
         gap = self.computed_styles.gap.get()
         total_gap = gap * (len(children) - 1)
         total_children_height = sum(child.margin_bounds.height() for child in children)
-        total_intrinsic_height = total_children_height + total_gap
-        max_child_width = max(child.margin_bounds.width() for child in children)
-        return skia.Rect.MakeWH(max_child_width, total_intrinsic_height)
+        return total_children_height + total_gap
 
     def _calculate_children_relative_positions(self, children: list[Node], get_child_bounds: Callable[[Node], skia.Rect]) -> list[Tuple[float, float]]:
         positions = []

@@ -28,12 +28,22 @@ Canvas().render(
 
 ## Sizing (`.size()`)
 
-The `.size()` method sets the explicit dimensions of an element's box. It accepts several types of values:
+The `.size()` method sets the explicit dimensions of an element's box. You can control the `width` and `height` independently.
 
--   **Absolute (pixels)**: An `int` or `float`. `size(width=200)`.
--   **Fit Content**: `'fit-content'`. The box will grow or shrink to fit its children. This is the default for all elements.
--   **Fit Background Image**: `'fit-background-image'`. The box will take on the dimensions of its background image.
--   **Percentage**: A string like `"50%"`. The box size will be a percentage of its parent container's content area.
+PicTex's sizing is powerful and flexible, supporting several modes for each dimension:
+
+| Value Type                 | Example                                     | Behavior                                                                                                                                                             |
+| -------------------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`'auto'`** (Default)     | `size()` or `size(width=200)`               | **Context-dependent.** Usually wraps the content (`fit-content`), but crucially, it allows the element to be stretched by its parent's alignment properties. This is default behavior.|
+| `'fit-content'`            | `size(height='fit-content')`                | **Explicit.** Forces the element to wrap its content. Use this to *prevent* an element from being stretched by its parent. |
+| `'fit-background-image'`   | `size(width='fit-background-image')`        | **Explicit.** Forces the element to match the dimensions of its background image. |
+| **Absolute (pixels)**      | `size(width=200, height=150)`               | **Explicit.** Sets a fixed size in pixels. This will override parent stretching. |
+| **Percentage**             | `size(width="50%")`                         | **Explicit.** Sets the size as a percentage of the parent's content area. This will override parent stretching. |
+
+The key difference to understand is between `'auto'` and `'fit-content'`:
+
+-   Use `'auto'` (or simply don't call `.size()` for an axis) when you want an element to be flexible and respect its parent's layout rules like `stretch`.
+-   Use `'fit-content'` when you want to force an element to be exactly as big as its content, no matter what its parent wants.
 
 ### The `border-box` Sizing Model
 

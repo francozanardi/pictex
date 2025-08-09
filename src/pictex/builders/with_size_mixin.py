@@ -1,5 +1,5 @@
 from typing import Union, Optional, Literal
-from ..models import Style, Size, SizeValue, SizeValueMode
+from ..models import Style, SizeValue, SizeValueMode
 
 try:
     from typing import Self
@@ -24,46 +24,51 @@ class WithSizeMixin:
 
     def size(
             self,
-            width: Union[float, int, Literal['fit-content', 'fit-background-image']] = "fit-content",
-            height: Union[float, int, Literal['fit-content', 'fit-background-image']] = "fit-content",
+            width: Optional[Union[float, int, Literal['auto', 'fit-content', 'fit-background-image']]] = None,
+            height: Optional[Union[float, int, Literal['auto', 'fit-content', 'fit-background-image']]] = None,
     ) -> Self:
-        """Sets the explicit size of the element.
+        """Sets the explicit size of the element's box using the border-box model.
 
-        The width and height can be defined independently. If an argument is
-        not provided, its corresponding dimension is not changed. Each dimension
-        supports three modes:
+        The width and height are defined independently and control the total
+        dimensions of the element, including its padding and border.
 
-        - **Absolute (pixels)**: An `int` or `float` value that sets the
-          dimension to a fixed size.
-            `size(width=200, height=150)`
+        Each dimension supports several modes:
 
-        - **Percentage**: A `str` ending with `%` that sets the dimension
-          relative to the parent container's size.
-            `size(width="50%", height="75%")`
+        - **`'auto'`**: The size is context-dependent. It typically
+          behaves like `'fit-content'`, but will yield to parent layout
+          constraints, such as stretching to fill the space in a `Row` or
+          `Column` with align `stretch`. This is the default behavior.
 
-        - **Automatic**: The dimension is automatically adjusted the
-          based on the size of its internal content ("fit-content") or based on the background image size ("fit-background-image").
-            `size(width="fit-content", height="fit-background-image")`
+        - **`'fit-content'`**: The size is explicitly set to wrap the element's
+          content. This will override parent constraints like `stretch`.
 
-        These modes can be mixed, for example: `size(width=100, height="fit-content")`.
+        - **`'fit-background-image'`**: The size is explicitly set to match the
+          dimensions of the element's background image.
+
+        - **Absolute (pixels)**: An `int` or `float` value (e.g., `200`) sets a
+          fixed size.
+
+        - **Percentage**: A `str` ending with `%` (e.g., `"50%"`) sets the size
+          relative to the parent container's content area.
 
         Args:
-            width (Optional[Union[float, int, str]]): The horizontal size value.
-                Can be an absolute pixel value, a percentage string, or specific mode (e.g. 'fit-content').
-            height (Optional[Union[float, int, str]]): The vertical size value.
-                Can be an absolute pixel value, a percentage string, or specific mode (e.g. 'fit-content').
+            width (Union[float, int, str]): The horizontal size value.
+                Defaults to "auto".
+            height (Union[float, int, str]): The vertical size value.
+                Defaults to "auto".
 
         Returns:
-            Self: The instance for chaining.
-
-        Raises:
-            TypeError: If width or height are of an unsupported type or value.
+            Self: The instance for method chaining.
         """
 
-        parsed_width = self._parse_size_value(width)
-        parsed_height = self._parse_size_value(height)
+        if width is not None:
+            parsed_width = self._parse_size_value(width)
+            self._style.width.set(parsed_width)
 
-        self._style.size.set(Size(width=parsed_width, height=parsed_height))
+        if height is not None:
+            parsed_height = self._parse_size_value(height)
+            self._style.height.set(parsed_height)
+
         return self
 
     def fit_background_image(self) -> Self:

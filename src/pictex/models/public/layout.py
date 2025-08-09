@@ -27,6 +27,7 @@ class VerticalAlignment(str, Enum):
     TOP = "top"
     CENTER = "center"
     BOTTOM = "bottom"
+    STRETCH = "stretch"
 
 class VerticalDistribution(str, Enum):
     TOP = "top"
@@ -40,3 +41,5 @@ class HorizontalAlignment(str, Enum):
     LEFT = "left"
     CENTER = "center"
     RIGHT = "right"
+    STRETCH = "stretch"
+

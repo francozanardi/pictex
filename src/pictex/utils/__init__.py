@@ -1,5 +1,6 @@
 from .alignment import get_line_x_position
 from .shadow import create_composite_shadow_filter
+from .cache import cached_method, cached_property, Cacheable
 from math import ceil, floor
 import skia
 

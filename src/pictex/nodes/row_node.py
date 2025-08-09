@@ -1,22 +1,46 @@
 from typing import Tuple, Callable
 from .container_node import ContainerNode
 from .node import Node
-from ..models import VerticalAlignment, HorizontalDistribution
+from ..models import VerticalAlignment, HorizontalDistribution, SizeValueMode
+from ..utils import cached_property
 import skia
 
 class RowNode(ContainerNode):
 
-    def _compute_intrinsic_content_bounds(self) -> skia.Rect:
+    def compute_intrinsic_width(self) -> int:
         children = self._get_positionable_children()
         if not children:
-            return skia.Rect.MakeEmpty()
+            return 0
 
         gap = self.computed_styles.gap.get()
         total_gap = gap * (len(children) - 1)
         total_children_width = sum(child.margin_bounds.width() for child in children)
-        total_intrinsic_width = total_children_width + total_gap
-        max_child_height = max(child.margin_bounds.height() for child in children)
-        return skia.Rect.MakeWH(total_intrinsic_width, max_child_height)
+        return total_children_width + total_gap
+    
+    def compute_intrinsic_height(self) -> int:
+        children = self._get_positionable_children()
+        if not children:
+            return 0
+
+        return max(child.margin_bounds.height() for child in children)
+    
+    @cached_property(group='bounds')
+    def content_height(self) -> int:
+        height = super().content_height
+        alignment = self.computed_styles.vertical_alignment.get()
+        
+        if alignment == VerticalAlignment.STRETCH:
+            children = self._get_positionable_children()
+            for child in children:
+                child_height = child.computed_styles.height.get()
+                if child_height and child_height.mode != SizeValueMode.AUTO:
+                    continue
+                
+                child.clear_bounds()
+                child._set_forced_size(height=height)
+                child._calculate_bounds()
+
+        return height
 
     def _calculate_children_relative_positions(self, children: list[Node], get_child_bounds: Callable[[Node], skia.Rect]) -> list[Tuple[float, float]]:
         positions = []

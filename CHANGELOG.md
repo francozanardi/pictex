@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Documentation for builder classes was improved
+- Support `stretch` for `horizontal_align()` and `vertical_align()` in `Row` and `Column` builders
+
+### Changed
+
+- Width and height are not calculated indivdually, it allows using parent with `fit-content` width (or height) and children with `percent` width (or height). For example, last version didn't admit child with `50%` width if the parent has fixed width but `fit-content` height.
 
 ### Fixed
 
