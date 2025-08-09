@@ -24,8 +24,8 @@ class WithSizeMixin:
 
     def size(
             self,
-            width: Union[float, int, Literal['auto', 'fit-content', 'fit-background-image']] = "auto",
-            height: Union[float, int, Literal['auto', 'fit-content', 'fit-background-image']] = "auto",
+            width: Optional[Union[float, int, Literal['auto', 'fit-content', 'fit-background-image']]] = None,
+            height: Optional[Union[float, int, Literal['auto', 'fit-content', 'fit-background-image']]] = None,
     ) -> Self:
         """Sets the explicit size of the element's box using the border-box model.
 
@@ -34,10 +34,10 @@ class WithSizeMixin:
 
         Each dimension supports several modes:
 
-        - **`'auto'` (Default)**: The size is context-dependent. It typically
+        - **`'auto'`**: The size is context-dependent. It typically
           behaves like `'fit-content'`, but will yield to parent layout
           constraints, such as stretching to fill the space in a `Row` or
-          `Column` with align `stretch`.
+          `Column` with align `stretch`. This is the default behavior.
 
         - **`'fit-content'`**: The size is explicitly set to wrap the element's
           content. This will override parent constraints like `stretch`.
@@ -61,11 +61,14 @@ class WithSizeMixin:
             Self: The instance for method chaining.
         """
 
-        parsed_width = self._parse_size_value(width)
-        parsed_height = self._parse_size_value(height)
+        if width is not None:
+            parsed_width = self._parse_size_value(width)
+            self._style.width.set(parsed_width)
 
-        self._style.width.set(parsed_width)
-        self._style.height.set(parsed_height)
+        if height is not None:
+            parsed_height = self._parse_size_value(height)
+            self._style.height.set(parsed_height)
+
         return self
 
     def fit_background_image(self) -> Self:
