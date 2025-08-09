@@ -104,25 +104,27 @@ Alignment controls how children are positioned along the **cross axis**.
 -   `'top'` / `'left'` (Default): Aligns children to the start of the cross axis.
 -   `'center'`: Centers children along the cross axis.
 -   `'bottom'` / `'right'`: Aligns children to the end of the cross axis.
+-   `'stretch'`: Resizes children to fill the container along the cross axis.
 
 ```python
 from pictex import *
 
 def create_alignment_example(align):
-    row_with_distribution = Row(
+    row_with_alignment = Row(
         Text("A").background_color("blue").font_size(80),
         Text("B").background_color("red").font_size(65),
         Text("C").background_color("green").font_size(50),
     ).vertical_align(align).border(4, "black").gap(30)
     return Column(
         Text(align).font_size(40),
-        row_with_distribution
+        row_with_alignment
     ).background_color("pink")
 
 aligns = [
     "top",
     "center",
     "bottom",
+    "stretch"
 ]
 examples = []
 for a in aligns:
@@ -132,7 +134,29 @@ image = Canvas().font_size(80).render(Column(*examples).gap(20))
 image.save("alignment.png")
 ```
 
-![Alignment Example](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754098898/alignment_qbmver.png)
+![Alignment Example](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754774757/alignment_m66sum.png)
+
+#### How `stretch` Works
+
+The `'stretch'` alignment is particularly powerful. It makes all children in a container have the same height (in a `Row`) or width (in a `Column`), creating clean, uniform layouts.
+
+**`stretch` only affects children whose size for that axis is set to `'auto'` (the default).**
+
+If you give a child an explicit size (e.g., `.size(height=50)` or `.size(height='fit-content')`), that child will **opt out** of being stretched and will keep its specified size. This allows you to create flexible layouts with specific exceptions.
+
+```python
+from pictex import *
+
+col = Column(
+    Text("I will stretch").background_color("blue"),
+    Text("I am fixed").background_color("green").size(width="fit-content"),
+    Text("I will also stretch").background_color("red")
+).horizontal_align('stretch')
+
+Canvas().render(col).save("stretch.png")
+```
+
+![Stretch Example](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754774789/stretch_lxinzt.png)
 
 ### Spacing with `.gap()`
 
