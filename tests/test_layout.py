@@ -33,7 +33,7 @@ def test_row_horizontal_distribution(file_regression, render_engine, mode):
     image = render_func(Canvas(), test_case)
     check_func(file_regression, image)
 
-@pytest.mark.parametrize("mode", ["top", "center", "bottom"])
+@pytest.mark.parametrize("mode", ["top", "center", "bottom", "stretch"])
 def test_row_vertical_alignment(file_regression, render_engine, mode):
     test_case = (
         Row(*ROW_CHILDREN)
@@ -83,7 +83,7 @@ def test_column_vertical_distribution(file_regression, render_engine, mode):
     image = render_func(Canvas(), test_case)
     check_func(file_regression, image)
 
-@pytest.mark.parametrize("mode", ["left", "center", "right"])
+@pytest.mark.parametrize("mode", ["left", "center", "right", "stretch"])
 def test_column_horizontal_alignment(file_regression, render_engine, mode):
     test_case = (
         Column(*COLUMN_CHILDREN)
