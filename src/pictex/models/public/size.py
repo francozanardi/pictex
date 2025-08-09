@@ -12,8 +12,3 @@ class SizeValueMode(str, Enum):
 class SizeValue(NamedTuple):
     mode: SizeValueMode
     value: float = 0
-
-@dataclass
-class Size:
-    width: SizeValue
-    height: SizeValue

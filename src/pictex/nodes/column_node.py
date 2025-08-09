@@ -6,14 +6,14 @@ import skia
 
 class ColumnNode(ContainerNode):
 
-    def _compute_intrinsic_width(self) -> int:
+    def compute_intrinsic_width(self) -> int:
         children = self._get_positionable_children()
         if not children:
             return 0
 
         return max(child.margin_bounds.width() for child in children)
     
-    def _compute_intrinsic_height(self) -> int:
+    def compute_intrinsic_height(self) -> int:
         children = self._get_positionable_children()
         if not children:
             return 0

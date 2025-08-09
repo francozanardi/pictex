@@ -4,34 +4,27 @@ from .node import Node
 from ..models import TextDecoration, Style, RenderProps, Line
 from ..text import FontManager, TextShaper
 from ..painters import Painter, BackgroundPainter, TextPainter, DecorationPainter, BorderPainter
-from .. import utils
+from ..utils import clone_skia_rect, cached_property, cached_method
 
 class TextNode(Node):
 
     def __init__(self, style: Style, text: str):
         super().__init__(style)
         self._text = text
-        self._text_bounds: Optional[skia.Rect] = None
-        self._intrinsic_content_bounds: Optional[skia.Rect] = None
         self._font_manager: Optional[FontManager] = None
         self._text_shaper: Optional[TextShaper] = None
-        self._shaped_lines: Optional[list[Line]] = None
 
     @property
     def text(self) -> str:
         return self._text
 
-    @property
+    @cached_property('bounds')
     def text_bounds(self) -> Optional[skia.Rect]:
-        if self._text_bounds is None:
-            self._text_bounds = self._compute_text_bounds()
-        return self._text_bounds
+        return self._compute_text_bounds()
 
-    @property
+    @cached_property('bounds') # This doesn't depend on the bounds right now, but it could in the future (text wrapping)
     def shaped_lines(self) -> list[Line]:
-        if self._shaped_lines is None:
-            self._shaped_lines = self._text_shaper.shape(self._text)
-        return self._shaped_lines
+        return self._text_shaper.shape(self._text)
 
     def _init_render_dependencies(self, render_props: RenderProps):
         super()._init_render_dependencies(render_props)
@@ -40,17 +33,8 @@ class TextNode(Node):
 
     def clear(self):
         super().clear()
-        self._text_bounds = None
-        self._intrinsic_content_bounds = None
         self._font_manager = None
         self._text_shaper = None
-        self._shaped_lines = None
-
-    def clear_bounds(self):
-        super().clear_bounds()
-    
-        self._text_bounds = None
-        self._intrinsic_content_bounds = None
 
     def _get_painters(self) -> list[Painter]:
         return [
@@ -62,10 +46,8 @@ class TextNode(Node):
 
     # We are including the decorations as part of the TextNode content.
     #  However, we could include them only in paint bounds, remove them from here.
+    @cached_method('bounds')
     def _compute_intrinsic_content_bounds(self) -> skia.Rect:
-        if self._intrinsic_content_bounds:
-            return self._intrinsic_content_bounds
-        
         line_gap = self.computed_styles.line_height.get() * self.computed_styles.font_size.get()
         content_bounds = skia.Rect.MakeEmpty()
         primary_font = self._font_manager.get_primary_font()
@@ -83,13 +65,12 @@ class TextNode(Node):
             current_y += line_gap
 
         content_bounds.join(self.text_bounds)
-        self._intrinsic_content_bounds = content_bounds
-        return self._intrinsic_content_bounds
+        return content_bounds
     
-    def _compute_intrinsic_width(self) -> int:
+    def compute_intrinsic_width(self) -> int:
         return self._compute_intrinsic_content_bounds().width()
     
-    def _compute_intrinsic_height(self) -> int:
+    def compute_intrinsic_height(self) -> int:
         return self._compute_intrinsic_content_bounds().height()
 
     def _add_decoration_bounds(
@@ -111,7 +92,7 @@ class TextNode(Node):
         dest_bounds.join(decoration_bounds)
 
     def _compute_paint_bounds(self) -> skia.Rect:
-        paint_bounds = utils.clone_skia_rect(self.margin_bounds)
+        paint_bounds = clone_skia_rect(self.margin_bounds)
         paint_bounds.join(self.content_bounds)
         paint_bounds.join(self._compute_shadow_bounds(self.text_bounds, self.computed_styles.text_shadows.get()))
         paint_bounds.join(self._compute_shadow_bounds(self.border_bounds, self.computed_styles.box_shadows.get()))

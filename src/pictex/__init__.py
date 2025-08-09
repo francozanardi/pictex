@@ -37,7 +37,6 @@ __all__ = [
     "BorderRadiusValue",
     "BackgroundImage",
     "BackgroundImageSizeMode",
-    "Size",
     "SizeValue",
     "SizeValueMode",
     "Position",

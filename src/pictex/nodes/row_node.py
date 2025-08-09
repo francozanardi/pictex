@@ -6,7 +6,7 @@ import skia
 
 class RowNode(ContainerNode):
 
-    def _compute_intrinsic_width(self) -> int:
+    def compute_intrinsic_width(self) -> int:
         children = self._get_positionable_children()
         if not children:
             return 0
@@ -16,7 +16,7 @@ class RowNode(ContainerNode):
         total_children_width = sum(child.margin_bounds.width() for child in children)
         return total_children_width + total_gap
     
-    def _compute_intrinsic_height(self) -> int:
+    def compute_intrinsic_height(self) -> int:
         children = self._get_positionable_children()
         if not children:
             return 0

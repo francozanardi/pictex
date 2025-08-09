@@ -4,23 +4,17 @@ from typing import Optional, Tuple
 import skia
 from ..models import Style, Shadow, PositionMode, RenderProps, CropMode
 from ..painters import Painter
-from ..utils import create_composite_shadow_filter, clone_skia_rect, to_int_skia_rect
+from ..utils import create_composite_shadow_filter, clone_skia_rect, to_int_skia_rect, cached_property, Cacheable
 from ..layout import SizeResolver
 
-class Node:
+class Node(Cacheable):
 
     def __init__(self, style: Style):
+        super().__init__()
         self._raw_style = style
         self._parent: Optional[Node] = None
         self._children: list[Node] = []
-        self._computed_styles: Optional[Style] = None
         self._forced_size: Tuple[Optional[int], Optional[int]] = (None, None)
-        self._size: Optional[Tuple[int, int]] = None
-        self._content_bounds: Optional[skia.Rect] = None
-        self._padding_bounds: Optional[skia.Rect] = None
-        self._border_bounds: Optional[skia.Rect] = None
-        self._margin_bounds: Optional[skia.Rect] = None
-        self._paint_bounds: Optional[skia.Rect] = None
         self._render_props: Optional[RenderProps] = None
         self._absolute_position: Optional[Tuple[float, float]] = None
 
@@ -32,17 +26,21 @@ class Node:
     def children(self) -> list[Node]:
         return self._children
 
-    @property
+    @cached_property()
     def computed_styles(self) -> Style:
-        if self._computed_styles is None:
-            self._computed_styles = self._compute_styles()
-        return self._computed_styles
+        return self._compute_styles()
 
-    @property
+    @cached_property(group='bounds')
     def size(self) -> Tuple[int, int]:
-        if self._size is None:
-            self._size = (self.border_bounds.width(), self.border_bounds.height())
-        return self._size
+        return (self.border_bounds.width(), self.border_bounds.height())
+    
+    @cached_property(group='bounds')
+    def content_width(self) -> int:
+        return SizeResolver(self).resolve_width()
+
+    @cached_property(group='bounds')
+    def content_height(self) -> int:
+        return SizeResolver(self).resolve_height()
 
     @property
     def absolute_position(self) -> Optional[Tuple[float, float]]:
@@ -69,35 +67,25 @@ class Node:
         self._absolute_position = position.get_relative_position(self_width, self_height, root_width, root_height)
         return self._absolute_position
 
-    @property
+    @cached_property(group='bounds')
     def padding_bounds(self):
-        if self._padding_bounds is None:
-            self._padding_bounds = to_int_skia_rect(self._compute_padding_bounds())
-        return self._padding_bounds
+        return to_int_skia_rect(self._compute_padding_bounds())
 
-    @property
+    @cached_property(group='bounds')
     def border_bounds(self):
-        if self._border_bounds is None:
-            self._border_bounds = to_int_skia_rect(self._compute_border_bounds())
-        return self._border_bounds
+        return to_int_skia_rect(self._compute_border_bounds())
 
-    @property
+    @cached_property(group='bounds')
     def margin_bounds(self):
-        if self._margin_bounds is None:
-            self._margin_bounds = to_int_skia_rect(self._compute_margin_bounds())
-        return self._margin_bounds
+        return to_int_skia_rect(self._compute_margin_bounds())
 
-    @property
+    @cached_property(group='bounds')
     def content_bounds(self) -> skia.Rect:
-        if self._content_bounds is None:
-            self._content_bounds = to_int_skia_rect(skia.Rect.MakeWH(self._compute_content_width(), self._compute_content_height()))
-        return self._content_bounds
+        return to_int_skia_rect(skia.Rect.MakeWH(self.content_width, self.content_height))
 
-    @property
+    @cached_property(group='bounds')
     def paint_bounds(self) -> skia.Rect:
-        if self._paint_bounds is None:
-            self._paint_bounds = to_int_skia_rect(self._compute_paint_bounds())
-        return self._paint_bounds
+        return to_int_skia_rect(self._compute_paint_bounds())
 
     def _compute_padding_bounds(self) -> skia.Rect:
         """
@@ -140,27 +128,6 @@ class Node:
             border_bounds.right() + margin.right,
             border_bounds.bottom() + margin.bottom
         )
-    
-    # TODO: we should cache this... but we need to do a refactor and using a decorator to avoid creating more attributes just for that
-    def _compute_content_width(self) -> int:
-        return SizeResolver(self).resolve_width()
-
-    def _compute_content_height(self) -> int:
-        return SizeResolver(self).resolve_height()
-    
-    def _compute_intrinsic_width(self) -> skia.Rect:
-        """
-        Compute the intrinsic width. That is, ignoring any size strategy set.
-        It measures the actual content (if the strategy is 'fit-content', then it's the same that _compute_content_width())
-        """
-        raise NotImplementedError("_compute_intrinsic_width() is not implemented")
-    
-    def _compute_intrinsic_height(self) -> skia.Rect:
-        """
-        Compute the intrinsic height. That is, ignoring any size strategy set.
-        It measures the actual content (if the strategy is 'fit-content', then it's the same that _compute_content_height())
-        """
-        raise NotImplementedError("_compute_intrinsic_height() is not implemented")
 
     def _compute_paint_bounds(self) -> skia.Rect:
         """
@@ -171,6 +138,20 @@ class Node:
 
     def _get_painters(self) -> list[Painter]:
         raise NotImplementedError("_get_painters() is not implemented")
+    
+    def compute_intrinsic_width(self) -> skia.Rect:
+        """
+        Compute the intrinsic width. That is, ignoring any size strategy set.
+        It measures the actual content (if the strategy is 'fit-content', then it's the same that self.content_width)
+        """
+        raise NotImplementedError("compute_intrinsic_width() is not implemented")
+    
+    def compute_intrinsic_height(self) -> skia.Rect:
+        """
+        Compute the intrinsic height. That is, ignoring any size strategy set.
+        It measures the actual content (if the strategy is 'fit-content', then it's the same that self.content_height)
+        """
+        raise NotImplementedError("compute_intrinsic_height() is not implemented")
 
     def prepare_tree_for_rendering(self, render_props: RenderProps) -> None:
         """
@@ -227,16 +208,10 @@ class Node:
         for child in self._children:
             child.clear()
 
-        self._computed_styles = None
         self._render_props = None
         self._absolute_position = None
         self._forced_size = (None, None)
-        self._size = None
-        self._content_bounds = None
-        self._padding_bounds = None
-        self._border_bounds = None
-        self._margin_bounds = None
-        self._paint_bounds = None
+        self.clear_cache()
 
     def clear_bounds(self):
         """
@@ -247,12 +222,7 @@ class Node:
             child.clear()
 
         self._forced_size = (None, None)
-        self._size = None
-        self._content_bounds = None
-        self._padding_bounds = None
-        self._border_bounds = None
-        self._margin_bounds = None
-        self._paint_bounds = None
+        self.clear_cache('bounds')
 
     def _set_forced_size(self, width: Optional[int], height: Optional[int]) -> None:
         """Allows a parent to impose a size on this node."""
