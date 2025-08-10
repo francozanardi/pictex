@@ -34,10 +34,15 @@ class ContainerNode(Node):
             BorderPainter(self.computed_styles, self.border_bounds),
         ]
 
-    def _set_absolute_position(self, x: float, y: float) -> None:
-        self._absolute_position = (x, y)
-        children = self._get_positionable_children()
-        positions = self._calculate_children_relative_positions(children, lambda node: node.margin_bounds)
-        for i, child in enumerate(children):
+    def _setup_absolute_position(self, x: float = 0, y: float = 0) -> None:
+        super()._setup_absolute_position(x, y)
+        x, y = self._absolute_position
+        positionable_children = self._get_positionable_children()
+        positions = self._calculate_children_relative_positions(positionable_children, lambda node: node.margin_bounds)
+        for i, child in enumerate(positionable_children):
             position = positions[i]
-            child._set_absolute_position(x + position[0], y + position[1])
+            child._setup_absolute_position(x + position[0], y + position[1])
+
+        non_positionable_children = self._get_non_positionable_children()
+        for child in non_positionable_children:
+            child._setup_absolute_position()

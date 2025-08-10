@@ -44,27 +44,6 @@ class Node(Cacheable):
 
     @property
     def absolute_position(self) -> Optional[Tuple[float, float]]:
-        if self._absolute_position:
-            return self._absolute_position
-
-        position = self.computed_styles.position.get()
-        if not position or not self._parent:
-            return None
-
-        self_width, self_height = self.size
-        if position.mode == PositionMode.RELATIVE:
-            parent_content_bounds = self._parent.content_bounds
-            parent_position = self._parent.absolute_position
-            self_position = position.get_relative_position(self_width, self_height, parent_content_bounds.width(), parent_content_bounds.height())
-            self._absolute_position = (
-                parent_position[0] + parent_content_bounds.left() + self_position[0],
-                parent_position[1] + parent_content_bounds.top() + self_position[1]
-            )
-            return self._absolute_position
-
-        root = self._get_root()
-        root_width, root_height = root.size
-        self._absolute_position = position.get_relative_position(self_width, self_height, root_width, root_height)
         return self._absolute_position
 
     @cached_property(group='bounds')
@@ -161,7 +140,7 @@ class Node(Cacheable):
         self.clear()
         self._init_render_dependencies(render_props)
         self._calculate_bounds()
-        self._set_absolute_position(0, 0)
+        self._setup_absolute_position()
 
     def _init_render_dependencies(self, render_props: RenderProps) -> None:
         self._render_props = render_props
@@ -186,11 +165,25 @@ class Node(Cacheable):
             self.paint_bounds,
         ]
 
-    def _set_absolute_position(self, x: float, y: float) -> None:
-        has_position = self.computed_styles.position.get() is not None
-        has_parent = self._parent is not None
-        if not has_position or not has_parent:
+    def _setup_absolute_position(self, x: float = 0, y: float = 0) -> None:
+        position = self.computed_styles.position.get()
+        if not position or not self._parent:
             self._absolute_position = (x, y)
+            return
+
+        self_width, self_height = self.size
+        if position.mode == PositionMode.RELATIVE:
+            parent_content_bounds = self._parent.content_bounds
+            parent_position = self._parent.absolute_position
+            self_position = position.get_relative_position(self_width, self_height, parent_content_bounds.width(), parent_content_bounds.height())
+            self._absolute_position = (
+                parent_position[0] + parent_content_bounds.left() + self_position[0],
+                parent_position[1] + parent_content_bounds.top() + self_position[1]
+            )
+        else:
+            root = self._get_root()
+            root_width, root_height = root.size
+            self._absolute_position = position.get_relative_position(self_width, self_height, root_width, root_height)
 
     def paint(self, canvas: skia.Canvas) -> None:
         canvas.save()
@@ -270,3 +263,6 @@ class Node(Cacheable):
 
     def _get_positionable_children(self) -> list[Node]:
         return [child for child in self.children if child.computed_styles.position.get() is None]
+    
+    def _get_non_positionable_children(self) -> list[Node]:
+        return [child for child in self.children if child.computed_styles.position.get() is not None]
