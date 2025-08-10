@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+<defs>
+    <builders type="text/css">
+        
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="100" height="100" />
+	<text font-size="50" font-family="DejaVu Sans" x="0, 20, 51, 77, " y="46.411133, ">
+			test
+	</text>
+</svg>
