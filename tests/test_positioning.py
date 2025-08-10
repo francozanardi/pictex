@@ -115,3 +115,10 @@ def test_position_with_mixed_anchors(file_regression, render_engine):
 
     image = render_func(Canvas(), container)
     check_func(file_regression, image)
+
+def test_container_with_position(file_regression, render_engine):
+    render_func, check_func = render_engine
+    
+    container = Row(Column("test").absolute_position(0, 0)).size(100, 100)
+    image = render_func(Canvas(), container)
+    check_func(file_regression, image)
