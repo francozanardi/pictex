@@ -3,7 +3,7 @@ from pictex import Canvas, Row, Column, Text
 
 ROW_CHILDREN = [
     Text("A").font_size(20).background_color("#3498db").padding(10),
-    Text("B").font_size(40).background_color("#e74c3c").padding(10),
+    Row(Text("B")).font_size(40).background_color("#e74c3c").padding(10),
     Text("C").font_size(30).background_color("#2ecc71").padding(10),
 ]
 

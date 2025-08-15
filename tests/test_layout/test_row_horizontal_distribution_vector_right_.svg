@@ -12,7 +12,7 @@
 			A
 	</text>
 	<rect fill="#E74C3C" transform="translate(512 0)" width="47" height="67" />
-	<text transform="translate(512 0)" font-size="40" font-family="DejaVu Sans" x="10, " y="47.128906, ">
+	<text transform="translate(522 10)" font-size="40" font-family="DejaVu Sans" x="0, " y="37.128906, ">
 			B
 	</text>
 	<rect fill="#2ECC71" transform="translate(559 0)" width="41" height="55" />
