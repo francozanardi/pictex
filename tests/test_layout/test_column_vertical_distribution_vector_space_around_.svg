@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="422" height="500">
+<defs>
+    <builders type="text/css">
+        
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="422" height="500" />
+	<rect fill="#ECF0F1" width="422" height="500" />
+	<rect fill="#3498DB" transform="translate(0 43.8333)" width="156" height="79" />
+	<text transform="translate(0 43.8333)" font-size="50" font-family="DejaVu Sans" x="10, 42, 74, 105, 126, " y="56.411133, ">
+			Short
+	</text>
+	<rect fill="#E74C3C" transform="translate(0 210.5)" width="422" height="79" />
+	<text transform="translate(0 210.5)" font-size="50" font-family="DejaVu Sans" x="10, 38, 69, 100, 131, 162, 193, 224, 255, 286, 317, 348, 380, " y="56.411133, ">
+			Loooooooooong
+	</text>
+	<rect fill="#2ECC71" transform="translate(0 377.167)" width="283" height="79" />
+	<text transform="translate(0 377.167)" font-size="50" font-family="DejaVu Sans" x="10, 53, 84, 115, 146, 178, 192, 224, " y="56.411133, ">
+			Meeedium
+	</text>
+</svg>

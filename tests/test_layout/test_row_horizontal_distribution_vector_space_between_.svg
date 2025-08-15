@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="67">
+<defs>
+    <builders type="text/css">
+        
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="600" height="67" />
+	<rect fill="#ECF0F1" width="600" height="67" />
+	<rect fill="#3498DB" width="34" height="44" />
+	<text font-size="20" font-family="DejaVu Sans" x="10, " y="28.564453, ">
+			A
+	</text>
+	<rect fill="#E74C3C" transform="translate(273 0)" width="47" height="67" />
+	<text transform="translate(283 10)" font-size="40" font-family="DejaVu Sans" x="0, " y="37.128906, ">
+			B
+	</text>
+	<rect fill="#2ECC71" transform="translate(559 0)" width="41" height="55" />
+	<text transform="translate(559 0)" font-size="30" font-family="DejaVu Sans" x="10, " y="37.84668, ">
+			C
+	</text>
+</svg>
