@@ -24,7 +24,7 @@ class SizeResolver:
 
         spacing = self._get_horizontal_spacing()
         box_width = self._get_axis_size(width, "width", spacing)
-        return max(0, box_width - spacing)
+        return max(0, box_width)
 
     def resolve_height(self) -> int:
         if self._node._forced_size[1] is not None:
@@ -39,7 +39,7 @@ class SizeResolver:
         spacing = self._get_vertical_spacing()
         box_height = self._get_axis_size(height, "height", spacing)
 
-        return max(0, box_height - spacing)
+        return max(0, box_height)
     
     def _get_horizontal_spacing(self) -> float:
         padding = self._node.computed_styles.padding.get()
@@ -57,9 +57,11 @@ class SizeResolver:
         if value.mode == 'absolute':
             return value.value - outer_space
         if value.mode == 'percent':
-            return self._get_parent_axis_size(axis) * (value.value / 100.0) - outer_space
+            return self._get_parent_percent_axis_size(axis, value.value / 100.0) - outer_space
         if value.mode == 'fit-content' or value.mode == 'auto':
             return self._get_intrinsic_axis_size(axis)
+        if value.mode == 'fill-available':
+            return self._get_parent_available_axis_size_per_child(axis)
         if value.mode == 'fit-background-image':
             return self._get_background_image_axis_size(axis) - outer_space
         raise ValueError(f"Unsupported size mode: {value.mode}")
@@ -80,7 +82,7 @@ class SizeResolver:
 
         return getattr(image, axis)()
 
-    def _get_parent_axis_size(self, axis: str) -> float:
+    def _get_parent_percent_axis_size(self, axis: str, factor: float) -> float:
         parent = self._node.parent
         if not parent:
             raise ValueError("Cannot use 'percent' size on a root element without a parent.")
@@ -90,8 +92,20 @@ class SizeResolver:
             raise ValueError("Cannot use 'percent' size if parent element has 'fit-content' size.")
 
         if axis == 'width':
-            return parent.content_width
+            return parent.content_width * factor
         elif axis == 'height':
-            return parent.content_height
+            return parent.content_height * factor
         
         raise ValueError(f"Unknown axis: {axis}")
+
+    def _get_parent_available_axis_size_per_child(self, axis: str) -> float:
+        parent = self._node.parent
+        if not parent:
+            raise ValueError("Cannot use 'fill-available' size on a root element without a parent.")
+
+        parent_size_style = getattr(parent.computed_styles, axis).get()
+        if not parent_size_style or parent_size_style.mode == 'fit-content' or parent_size_style.mode == 'auto':
+            raise ValueError("Cannot use 'fill-available' size if parent element has 'fit-content' size.")
+        
+        # We just return the intrinsic size as a placeholder, this should be recalculated when the parent is positionating the children
+        return self._get_intrinsic_axis_size(axis)
