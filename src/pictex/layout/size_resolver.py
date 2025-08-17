@@ -23,12 +23,7 @@ class SizeResolver:
             return self._node.compute_intrinsic_width()
 
         spacing = self._get_horizontal_spacing()
-        box_width = self._get_axis_size(
-            width,
-            lambda: self._node.compute_intrinsic_width() + spacing,
-            lambda: self._get_background_value("width"),
-            lambda: self._get_container_value("width")
-        )
+        box_width = self._get_axis_size(width, "width", spacing)
         return max(0, box_width - spacing)
 
     def resolve_height(self) -> int:
@@ -42,12 +37,7 @@ class SizeResolver:
             return self._node.compute_intrinsic_height()
 
         spacing = self._get_vertical_spacing()
-        box_height = self._get_axis_size(
-            height,
-            lambda: self._node.compute_intrinsic_height() + spacing,
-            lambda: self._get_background_value("height"),
-            lambda: self._get_container_value("height")
-        )
+        box_height = self._get_axis_size(height, "height", spacing)
 
         return max(0, box_height - spacing)
     
@@ -63,7 +53,23 @@ class SizeResolver:
         border_width = border.width if border else 0
         return padding.top + padding.bottom + (border_width * 2)
 
-    def _get_background_value(self, axis: str) -> float:
+    def _get_axis_size(self, value: 'SizeValue', axis: str, outer_space: float) -> float:
+        if value.mode == 'absolute':
+            return value.value - outer_space
+        if value.mode == 'percent':
+            return self._get_parent_axis_size(axis) * (value.value / 100.0) - outer_space
+        if value.mode == 'fit-content' or value.mode == 'auto':
+            return self._get_intrinsic_axis_size(axis)
+        if value.mode == 'fit-background-image':
+            return self._get_background_image_axis_size(axis) - outer_space
+        raise ValueError(f"Unsupported size mode: {value.mode}")
+    
+    def _get_intrinsic_axis_size(self, axis: str) -> float:
+        if axis == 'width':
+            return self._node.compute_intrinsic_width()
+        return self._node.compute_intrinsic_height()
+
+    def _get_background_image_axis_size(self, axis: str) -> float:
         background_image = self._node.computed_styles.background_image.get()
         if not background_image:
             raise ValueError("Cannot use 'fit-background-image' on an element without a background image.")
@@ -74,7 +80,7 @@ class SizeResolver:
 
         return getattr(image, axis)()
 
-    def _get_container_value(self, axis: str) -> float:
+    def _get_parent_axis_size(self, axis: str) -> float:
         parent = self._node.parent
         if not parent:
             raise ValueError("Cannot use 'percent' size on a root element without a parent.")
@@ -89,20 +95,3 @@ class SizeResolver:
             return parent.content_height
         
         raise ValueError(f"Unknown axis: {axis}")
-
-    def _get_axis_size(
-            self,
-            value: 'SizeValue',
-            get_content_value: Callable[[], float],
-            get_background_value: Callable[[], float],
-            get_container_value: Callable[[], float]
-    ) -> float:
-        if value.mode == 'absolute':
-            return value.value
-        if value.mode == 'percent':
-            return get_container_value() * (value.value / 100.0)
-        if value.mode == 'fit-content' or value.mode == 'auto':
-            return get_content_value()
-        if value.mode == 'fit-background-image':
-            return get_background_value()
-        raise ValueError(f"Unsupported size mode: {value.mode}")
