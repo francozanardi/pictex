@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- New `'fill-available'` size mode allows elements to grow and fill the remaining space within a `Row` or `Column`, enabling more complex and fluid layouts.
+
 ### Fixed
 
 - Use `position()`/`absolute_position()` in container (row or column) with children was causing unexpected exception
