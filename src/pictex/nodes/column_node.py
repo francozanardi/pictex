@@ -89,3 +89,29 @@ class ColumnNode(ContainerNode):
             start_y += distribution_gap
 
         return start_y, distribution_gap
+
+    def _resize_children_if_needed(self, children: list[Node]):
+        fixed_children_height = 0
+        flexible_children: list[Node] = []
+        user_gap = self.computed_styles.gap.get()
+
+        for child in children:
+            child_height_style = child.computed_styles.height.get()
+            if child_height_style and child_height_style.mode == SizeValueMode.FILL_AVAILABLE:
+                flexible_children.append(child)
+            else:
+                fixed_children_height += child.size[1]
+        
+        container_height = self.content_bounds.height()
+        total_gap_space = user_gap * (len(children) - 1) if len(children) > 1 else 0
+        remaining_space = container_height - fixed_children_height - total_gap_space
+
+        if not flexible_children:
+            return
+        
+        space_per_flexible_child = max(0, remaining_space / len(flexible_children))
+        for child in flexible_children:
+            child.clear_bounds()
+            child._set_forced_size(height=space_per_flexible_child)
+            child._calculate_bounds()
+        

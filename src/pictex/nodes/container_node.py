@@ -13,6 +13,9 @@ class ContainerNode(Node):
 
     def _calculate_children_relative_positions(self, children: list[Node], get_child_bounds: Callable[[Node], skia.Rect]) -> list[Tuple[float, float]]:
         raise NotImplemented
+    
+    def _resize_children_if_needed(self, children: list[Node]):
+        raise NotImplemented
 
     def _compute_paint_bounds(self) -> skia.Rect:
         paint_bounds = skia.Rect.MakeEmpty()
@@ -38,6 +41,7 @@ class ContainerNode(Node):
         super()._setup_absolute_position(x, y)
         x, y = self._absolute_position
         positionable_children = self._get_positionable_children()
+        self._resize_children_if_needed(positionable_children)
         positions = self._calculate_children_relative_positions(positionable_children, lambda node: node.margin_bounds)
         for i, child in enumerate(positionable_children):
             position = positions[i]

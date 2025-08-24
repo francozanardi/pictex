@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="357" height="400">
+<defs>
+    <builders type="text/css">
+        
+    </builders>
+</defs>
+            
+	<rect fill-opacity="0" width="357" height="400" />
+	<rect fill="#ECF0F1" width="300" height="400" />
+	<rect fill="#F39C12" transform="translate(20 20)" width="246" height="50" />
+	<text transform="translate(20 20)" font-size="50" font-family="DejaVu Sans" x="0, 29, 43, 73, 104, 136, 152, 183, 214, " y="46.411133, ">
+			Fixed Top
+	</text>
+	<rect fill="#2980B9" transform="translate(20 80)" width="243" height="125" />
+	<text transform="translate(20 80)" font-size="50" font-family="DejaVu Sans" x="0, 29, 43, 74, 104, 118, 150, 164, 195, 211, " y="46.411133, ">
+			Flexible 1
+	</text>
+	<rect fill="#8E44AD" transform="translate(20 215)" width="243" height="125" />
+	<text transform="translate(20 215)" font-size="50" font-family="DejaVu Sans" x="0, 29, 43, 74, 104, 118, 150, 164, 195, 211, " y="46.411133, ">
+			Flexible 2
+	</text>
+	<rect fill="#F39C12" transform="translate(20 350)" width="337" height="30" />
+	<text transform="translate(20 350)" font-size="50" font-family="DejaVu Sans" x="0, 29, 43, 73, 104, 136, 152, 186, 217, 237, 257, 288, " y="46.411133, ">
+			Fixed Bottom
+	</text>
+</svg>

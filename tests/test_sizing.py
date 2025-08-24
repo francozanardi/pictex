@@ -128,3 +128,48 @@ def test_size_percent_on_root_element_is_not_supported(render_engine):
 
     with pytest.raises(ValueError, match="Cannot use 'percent' size on a root element without a parent"):
         render_func(canvas, "Percent")
+
+def test_size_fill_available_single_child(file_regression, render_engine):
+    """
+    Tests that a single 'fill-available' child expands to fill all the
+    remaining space in a Row next to a fixed-size sibling.
+    """
+    render_func, check_func = render_engine
+
+    parent = Row(
+        Image(IMAGE_PATH).size(width=100), # Fixed-size sibling takes 100px
+        Text("This text fills the rest").size(width='fill-available').background_color("#27ae60"),
+    ).size(
+        width=400, height=150
+    ).gap(
+        20
+    ).padding(
+        10
+    ).background_color("#ecf0f1")
+
+    image = render_func(Canvas(), parent)
+    check_func(file_regression, image)
+
+
+def test_size_fill_available_multiple_children(file_regression, render_engine):
+    """
+    Tests that multiple 'fill-available' children share the remaining
+    space equally.
+    """
+    render_func, check_func = render_engine
+
+    parent = Column(
+        Text("Fixed Top").size(height=50).background_color("#f39c12"),
+        Row(Text("Flexible 1")).size(height='fill-available').background_color("#2980b9"),
+        Row(Text("Flexible 2")).size(height='fill-available').background_color("#8e44ad"),
+        Text("Fixed Bottom").size(height=30).background_color("#f39c12"),
+    ).size(
+        width=300, height=400
+    ).gap(
+        10
+    ).padding(
+        20
+    ).background_color("#ecf0f1")
+    
+    image = render_func(Canvas(), parent)
+    check_func(file_regression, image)

@@ -89,3 +89,28 @@ class RowNode(ContainerNode):
             start_x += distribution_gap
 
         return distribution_gap, start_x
+
+    def _resize_children_if_needed(self, children: list[Node]):
+        fixed_children_width = 0
+        flexible_children: list[Node] = []
+        user_gap = self.computed_styles.gap.get()
+
+        for child in children:
+            child_width_style = child.computed_styles.width.get()
+            if child_width_style and child_width_style.mode == SizeValueMode.FILL_AVAILABLE:
+                flexible_children.append(child)
+            else:
+                fixed_children_width += child.size[0]
+
+        container_width = self.content_bounds.width()
+        total_gap_space = user_gap * (len(children) - 1) if len(children) > 1 else 0
+        remaining_space = container_width - fixed_children_width - total_gap_space
+        
+        if not flexible_children:
+            return
+        
+        space_per_flexible_child = max(0, remaining_space / len(flexible_children))
+        for child in flexible_children:
+            child.clear_bounds()
+            child._set_forced_size(width=space_per_flexible_child)
+            child._calculate_bounds()

@@ -7,6 +7,7 @@ class SizeValueMode(str, Enum):
     ABSOLUTE = 'absolute'
     PERCENT = 'percent'
     FIT_CONTENT = 'fit-content'
+    FILL_AVAILABLE = 'fill-available'
     FIT_BACKGROUND_IMAGE = 'fit-background-image'
 
 class SizeValue(NamedTuple):
