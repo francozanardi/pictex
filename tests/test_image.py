@@ -64,6 +64,73 @@ def test_image_to_pillow(dummy_skia_image):
     assert pillow_image.mode == "RGBA"
     assert pillow_image.getpixel((0, 0)) == (255, 0, 0, 255)
 
+def test_to_bytes_format_consistency():
+    """Tests that to_bytes() consistently returns BGRA unpremultiplied format.
+    
+    This test verifies the fix for cross-platform consistency issues where
+    the byte format could differ between OS (Windows vs Linux/macOS).
+    The fix ensures to_bytes() always returns BGRA with unpremultiplied alpha.
+    """
+    from pictex import Canvas, Text, SolidColor
+    
+    # SolidColor(255, 0, 0, 128) = 50% transparent red
+    canvas = Canvas().size(2, 2).background_color(SolidColor(255, 0, 0, 128))
+    image = canvas.render(Text(""))
+    raw_bytes = image.to_bytes()
+    
+    # Verify the total byte length (2x2 pixels * 4 bytes per pixel)
+    assert len(raw_bytes) == 16
+    
+    byte_array = np.frombuffer(raw_bytes, dtype=np.uint8).reshape((2, 2, 4))
+    
+    # All pixels should be identical (solid red background at 50% opacity)
+    # BGRA format: [B=0, G=0, R=255, A=128]
+    first_pixel = byte_array[0, 0]
+    
+    assert first_pixel[0] == 0    # B
+    assert first_pixel[1] == 0    # G
+    assert first_pixel[2] == 255  # R
+    assert first_pixel[3] == 128  # A
+    
+    # All pixels should be identical (uniform background)
+    for i in range(2):
+        for j in range(2):
+            assert np.array_equal(byte_array[i, j], first_pixel), \
+                f"Pixel ({i},{j}) differs from expected: {byte_array[i, j]} != {first_pixel}"
+    
+    # Test to_numpy() BGRA mode - should match to_bytes()
+    numpy_bgra = image.to_numpy('BGRA')
+    assert numpy_bgra.shape == (2, 2, 4)
+    assert np.array_equal(numpy_bgra, byte_array), \
+        "to_numpy('BGRA') should return the same data as to_bytes()"
+    
+    # Verify BGRA unpremultiplied values
+    assert numpy_bgra[0, 0][0] == 0    # B
+    assert numpy_bgra[0, 0][1] == 0    # G
+    assert numpy_bgra[0, 0][2] == 255  # R (unpremultiplied - should be 255, not 128)
+    assert numpy_bgra[0, 0][3] == 128  # A
+    
+    # Test to_numpy() RGBA mode - should have channels swapped
+    numpy_rgba = image.to_numpy('RGBA')
+    assert numpy_rgba.shape == (2, 2, 4)
+    
+    # Verify RGBA unpremultiplied values (R and B swapped from BGRA)
+    assert numpy_rgba[0, 0][0] == 255  # R (unpremultiplied)
+    assert numpy_rgba[0, 0][1] == 0    # G
+    assert numpy_rgba[0, 0][2] == 0    # B
+    assert numpy_rgba[0, 0][3] == 128  # A
+    
+    # Test to_pillow() - should return correct RGBA unpremultiplied values
+    pillow_image = image.to_pillow()
+    assert pillow_image.mode == 'RGBA'
+    assert pillow_image.size == (2, 2)
+    
+    # Verify all pixels in pillow image
+    for i in range(2):
+        for j in range(2):
+            assert pillow_image.getpixel((j, i)) == (255, 0, 0, 128), \
+                f"Pillow pixel ({j},{i}) should be (255, 0, 0, 128) unpremultiplied"
+
 def test_image_with_render_tree(dummy_skia_image):
     """Tests BitmapImage with render tree functionality."""
     content_box = Box(x=10, y=20, width=30, height=40)
