@@ -11,7 +11,7 @@ def dummy_skia_image():
         [[0, 0, 255, 255], [0, 0, 255, 255]],
     ], dtype=np.uint8)
 
-    return skia.Image.fromarray(pixels)
+    return skia.Image.fromarray(pixels, colorType=skia.kBGRA_8888_ColorType)
 
 def test_image_properties(dummy_skia_image):
     """Tests the basic properties of the Image class."""
