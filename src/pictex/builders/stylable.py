@@ -133,17 +133,32 @@ class Stylable:
         self._style.box_shadows.set(list(shadows))
         return self
 
-    def text_stroke(self, width: float, color: Union[str, PaintSource]) -> Self:
-        """Adds an outline stroke to the text.
-
+    def text_stroke(
+        self, 
+        width: float, 
+        color: Union[str, PaintSource],
+        mode: Union[str, StrokeMode] = "center"
+    ) -> Self:
+        """Adds a stroke to the text.
+        
+        By default, follows CSS standards where the stroke is centered on the text path
+        (half inside, half outside). You can change this behavior with the mode parameter.
+        
         Args:
-            width: The width of the outline stroke.
-            color: The color of the outline.
-
+            width: The width of the stroke in pixels.
+            color: The color of the stroke.
+            mode: The stroke rendering mode:
+                - "center" (default): CSS-compliant centered stroke
+                - "outline": Pure outline (stroke only outside the text)
+                - "inline": Pure inline (stroke only inside the text)
+        
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.text_stroke.set(OutlineStroke(width=width, color=self._build_color(color)))
+        stroke_mode = StrokeMode(mode) if isinstance(mode, str) else mode
+        self._style.text_stroke.set(
+            OutlineStroke(width=width, color=self._build_color(color), mode=stroke_mode)
+        )
         return self
 
     def underline(

@@ -1,6 +1,19 @@
 from dataclasses import dataclass, field
+from enum import Enum
 from .color import SolidColor
 from .paint_source import PaintSource
+
+class StrokeMode(str, Enum):
+    """Text stroke rendering mode.
+    
+    Attributes:
+        CENTER: CSS-compliant centered stroke (half inside, half outside the text path).
+        OUTLINE: Pure outline stroke (entirely outside the text path).
+        INLINE: Pure inline stroke (entirely inside the text path).
+    """
+    CENTER = "center"
+    OUTLINE = "outline"
+    INLINE = "inline"
 
 @dataclass
 class Shadow:
@@ -52,6 +65,14 @@ class Shadow:
 
 @dataclass
 class OutlineStroke:
-    """Represents an outline text stroke."""
+    """Represents a text stroke.
+    
+    Attributes:
+        width: The width of the stroke in pixels.
+        color: The color of the stroke.
+        mode: The stroke rendering mode (center, outline, or inline).
+    """
     width: float = 2.0
     color: PaintSource = field(default_factory=lambda: SolidColor(0, 0, 0))
+    mode: StrokeMode = StrokeMode.CENTER
+

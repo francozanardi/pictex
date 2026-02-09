@@ -26,7 +26,7 @@ def test_builders_fluent_api_and_style_building():
             .text_align('right')
             .color("#FF0000")
             .text_shadows(Shadow([1, 1], 1, 'black'), Shadow([2, 2], 2, 'black'))
-            .text_stroke(10, 'green')
+            .text_stroke(10, 'green', mode='outline')
             .underline(5.0, 'pink')
             .strikethrough(3.5, 'magenta')
             .box_shadows(Shadow([3, 3], 3, 'blue'), Shadow([4, 4], 4, 'blue'))
@@ -50,7 +50,7 @@ def test_builders_fluent_api_and_style_building():
         assert style.color == SolidColor.from_str("#FF0000")
         assert style.text_shadows == [Shadow([1, 1], 1, SolidColor.from_str('black')),
                                       Shadow([2, 2], 2, SolidColor.from_str('black'))]
-        assert style.text_stroke == OutlineStroke(10, SolidColor.from_str('green'))
+        assert style.text_stroke == OutlineStroke(10, SolidColor.from_str('green'), StrokeMode.OUTLINE)
         assert style.underline == TextDecoration(SolidColor.from_str('pink'), 5.0)
         assert style.strikethrough == TextDecoration(SolidColor.from_str('magenta'), 3.5)
 
@@ -121,7 +121,7 @@ def test_color_formats():
         assert style.color == expected_color
         assert style.text_shadows == [Shadow([0, 0], 0, expected_color)]
         assert style.box_shadows == [Shadow([0, 0], 0, expected_color)]
-        assert style.text_stroke == OutlineStroke(0, expected_color)
+        assert style.text_stroke == OutlineStroke(0, expected_color, StrokeMode.CENTER)
         assert style.underline == TextDecoration(expected_color, 0)
         assert style.strikethrough == TextDecoration(expected_color, 0)
         assert style.background_color == expected_color
@@ -138,7 +138,7 @@ def test_gradient_on_color_arguments():
     )
     style = canvas._style
     assert style.color == gradient
-    assert style.text_stroke == OutlineStroke(0, gradient)
+    assert style.text_stroke == OutlineStroke(0, gradient, StrokeMode.CENTER)
     assert style.underline == TextDecoration(gradient, 0)
     assert style.strikethrough == TextDecoration(gradient, 0)
     assert style.background_color == gradient

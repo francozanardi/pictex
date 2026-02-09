@@ -15,7 +15,7 @@ __version__ = "2.0.1"
 __all__ = [
     "Canvas", "Text", "Row", "Column", "Image", "Element",
     
-    "Shadow", "OutlineStroke",
+    "Shadow", "OutlineStroke", "StrokeMode",
     "Style",
     "FontStyle", "FontWeight", "FontSmoothing", "TextAlign", "TextWrap",
     "PaintSource",

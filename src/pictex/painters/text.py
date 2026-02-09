@@ -1,9 +1,8 @@
 from .painter import Painter
 from ..text import FontManager
 from ..utils import create_composite_shadow_filter, get_line_x_position
-from typing import Optional
 import skia
-from ..models import Style, Line
+from ..models import Style, Line, PaintSource, StrokeMode
 
 class TextPainter(Painter):
 
@@ -42,31 +41,53 @@ class TextPainter(Painter):
         current_y = self._text_bounds.top()
         line_gap = self._style.line_height.get() * self._style.font_size.get()
         block_width = self._parent_bounds.width()
-        outline_paint = self._build_outline_paint()
         
         for line in self._lines:
             draw_x_start = self._text_bounds.x() + get_line_x_position(line.width, block_width, self._style.text_align.get())
             current_x = draw_x_start
+            
             for run in line.runs:
-                blob = run.blob
-                if not blob:
-                    blob = skia.TextBlob.MakeFromShapedText(run.text, run.font)
-                canvas.drawTextBlob(blob, current_x, current_y, paint)
-                if outline_paint:
-                    canvas.drawTextBlob(blob, current_x, current_y, outline_paint)
+                blob = run.blob if run.blob else skia.TextBlob.MakeFromShapedText(run.text, run.font)
+                self._render_text_blob(canvas, blob, current_x, current_y, paint)
                 current_x += run.width
             
             current_y += line_gap
 
-    def _build_outline_paint(self) -> Optional[skia.Paint]:
+    def _render_text_blob(
+        self, 
+        canvas: skia.Canvas, 
+        blob: skia.TextBlob, 
+        x: float, 
+        y: float, 
+        fill_paint: skia.Paint
+    ) -> None:
         outline = self._style.text_stroke.get()
         if not outline:
-            return None
+            canvas.drawTextBlob(blob, x, y, fill_paint)
+            return
         
-        paint = skia.Paint(
-            AntiAlias=True,
-            Style=skia.Paint.kStroke_Style,
-            StrokeWidth=outline.width
-        )
-        outline.color.apply_to_paint(paint, self._text_bounds)
+        mode = outline.mode
+        if mode == StrokeMode.CENTER:
+            stroke_paint = self._create_stroke_paint(outline.width, outline.color)
+            canvas.drawTextBlob(blob, x, y, fill_paint)
+            canvas.drawTextBlob(blob, x, y, stroke_paint)
+
+        elif mode == StrokeMode.OUTLINE:
+            stroke_paint = self._create_stroke_paint(outline.width * 2, outline.color)
+            canvas.drawTextBlob(blob, x, y, stroke_paint)
+            canvas.drawTextBlob(blob, x, y, fill_paint)
+
+        elif mode == StrokeMode.INLINE:
+            stroke_paint = self._create_stroke_paint(outline.width, outline.color)
+            stroke_paint.setBlendMode(skia.BlendMode.kSrcIn)
+            
+            canvas.saveLayer(None, None)
+            canvas.drawTextBlob(blob, x, y, fill_paint)
+            canvas.drawTextBlob(blob, x, y, stroke_paint)
+            canvas.restore()
+
+    def _create_stroke_paint(self, width: float, color: PaintSource) -> skia.Paint:
+        paint = skia.Paint(AntiAlias=True, Style=skia.Paint.kStroke_Style, StrokeWidth=width)
+        color.apply_to_paint(paint, self._text_bounds)
         return paint
+

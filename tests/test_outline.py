@@ -50,3 +50,52 @@ def test_outline_without_fill(file_regression, render_engine):
     render_func, check_func = render_engine
     image = render_func(canvas, "HOLLOW")
     check_func(file_regression, image)
+
+def test_stroke_mode_center(file_regression, render_engine):
+    """
+    Tests center stroke mode (CSS-compliant default).
+    Stroke is centered on the text path (half inside, half outside).
+    """
+    canvas = (
+        Canvas()
+        .font_family(STATIC_FONT_PATH)
+        .font_size(120)
+        .color("blue")
+        .text_stroke(width=8, color="orange", mode="center")
+    )
+    render_func, check_func = render_engine
+    image = render_func(canvas, "CENTER")
+    check_func(file_regression, image)
+
+def test_stroke_mode_outline(file_regression, render_engine):
+    """
+    Tests outline stroke mode where the stroke is entirely outside the text.
+    This prevents text from thinning at large stroke widths.
+    """
+    canvas = (
+        Canvas()
+        .font_family(STATIC_FONT_PATH)
+        .font_size(120)
+        .color("blue")
+        .text_stroke(width=8, color="orange", mode="outline")
+    )
+    render_func, check_func = render_engine
+    image = render_func(canvas, "OUTLINE")
+    check_func(file_regression, image)
+
+def test_stroke_mode_inline(file_regression, render_engine):
+    """
+    Tests inline stroke mode where the stroke is entirely inside the text.
+    This makes the text appear thinner.
+    """
+    canvas = (
+        Canvas()
+        .font_family(STATIC_FONT_PATH)
+        .font_size(120)
+        .color("blue")
+        .text_stroke(width=8, color="orange", mode="inline")
+    )
+    render_func, check_func = render_engine
+    image = render_func(canvas, "INLINE")
+    check_func(file_regression, image)
+

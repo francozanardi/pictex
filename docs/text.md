@@ -260,11 +260,18 @@ canvas.render("NEON").save("neon.png")
 
 ## Outline Stroke
 
-The `.text_stroke()` method adds a contour around the text. This is great for creating impactful, cartoon-style, or sticker-like text.
+The `.text_stroke()` method adds a stroke around the text.
+
+By default, it follows CSS standards where the stroke is centered on the text path (half inside, half outside). You can control the stroke rendering with the `mode` parameter:
+
+-   `"center"` (default): CSS-compliant centered stroke
+-   `"outline"`: Stroke only outside the text (prevents thinning at large widths)
+-   `"inline"`: Stroke only inside the text
 
 ```python
 from pictex import Canvas
 
+# Default CSS-compliant stroke
 canvas = (
     Canvas()
     .font_size(150)
