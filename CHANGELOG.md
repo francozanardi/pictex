@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **Text Stroke Modes**: `text_stroke()` accepts a `mode` parameter (`"center"`, `"outline"`, `"inline"`). Default is `"center"` (CSS-compliant).
 
+### Fixed
+- **Text Stroke Bounds**: Fixed an issue where text stroke bounds were not included in the paint bounds, causing strokes to be clipped at the edges.
+- **Positioning**: Fixed null layout_result error when using positioning methods.
+- **Image Export**: Fixed color type and alpha type conversions when exporting to bytes.
+- **to_pillow**: Removed redundant unpremultiply logic since to_numpy now returns unpremultiplied BGRA format.
+
+
 ## [2.0.1] - 2026-01-10
 
 ### Fixed
