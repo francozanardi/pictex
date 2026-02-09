@@ -10,7 +10,7 @@ from .models.public import *
 from .bitmap_image import BitmapImage
 from .vector_image import VectorImage
 
-__version__ = "2.0.1"
+__version__ = "2.0.2"
 
 __all__ = [
     "Canvas", "Text", "Row", "Column", "Image", "Element",
