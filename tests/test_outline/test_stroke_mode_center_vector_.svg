@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="421" height="144"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="429" height="152"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('Lato-BoldItalic.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="421" height="144" />
-	<text fill="blue" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 72.419937, 135.47987, 218.9998, 284.75974, 347.81967, " y="118.44, ">
+	<rect fill-opacity="0" width="429" height="152" />
+	<text fill="blue" transform="translate(4 4)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 72.419937, 135.47987, 218.9998, 284.75974, 347.81967, " y="118.44, ">
 			CENTER
 	</text>
-	<text fill="none" stroke="#FFA500" stroke-width="8" stroke-miterlimit="4" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 72.419937, 135.47987, 218.9998, 284.75974, 347.81967, " y="118.44, ">
+	<text fill="none" stroke="#FFA500" stroke-width="8" stroke-miterlimit="4" transform="translate(4 4)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 72.419937, 135.47987, 218.9998, 284.75974, 347.81967, " y="118.44, ">
 			CENTER
 	</text>
 </svg>

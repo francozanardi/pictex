@@ -87,6 +87,8 @@ def test_stroke_mode_inline(file_regression, render_engine):
     """
     Tests inline stroke mode where the stroke is entirely inside the text.
     This makes the text appear thinner.
+    
+    NOTE: Known issue - inline mode does not render correctly in SVG (appears invisible).
     """
     canvas = (
         Canvas()

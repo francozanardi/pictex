@@ -1,7 +1,7 @@
 from typing import Optional
 import skia
 from .node import Node
-from ..models import TextDecoration, Style, RenderProps, Line
+from ..models import TextDecoration, Style, RenderProps, Line, StrokeMode
 from ..text import FontManager, TextShaper
 from ..painters import Painter, BackgroundPainter, TextPainter, DecorationPainter, BorderPainter
 from ..utils import cached_property, cached_method, to_int_skia_rect
@@ -141,6 +141,14 @@ class TextNode(Node):
         paint_bounds = super()._compute_paint_bounds()
         shadow_bounds = self._compute_shadow_bounds(self.absolute_text_bounds, self.computed_styles.text_shadows.get())
         paint_bounds.join(shadow_bounds)
+        
+        outline = self.computed_styles.text_stroke.get()
+        if not outline or outline.mode == StrokeMode.INLINE:
+            return paint_bounds
+        
+        stroke_expansion = outline.width if outline.mode == StrokeMode.OUTLINE else outline.width / 2
+        expanded_text_bounds = self.absolute_text_bounds.makeOutset(stroke_expansion, stroke_expansion)
+        paint_bounds.join(expanded_text_bounds)
         return paint_bounds
 
     def _compute_relative_text_bounds(self) -> skia.Rect:
