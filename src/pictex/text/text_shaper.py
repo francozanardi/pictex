@@ -2,6 +2,7 @@ import skia
 from typing import List, Optional
 from .typeface_loader import TypefaceLoader
 from .font_manager import FontManager
+from .harfbuzz_shaper import HarfBuzzShaper
 from ..models import Style, Line, TextRun
 from .. import utils
 import re
@@ -11,6 +12,7 @@ class TextShaper:
     def __init__(self, style: Style, font_manager: FontManager):
         self._style = style
         self._font_manager = font_manager
+        self._hb_shaper = HarfBuzzShaper()
 
     def shape(self, text: str, max_width: Optional[float] = None) -> List[Line]:
         """
@@ -52,17 +54,62 @@ class TextShaper:
         return line
     
     def _create_line(self, runs: list[TextRun]) -> Line:
-        line_width: float = 0
-        font_height: float = 0
+        line_width = 0.0
+        font_height = 0.0
+        
         for run in runs:
-            run.blob = skia.TextBlob.MakeFromShapedText(run.text, run.font)
-            # TODO: it's failing with the emoji '👨‍👩‍👧‍👦' in the system font from windows for emojis
-            glyph_ids = [gid for run in list(run.blob) for gid in run.fGlyphIndices]
-            run.width = sum(run.font.getWidths(glyph_ids))
+            self._shape_and_create_blob(run)
             line_width += run.width
             font_height = max(font_height, self._font_manager.get_font_height(run.font))
 
-        return Line(runs=runs, width=line_width, height=font_height, bounds=skia.Rect.MakeWH(line_width, font_height))
+        return Line(
+            runs=runs,
+            width=line_width,
+            height=font_height,
+            bounds=skia.Rect.MakeWH(line_width, font_height)
+        )
+    
+    def _shape_and_create_blob(self, run: TextRun) -> None:
+        shaped = self._hb_shaper.shape(run.text, run.font)
+        run.width = shaped.width
+        
+        if shaped.glyphs:
+            run.blob = self._create_text_blob(shaped.glyphs, run.font)
+        else:
+            run.blob = None
+    
+    def _create_text_blob(self, glyphs: list, font: skia.Font) -> skia.TextBlob:
+        import struct
+        
+        glyph_data = b''.join(
+            struct.pack('<H', g.glyph_id) for g in glyphs
+        )
+        x_positions = self._calculate_glyph_positions(glyphs)
+        baseline_y = self._calculate_baseline_offset(font)
+        
+        return skia.TextBlob.MakeFromPosTextH(
+            glyph_data,
+            xpos=x_positions,
+            constY=baseline_y,
+            font=font,
+            encoding=skia.TextEncoding.kGlyphID
+        )
+    
+    def _calculate_glyph_positions(self, glyphs: list) -> list[float]:
+        """Calculate cumulative X positions for glyphs."""
+        positions = []
+        current_x = 0.0
+        
+        for glyph in glyphs:
+            positions.append(current_x + glyph.x_offset)
+            current_x += glyph.x_advance
+        
+        return positions
+    
+    def _calculate_baseline_offset(self, font: skia.Font) -> float:
+        metrics = font.getMetrics()
+        return -metrics.fAscent
+
     
     def _split_line_in_runs(self, line_text: str) -> list[TextRun]:
         primary_font = self._font_manager.get_primary_font()

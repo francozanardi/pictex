@@ -16,7 +16,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Image Export**: Fixed color type and alpha type conversions when exporting to bytes.
 - **to_pillow**: Removed redundant unpremultiply logic since to_numpy now returns unpremultiplied BGRA format.
 
-
 ## [2.0.1] - 2026-01-10
 
 ### Fixed
