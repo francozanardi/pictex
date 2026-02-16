@@ -109,6 +109,11 @@ class TextShaper:
     def _calculate_baseline_offset(self, font: skia.Font) -> float:
         metrics = font.getMetrics()
         return -metrics.fAscent
+    
+    def _measure_token_width(self, token: str, font: skia.Font) -> float:
+        """Measure token width using HarfBuzz for consistency."""
+        shaped = self._hb_shaper.shape(token, font)
+        return shaped.width
 
     
     def _split_line_in_runs(self, line_text: str) -> list[TextRun]:
@@ -169,7 +174,6 @@ class TextShaper:
         Wraps a single line of text to fit within the specified width.
         Words are treated as indivisible units.
         """
-        # Split into words and spaces, keeping both
         tokens: list[str] = re.findall(r'\S+|\s+', text)
         if not tokens:
             return ['']
@@ -177,14 +181,11 @@ class TextShaper:
         primary_font = self._font_manager.get_primary_font()
         wrapped_lines: List[str] = []
         current_line_tokens: list[str] = []
-        current_width = 0
+        current_width = 0.0
 
         for token in tokens:
-            # This is an approximate width measurement, since it is using the primary font
-            # some characters may be rendered with a fallback font, leading to a different final width
-            token_width = primary_font.measureText(token)
+            token_width = self._measure_token_width(token, primary_font)
 
-            # If it's the first token, add it regardless
             if not current_line_tokens:
                 current_line_tokens.append(token)
                 current_width = token_width
