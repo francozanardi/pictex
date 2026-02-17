@@ -56,20 +56,25 @@ class TextShaper:
     def _create_line(self, runs: list[TextRun]) -> Line:
         line_width = 0.0
         font_height = 0.0
+        last_visual_width = 0.0
         
         for run in runs:
-            self._shape_and_create_blob(run)
+            last_visual_width = self._shape_and_create_blob(run)
             line_width += run.width
             font_height = max(font_height, self._font_manager.get_font_height(run.font))
+
+        # Use visual_width for the last run to capture italic overhang
+        bounds_width = line_width - runs[-1].width + last_visual_width if runs else line_width
 
         return Line(
             runs=runs,
             width=line_width,
             height=font_height,
-            bounds=skia.Rect.MakeWH(line_width, font_height)
+            bounds=skia.Rect.MakeWH(bounds_width, font_height)
         )
     
-    def _shape_and_create_blob(self, run: TextRun) -> None:
+    def _shape_and_create_blob(self, run: TextRun) -> float:
+        """Shape a text run and create its blob. Returns the visual width."""
         shaped = self._hb_shaper.shape(run.text, run.font)
         run.width = shaped.width
         
@@ -77,6 +82,8 @@ class TextShaper:
             run.blob = self._create_text_blob(shaped.glyphs, run.font)
         else:
             run.blob = None
+        
+        return shaped.visual_width
     
     def _create_text_blob(self, glyphs: list, font: skia.Font) -> skia.TextBlob:
         import struct
@@ -173,18 +180,29 @@ class TextShaper:
         """
         Wraps a single line of text to fit within the specified width.
         Words are treated as indivisible units.
+        
+        Token widths are derived from a single full-line shaping pass
+        (using HarfBuzz cluster info) so they include inter-token kerning
+        and always sum exactly to the full line width.
         """
         tokens: list[str] = re.findall(r'\S+|\s+', text)
         if not tokens:
             return ['']
 
+        # TODO: This shapes with primary_font only. When fallback fonts are used
+        # (e.g. emojis), the token widths may differ from actual rendered widths.
+        # To fix, split into runs first (with font fallback) and shape each run with
+        # its actual font before computing token widths.
         primary_font = self._font_manager.get_primary_font()
+        shaped = self._hb_shaper.shape(text, primary_font)
+        token_widths = self._compute_token_widths_from_shaping(tokens, shaped)
+
         wrapped_lines: List[str] = []
         current_line_tokens: list[str] = []
         current_width = 0.0
 
-        for token in tokens:
-            token_width = self._measure_token_width(token, primary_font)
+        for i, token in enumerate(tokens):
+            token_width = token_widths[i]
 
             if not current_line_tokens:
                 current_line_tokens.append(token)
@@ -213,5 +231,31 @@ class TextShaper:
             return [text]
         
         return wrapped_lines if wrapped_lines else ['']
-    
+
+    def _compute_token_widths_from_shaping(
+        self, tokens: list[str], shaped
+    ) -> list[float]:
+        """Compute each token's width from the full-line shaping's glyph clusters.
+        
+        Each glyph's cluster value indicates the character position it maps to.
+        By matching glyph clusters to token character ranges, the resulting
+        widths preserve inter-token kerning and sum exactly to shaped.width.
+        """
+        token_widths: list[float] = []
+        char_offset = 0
+
+        for token in tokens:
+            token_start = char_offset
+            token_end = char_offset + len(token)
+
+            width = sum(
+                glyph.x_advance
+                for glyph in shaped.glyphs
+                if token_start <= glyph.cluster < token_end
+            )
+
+            token_widths.append(width)
+            char_offset = token_end
+
+        return token_widths
     
