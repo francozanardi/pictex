@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Properly reorders mixed LTR/RTL text (e.g., English + Arabic).
   - Processes BiDi control characters (U+202B, U+202A, U+202C).
   - Automatic detection of text direction from content.
-- **Text Direction**: Added `.direction()` method to control horizontal text flow (`"ltr"`, `"rtl"`). Supports inheritance and automatic Flexbox reversing.
+- **Text Direction**: Added `.direction()` method to control horizontal text flow (`"ltr"`, `"rtl"`).
 
 ### Fixed
 - **Text Wrapping**: Fully refactored word wrapping to use HarfBuzz shaping for all token measurements, ensuring pixel-perfect layout.
