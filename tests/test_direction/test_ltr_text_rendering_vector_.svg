@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="369" height="113"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="369" height="113" />
+	<text font-size="60" font-family="pictex-InterVariable" x="20, 64.589844, 99.570312, 114.10156, 128.63281, 164.60938, 181.48438, 237.55859, 273.53516, 297.06055, 311.5918, " y="78.125, ">
+			Hello World
+	</text>
+</svg>
