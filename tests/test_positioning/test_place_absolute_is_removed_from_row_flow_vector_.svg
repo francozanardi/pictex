@@ -14,8 +14,8 @@
 	<text font-size="50" font-family="pictex-InterVariable" x="10, 48.232422, 77.773438, " y="58.4375, ">
 			One
 	</text>
-	<rect fill="#E74C3C" x="138" y="34" width="124" height="82" />
-	<text font-size="50" font-family="pictex-InterVariable" x="148, 177.15039, 217.16504, " y="92.4375, ">
+	<rect fill="#E74C3C" x="140" y="34" width="120" height="82" />
+	<text font-size="50" font-family="pictex-InterVariable" x="150, 179.15039, 219.16504, " y="92.4375, ">
 			Two
 	</text>
 	<rect fill="#2ECC71" x="117" width="159" height="81" />

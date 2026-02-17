@@ -10,7 +10,7 @@
 }</style></defs>
 	<rect fill-opacity="0" width="381" height="322" />
 	<rect fill="#ECF0F1" width="381" height="322" />
-	<rect fill="#34495E" x="20" y="20" width="193" height="81" />
+	<rect fill="#34495E" x="20" y="20" width="194" height="81" />
 	<text font-size="50" font-family="pictex-InterVariable" x="30, 67.158203, 96.796875, 124.87305, 155.48828, 184.63867, " y="78.4375, ">
 			Header
 	</text>
@@ -18,7 +18,7 @@
 	<text font-size="50" font-family="pictex-InterVariable" x="30, 62.080078, 91.645508, 121.62598, 141.23047, 157.58789, 171.65039, 200.21484, 230.19531, 259.73633, 275.60547, 304.75586, 334.29688, " y="169.4375, ">
 			Short content
 	</text>
-	<rect fill="#34495E" x="20" y="221" width="174" height="81" />
+	<rect fill="#34495E" x="20" y="221" width="172" height="81" />
 	<text font-size="50" font-family="pictex-InterVariable" x="30, 57.539062, 87.519531, 117.5, 133.36914, 162.51953, " y="279.4375, ">
 			Footer
 	</text>

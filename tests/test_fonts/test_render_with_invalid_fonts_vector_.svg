@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="497" height="84"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="493" height="84"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('Lato-BoldItalic.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="497" height="84" />
-	<text fill="aqua" font-size="70" font-style="italic" font-family="pictex-Lato" x="0, 20.300049, 56.735153, 90.370239, 126.59532, 144.06036, 162.0854, 199.81549, 213.32553, 231.35057, 258.82562, 272.33566, 290.36072, 324.31079, 362.00589, 397.70599, 421.75107, 454.86115, " y="69.089996, ">
+	<rect fill-opacity="0" width="493" height="84" />
+	<text fill="aqua" font-size="70" font-style="italic" font-family="pictex-Lato" x="0, 20.299999, 56.735001, 90.370003, 126.595, 144.06, 162.08501, 199.815, 213.325, 231.35001, 258.82501, 272.33499, 290.35999, 324.31, 362.005, 397.70499, 421.75, 454.85999, " y="69.089996, ">
 			Invalid is ignored
 	</text>
 </svg>

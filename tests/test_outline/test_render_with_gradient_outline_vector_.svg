@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="569" height="154"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="575" height="154"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('Lato-BoldItalic.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="569" height="154" />
-	<text fill="white" transform="translate(5 5)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 79.619919, 152.15985, 229.13977, 311.57971, 346.3797, 409.43964, 492.95956, " y="118.44, ">
+	<rect fill-opacity="0" width="575" height="154" />
+	<text fill="white" transform="translate(5 5)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 79.620003, 152.16, 229.14, 311.57999, 346.38, 409.44, 492.95999, " y="118.44, ">
 			GRADIENT
 	</text>
 	<defs>
-		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="0" y1="72" x2="558.71948" y2="72">
+		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="0" y1="72" x2="564.47998" y2="72">
 			<stop offset="0" stop-color="#4A00E0" />
 			<stop offset="1" stop-color="#8E2DE2" />
 		</linearGradient>
 	</defs>
-	<text fill="none" stroke="url(#gradient_0)" stroke-width="10" stroke-miterlimit="4" transform="translate(5 5)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 79.619919, 152.15985, 229.13977, 311.57971, 346.3797, 409.43964, 492.95956, " y="118.44, ">
+	<text fill="none" stroke="url(#gradient_0)" stroke-width="10" stroke-miterlimit="4" transform="translate(5 5)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 79.620003, 152.16, 229.14, 311.57999, 346.38, 409.44, 492.95999, " y="118.44, ">
 			GRADIENT
 	</text>
 </svg>

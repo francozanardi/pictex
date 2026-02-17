@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="324" height="152"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="328" height="152"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('Lato-BoldItalic.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="324" height="152" />
-	<text fill="yellow" transform="translate(4 4)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 71.999939, 148.97986, 208.31981, 243.11978, " y="118.44, ">
+	<rect fill-opacity="0" width="328" height="152" />
+	<text fill="yellow" transform="translate(4 4)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 72, 148.98, 208.32001, 243.12, " y="118.44, ">
 			BASIC
 	</text>
-	<text fill="none" stroke="black" stroke-width="8" stroke-miterlimit="4" transform="translate(4 4)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 71.999939, 148.97986, 208.31981, 243.11978, " y="118.44, ">
+	<text fill="none" stroke="black" stroke-width="8" stroke-miterlimit="4" transform="translate(4 4)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 72, 148.98, 208.32001, 243.12, " y="118.44, ">
 			BASIC
 	</text>
 </svg>

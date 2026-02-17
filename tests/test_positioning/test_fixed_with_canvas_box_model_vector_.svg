@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="307" height="250"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="304" height="250"><defs><style type="text/css">@font-face {
     font-family: 'pictex-InterVariable';
     src: url('InterVariable.ttf');
 }@font-face {
     font-family: 'pictex-InterVariable';
     src: url('InterVariable.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="307" height="250" />
+	<rect fill-opacity="0" width="304" height="250" />
 	<rect fill="blue" transform="translate(25 25)" width="200" height="200" />
 	<rect fill="none" stroke="red" stroke-width="25" stroke-miterlimit="4" transform="translate(25 25)" x="12.5" y="12.5" width="175" height="175" />
-	<rect fill="white" transform="translate(25 25)" x="-25" y="-25" width="275" height="67" />
+	<rect fill="white" transform="translate(25 25)" x="-25" y="-25" width="273" height="67" />
 	<text transform="translate(25 25)" font-size="50" font-family="pictex-InterVariable" x="-22, 7.5166016, 20.944336, 55.050781, 85.104492, 121.18848, 169.47949, 199.75293, 212.8877, " y="26.4375, ">
 			FIXED0,0
 	</text>
-	<rect fill="yellow" transform="translate(25 25)" x="50" y="50" width="232" height="67" />
+	<rect fill="yellow" transform="translate(25 25)" x="50" y="50" width="229" height="67" />
 	<text transform="translate(25 25)" font-size="50" font-family="pictex-InterVariable" x="53, 87.49707, 120.21191, 152.29199, 200.58301, 230.85645, 243.99121, " y="101.4375, ">
 			ABS0,0
 	</text>

@@ -4,8 +4,8 @@
 }</style></defs>
 	<rect fill-opacity="0" width="300" height="200" />
 	<rect fill="#ECF0F1" width="300" height="200" />
-	<rect fill="#9B59B6" x="30" y="59" width="240" height="82" />
-	<text font-size="50" font-family="pictex-InterVariable" x="40, 76.523438, 105.67383, 135.21484, 151.08398, 180.23438, 198.22754, 227.37793, " y="117.4375, ">
+	<rect fill="#9B59B6" x="31" y="59" width="238" height="82" />
+	<text font-size="50" font-family="pictex-InterVariable" x="41, 77.523438, 106.67383, 136.21484, 152.08398, 181.23438, 199.22754, 228.37793, " y="117.4375, ">
 			Centered
 	</text>
 </svg>

@@ -14,12 +14,12 @@
 	<text font-size="50" font-family="pictex-InterVariable" x="10, 39.516602, 51.625977, 77.797852, 106.94824, " y="58.4375, ">
 			Fixed
 	</text>
-	<rect fill="#E74C3C" x="100" width="233" height="81" />
+	<rect fill="#E74C3C" x="100" width="232" height="81" />
 	<text font-size="50" font-family="pictex-InterVariable" x="110, 147.30469, 165.29785, 194.375, 235.29297, 249.35547, 276.65039, " y="58.4375, ">
 			Grow x1
 	</text>
-	<rect fill="#2ECC71" x="333" width="267" height="81" />
-	<text font-size="50" font-family="pictex-InterVariable" x="343, 380.30469, 398.29785, 427.375, 468.29297, 482.35547, 509.65039, " y="58.4375, ">
+	<rect fill="#2ECC71" x="332" width="268" height="81" />
+	<text font-size="50" font-family="pictex-InterVariable" x="342, 379.30469, 397.29785, 426.375, 467.29297, 481.35547, 508.65039, " y="58.4375, ">
 			Grow x2
 	</text>
 </svg>

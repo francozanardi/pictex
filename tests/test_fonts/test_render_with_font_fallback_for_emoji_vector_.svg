@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="208" height="84"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="204" height="84"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('Lato-BoldItalic.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="208" height="84" />
-	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="0, 33.880081, 67.620163, 102.83025, " y="69.089996, ">
+	<rect fill-opacity="0" width="204" height="84" />
+	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="0, 33.880001, 67.620003, 102.83, " y="69.089996, ">
 			Fox 
 	</text>
-	<text font-size="70" font-family="Noto Color Emoji" x="120.5403, " y="64.862389, ">
+	<text font-size="70" font-family="Noto Color Emoji" x="116.34, " y="64.862389, ">
 			🦊
 	</text>
 </svg>

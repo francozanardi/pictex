@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="495" height="150"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="496" height="150"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('Lato-BoldItalic.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="495" height="150" />
-	<text fill="none" stroke="black" stroke-width="5" stroke-miterlimit="4" transform="translate(3 3)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 83.519928, 171.35985, 228.4798, 279.83975, 367.67969, " y="118.44, ">
+	<rect fill-opacity="0" width="496" height="150" />
+	<text fill="none" stroke="black" stroke-width="5" stroke-miterlimit="4" transform="translate(3 3)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 83.519997, 171.36, 228.48, 279.84, 367.67999, " y="118.44, ">
 			HOLLOW
 	</text>
 </svg>
