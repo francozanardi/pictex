@@ -58,8 +58,13 @@ class TextShaper:
         font_height = 0.0
         last_visual_width = 0.0
         
+        # Calculate common baseline for entire line from primary font
+        # This ensures all runs are vertically aligned regardless of fallback fonts
+        primary_font = self._font_manager.get_primary_font()
+        common_baseline = self._calculate_baseline_offset(primary_font)
+        
         for run in runs:
-            last_visual_width = self._shape_and_create_blob(run)
+            last_visual_width = self._shape_and_create_blob(run, common_baseline)
             line_width += run.width
             font_height = max(font_height, self._font_manager.get_font_height(run.font))
 
@@ -73,42 +78,48 @@ class TextShaper:
             bounds=skia.Rect.MakeWH(bounds_width, font_height)
         )
     
-    def _shape_and_create_blob(self, run: TextRun) -> float:
+    def _shape_and_create_blob(self, run: TextRun, baseline_y: float) -> float:
         """Shape a text run and create its blob. Returns the visual width."""
         shaped = self._hb_shaper.shape(run.text, run.font)
         run.width = shaped.width
         
         if shaped.glyphs:
-            run.blob = self._create_text_blob(shaped.glyphs, run.font)
+            run.blob = self._create_text_blob(shaped.glyphs, run.font, baseline_y)
         else:
             run.blob = None
         
         return shaped.visual_width
     
-    def _create_text_blob(self, glyphs: list, font: skia.Font) -> skia.TextBlob:
+    def _create_text_blob(self, glyphs: list, font: skia.Font, baseline_y: float) -> skia.TextBlob:
         import struct
         
         glyph_data = b''.join(
             struct.pack('<H', g.glyph_id) for g in glyphs
         )
-        x_positions = self._calculate_glyph_positions(glyphs)
-        baseline_y = self._calculate_baseline_offset(font)
+        positions = self._calculate_glyph_positions_with_offsets(glyphs, baseline_y)
         
-        return skia.TextBlob.MakeFromPosTextH(
+        return skia.TextBlob.MakeFromPosText(
             glyph_data,
-            xpos=x_positions,
-            constY=baseline_y,
+            positions,
             font=font,
             encoding=skia.TextEncoding.kGlyphID
         )
     
-    def _calculate_glyph_positions(self, glyphs: list) -> list[float]:
-        """Calculate cumulative X positions for glyphs."""
+    
+    def _calculate_glyph_positions_with_offsets(self, glyphs: list, baseline_y: float) -> list[tuple[float, float]]:
+        """Calculate (x, y) positions for each glyph, applying HarfBuzz offsets.
+        
+        Args:
+            glyphs: List of shaped glyphs from HarfBuzz
+            baseline_y: Common baseline Y position for the entire line
+        """
         positions = []
         current_x = 0.0
         
         for glyph in glyphs:
-            positions.append(current_x + glyph.x_offset)
+            x = current_x + glyph.x_offset
+            y = baseline_y + glyph.y_offset
+            positions.append((x, y))
             current_x += glyph.x_advance
         
         return positions
