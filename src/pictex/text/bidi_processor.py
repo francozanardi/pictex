@@ -5,7 +5,7 @@ This module provides utilities to analyze and reorder text according to
 the Unicode Bidirectional Algorithm (UAX #9), which is essential for proper
 rendering of mixed LTR/RTL text.
 """
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 from bidi.algorithm import get_display
 from ..models.public.text_direction import TextDirection
 
@@ -26,7 +26,7 @@ class BiDiProcessor:
     contains both LTR and RTL runs (e.g., English + Arabic).
     """
     
-    def process(self, text: str, base_direction: TextDirection = None) -> str:
+    def process(self, text: str, base_direction: Optional[TextDirection] = None) -> str:
         """
         Apply BiDi algorithm to reorder text for visual display.
         

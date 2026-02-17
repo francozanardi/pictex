@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 
 class LayoutEngine:
-    def __init__(self):
+    def __init__(self) -> None:
         self._node_map: Dict['Node', StretchableNode] = {}
         self._style_mapper = StyleMapper()
 

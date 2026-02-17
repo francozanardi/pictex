@@ -33,7 +33,7 @@ class HarfBuzzShaper:
     to prevent garbage collection issues.
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
         self._font_cache: dict[tuple[int, float], tuple[hb.Font, int, object]] = {}
     
     def shape(self, text: str, font: skia.Font) -> ShapedText:
