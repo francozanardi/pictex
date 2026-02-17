@@ -1,6 +1,7 @@
 from .effects import Shadow, OutlineStroke, StrokeMode
 from .style import Style
 from .typography import FontStyle, FontWeight, FontSmoothing, TextAlign, TextWrap
+from .text_direction import TextDirection
 from .paint_source import PaintSource
 from .color import SolidColor, NamedColor
 from .linear_gradient import LinearGradient
@@ -22,7 +23,7 @@ from .node_type import NodeType
 __all__ = [
     "Shadow", "OutlineStroke", "StrokeMode",
     "Style",
-    "FontStyle", "FontWeight", "FontSmoothing", "TextAlign", "TextWrap",
+    "FontStyle", "FontWeight", "FontSmoothing", "TextAlign", "TextWrap", "TextDirection",
     "PaintSource",
     "SolidColor", "NamedColor",
     "LinearGradient",

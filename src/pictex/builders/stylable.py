@@ -420,6 +420,30 @@ class Stylable:
         self._style.text_wrap.set(wrap if isinstance(wrap, TextWrap) else TextWrap(wrap))
         return self
 
+    def direction(self, value: Union[TextDirection, Literal["ltr", "rtl"]]) -> Self:
+        """Sets the text direction (horizontal flow).
+        
+        BiDi algorithm runs automatically regardless of this setting.
+        This property is inherited by child elements.
+
+        Args:
+            value: The text direction, either "ltr" (left-to-right) or "rtl" (right-to-left).
+                   Can be a TextDirection enum or a string.
+
+        Returns:
+            The `Self` instance for chaining.
+        
+        Example:
+            >>> Text("مرحبا").direction("rtl")
+            >>> Column(
+            ...     Text("Text 1"),  # inherits RTL
+            ...     Text("Text 2")   # inherits RTL
+            ... ).direction("rtl")
+        """
+        self._style.direction.set(value if isinstance(value, TextDirection) else TextDirection(value))
+        return self
+
+
     def flex_grow(self, value: float) -> Self:
         """Sets the flex grow factor for this element (CSS flex-grow).
         

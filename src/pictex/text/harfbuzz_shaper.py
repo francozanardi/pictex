@@ -1,8 +1,9 @@
 import skia
 import uharfbuzz as hb
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 from dataclasses import dataclass
 from .skia_table_loader import SkiaTableLoader
+from ..models.public.text_direction import TextDirection
 
 
 @dataclass
@@ -35,13 +36,14 @@ class HarfBuzzShaper:
     def __init__(self):
         self._font_cache: dict[tuple[int, float], tuple[hb.Font, int, object]] = {}
     
-    def shape(self, text: str, font: skia.Font) -> ShapedText:
+    def shape(self, text: str, font: skia.Font, direction: Optional[TextDirection] = None) -> ShapedText:
         """
         Shape text using HarfBuzz.
         
         Args:
             text: The text to shape
             font: The Skia font to use for shaping
+            direction: The text direction (LTR or RTL). If None, uses LTR as default.
         
         Returns:
             ShapedText with glyphs and total width
@@ -49,16 +51,28 @@ class HarfBuzzShaper:
         hb_font, upem = self._get_or_create_hb_font(font)
         font_size = font.getSize()
         
-        buffer = self._create_buffer(text)
+        buffer = self._create_buffer(text, direction)
         hb.shape(hb_font, buffer)
         
         return self._process_shaped_buffer(buffer, hb_font, font_size, upem)
     
-    def _create_buffer(self, text: str) -> hb.Buffer:
-        """Create and configure HarfBuzz buffer for text."""
+    def _create_buffer(self, text: str, direction: Optional[TextDirection] = None) -> hb.Buffer:
+        """Create and configure HarfBuzz buffer for text.
+        
+        Args:
+            text: The text to shape
+            direction: The text direction (LTR or RTL). If None, uses LTR.
+        """
         buffer = hb.Buffer()
         buffer.add_str(text)
         buffer.guess_segment_properties()
+        
+        # This overrides guess_segment_properties() if direction is specified
+        if direction == TextDirection.RTL:
+            buffer.direction = "rtl"
+        else:
+            buffer.direction = "ltr"
+        
         return buffer
     
     def _process_shaped_buffer(

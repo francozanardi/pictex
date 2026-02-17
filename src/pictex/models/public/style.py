@@ -8,6 +8,7 @@ from .position import Position
 from .transform import Transform
 from .style_property import StyleProperty
 from .typography import TextAlign, FontWeight, FontStyle, TextWrap
+from .text_direction import TextDirection
 from .paint_source import PaintSource
 from .decoration import TextDecoration
 from .color import SolidColor
@@ -34,6 +35,7 @@ class Style:
     underline: StyleProperty[Optional[TextDecoration]] = field(default_factory=lambda: StyleProperty(None))
     strikethrough: StyleProperty[Optional[TextDecoration]] = field(default_factory=lambda: StyleProperty(None))
     text_wrap: StyleProperty[TextWrap] = field(default_factory=lambda: StyleProperty(TextWrap.NORMAL))
+    direction: StyleProperty[TextDirection] = field(default_factory=lambda: StyleProperty(TextDirection.LTR))
 
     # Properties that cannot be inherited.
     box_shadows: StyleProperty[list[Shadow]] = field(default_factory=lambda: StyleProperty([], inheritable=False))

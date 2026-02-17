@@ -80,7 +80,7 @@ class TextShaper:
     
     def _shape_and_create_blob(self, run: TextRun, baseline_y: float) -> float:
         """Shape a text run and create its blob. Returns the visual width."""
-        shaped = self._hb_shaper.shape(run.text, run.font)
+        shaped = self._hb_shaper.shape(run.text, run.font, self._style.direction.get())
         run.width = shaped.width
         
         if shaped.glyphs:
@@ -127,12 +127,6 @@ class TextShaper:
     def _calculate_baseline_offset(self, font: skia.Font) -> float:
         metrics = font.getMetrics()
         return -metrics.fAscent
-    
-    def _measure_token_width(self, token: str, font: skia.Font) -> float:
-        """Measure token width using HarfBuzz for consistency."""
-        shaped = self._hb_shaper.shape(token, font)
-        return shaped.width
-
     
     def _split_line_in_runs(self, line_text: str) -> list[TextRun]:
         primary_font = self._font_manager.get_primary_font()
@@ -251,7 +245,7 @@ class TextShaper:
         char_offset = 0
 
         for run in runs:
-            shaped = self._hb_shaper.shape(run.text, run.font)
+            shaped = self._hb_shaper.shape(run.text, run.font, self._style.direction.get())
             for glyph in shaped.glyphs:
                 all_glyphs.append(ShapedGlyph(
                     glyph_id=glyph.glyph_id,
