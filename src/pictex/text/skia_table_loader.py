@@ -4,6 +4,7 @@ Font table loader for HarfBuzz integration with Skia typefaces.
 This module provides a component for loading font tables from Skia
 typefaces into HarfBuzz.
 """
+from typing import Optional
 import skia
 
 
@@ -50,14 +51,14 @@ class SkiaTableLoader:
         self._table_cache[tag_int] = table_data
         return table_data
     
-    def _parse_tag(self, tag_str) -> int | None:
+    def _parse_tag(self, tag_str) -> Optional[int]:
         """Convert tag string to integer (e.g., 'head' -> 0x68656164)."""
         try:
             return int.from_bytes(tag_str.encode('ascii'), 'big')
         except (UnicodeEncodeError, AttributeError):
             return None
     
-    def _load_table(self, tag_int: int) -> bytes | None:
+    def _load_table(self, tag_int: int) -> Optional[bytes]:
         """Load table data from Skia typeface."""
         data = self.typeface.getTableData(tag_int)
         if not data:
