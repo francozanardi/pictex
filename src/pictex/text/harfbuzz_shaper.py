@@ -43,7 +43,7 @@ class HarfBuzzShaper:
         Args:
             text: The text to shape
             font: The Skia font to use for shaping
-            direction: The text direction (LTR or RTL). If None, uses LTR as default.
+            direction: The text direction (LTR or RTL).
         
         Returns:
             ShapedText with glyphs and total width
@@ -61,7 +61,7 @@ class HarfBuzzShaper:
         
         Args:
             text: The text to shape
-            direction: The text direction (LTR or RTL). If None, uses LTR.
+            direction: The text direction (LTR or RTL).
         """
         buffer = hb.Buffer()
         buffer.add_str(text)
@@ -70,7 +70,7 @@ class HarfBuzzShaper:
         # This overrides guess_segment_properties() if direction is specified
         if direction == TextDirection.RTL:
             buffer.direction = "rtl"
-        else:
+        elif direction == TextDirection.LTR:
             buffer.direction = "ltr"
         
         return buffer
