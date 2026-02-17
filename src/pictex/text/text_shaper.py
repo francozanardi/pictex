@@ -4,6 +4,7 @@ from .typeface_loader import TypefaceLoader
 from .font_manager import FontManager
 from .harfbuzz_shaper import HarfBuzzShaper, ShapedGlyph
 from ..models import Style, Line, TextRun
+from .bidi_processor import BiDiProcessor
 from .. import utils
 import re
 import regex
@@ -13,6 +14,7 @@ class TextShaper:
         self._style = style
         self._font_manager = font_manager
         self._hb_shaper = HarfBuzzShaper()
+        self._bidi_processor = BiDiProcessor()
 
     def shape(self, text: str, max_width: Optional[float] = None) -> List[Line]:
         """
@@ -28,8 +30,10 @@ class TextShaper:
                 shaped_lines.append(self._create_empty_line())
                 continue
             
+            direction = self._style.direction.get()
+            visual_text = self._bidi_processor.process(line_text, direction)
             if max_width is not None:
-                wrapped_lines = self._wrap_line_to_width(line_text, max_width)
+                wrapped_lines = self._wrap_line_to_width(visual_text, max_width)
                 for wrapped_line_text in wrapped_lines:
                     if not wrapped_line_text:
                         shaped_lines.append(self._create_empty_line())
@@ -38,7 +42,7 @@ class TextShaper:
                     line = self._create_line(wrapped_runs)
                     shaped_lines.append(line)
             else:
-                runs: list[TextRun] = self._split_line_in_runs(line_text)
+                runs: list[TextRun] = self._split_line_in_runs(visual_text)
                 line = self._create_line(runs)
                 shaped_lines.append(line)
         
@@ -80,7 +84,7 @@ class TextShaper:
     
     def _shape_and_create_blob(self, run: TextRun, baseline_y: float) -> float:
         """Shape a text run and create its blob. Returns the visual width."""
-        shaped = self._hb_shaper.shape(run.text, run.font, self._style.direction.get())
+        shaped = self._hb_shaper.shape(run.text, run.font)
         run.width = shaped.width
         
         if shaped.glyphs:
@@ -245,7 +249,7 @@ class TextShaper:
         char_offset = 0
 
         for run in runs:
-            shaped = self._hb_shaper.shape(run.text, run.font, self._style.direction.get())
+            shaped = self._hb_shaper.shape(run.text, run.font)
             for glyph in shaped.glyphs:
                 all_glyphs.append(ShapedGlyph(
                     glyph_id=glyph.glyph_id,

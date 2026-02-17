@@ -18,6 +18,7 @@ A Python library for efficient image generation using CSS Flexbox. Build complex
 -   **Rich Styling**: Gradients, multiple shadows, borders with rounded corners, and text decorations.
 -   **Advanced Typography**: Custom fonts, variable fonts, line height, alignment, and professional text shaping using **HarfBuzz** for kerning, ligatures, and complex scripts.
 -   **Automatic Font Fallback**: Seamlessly render emojis and multilingual text.
+-   **Bidirectional Text (BiDi)**: Automatic Unicode BiDi algorithm for proper LTR/RTL mixed text rendering.
 -   **Flexible Output**: 
     -   **Raster**: Save as PNG/JPEG/WebP, or convert to NumPy/Pillow.
     -   **Vector**: Export to a clean, scalable SVG file with font embedding.

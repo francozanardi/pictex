@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Accurate width calculation for zero-width characters (ZWJ, ZWNJ, BiDi controls).
   - Proper composition of complex emoji sequences (e.g., 👨‍👩‍👧‍👦).
   - Precision glyph positioning using HarfBuzz x/y offsets.
+- **BiDi Algorithm**: Automatic Unicode Bidirectional Algorithm (UAX #9) for all text using `python-bidi`.
+  - Properly reorders mixed LTR/RTL text (e.g., English + Arabic).
+  - Processes BiDi control characters (U+202B, U+202A, U+202C).
+  - Automatic detection of text direction from content.
 - **Text Direction**: Added `.direction()` method to control horizontal text flow (`"ltr"`, `"rtl"`). Supports inheritance and automatic Flexbox reversing.
 
 ### Fixed

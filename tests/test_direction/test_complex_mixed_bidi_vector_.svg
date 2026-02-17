@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="77"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="440" height="77" />
+	<rect fill="#FEE" x="20" y="20" width="400" height="37" />
+	<text font-size="30" font-family="pictex-InterVariable" x="20, 38.032227, 55.756836, 74.155273, 81.420898, 88.686523, 104.52148, 122.26074, " y="49.0625, ">
+			English 
+	</text>
+	<text font-size="30" font-family="DejaVu Sans" x="130.69824, 139.83887, 148.8916, 167.43652, 183.98926, " y="49.0625, ">
+			ﺎﺒﺣﺮﻣ
+	</text>
+	<text font-size="30" font-family="pictex-InterVariable" x="208.49609, 236.5332, 254.52148, 266.28418, 273.5498, " y="49.0625, ">
+			World
+	</text>
+</svg>

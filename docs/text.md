@@ -158,7 +158,7 @@ from pictex import Canvas
 
 `PicTex` fully supports multi-line text using newline characters (`\n`). Additionally, text can automatically wrap when placed in containers with fixed widths.
 
--   `.text_align()`: Controls how text lines are aligned within the text block. Accepts `TextAlign.LEFT`, `TextAlign.CENTER`, or `TextAlign.RIGHT`.
+-   `.text_align()`: Controls how text lines are aligned within the text block. Accepts `TextAlign.LEFT`, `TextAlign.CENTER`, or `TextAlign.RIGHT`. If not set, it defaults to `LEFT` in LTR contexts and `RIGHT` in RTL contexts.
 -   `.line_height()`: Sets the spacing between lines as a multiplier of the font size. A value of `1.5` means 150% spacing.
 -   `.text_wrap()`: Controls whether text automatically wraps to fit container width. Accepts `"normal"` (default, wrapping enabled) or `"nowrap"` (wrapping disabled).
 
@@ -184,23 +184,39 @@ canvas.render(text).save("alignment_example.png")
 
 ## Text Direction (LTR / RTL)
 
-PicTex supports bidirectional text rendering through the `.direction()` method. This allows you to explicitly set the base direction of a text block or an entire container.
+PicTex automatically applies the **Unicode Bidirectional Algorithm (BiDi)** to all text, ensuring proper visual ordering of mixed-direction content without any configuration required. It also replicates CSS-compliant layout behavior for RTL contexts.
 
--   **Automatic BiDi**: Even without setting a direction, PicTex uses a BiDi algorithm to properly order characters in mixed scripts (e.g., English + Arabic).
--   **Manual Override**: Use `.direction("rtl")` to force right-to-left context, which also affects Flexbox alignment and item order in `Row` containers.
--   **Inheritance**: The direction property is inherited by all children within a container.
+-   **Automatic BiDi Processing**: The BiDi algorithm runs automatically on every text element, properly reordering characters in mixed scripts (e.g., English + Arabic). This includes correct positioning of punctuation: in RTL, `"Hello!"` visually becomes `"!Hello"`.
+-   **Manual Direction Override**: Use `.direction("rtl")` or `.direction("ltr")` to set an explicit base paragraph direction.
+-   **Automatic Alignment Resolution**: In an RTL context, `text_align()` automatically defaults to `TextAlign.RIGHT` if not explicitly set, ensuring text aligns correctly with the paragraph flow.
+-   **Layout Mirroring**: `Row` containers automatically reverse the visual order of their children when `direction("rtl")` is applied, mirroring the behavior of `direction: rtl` in CSS Flexbox.
+-   **Direction Inheritance**: The direction property is inherited by all children within a container.
 
 ```python
-from pictex import Canvas, Column, Text
+from pictex import Canvas, Row, Column, Text
 
-# RTL column with inherited direction
+# Automatic BiDi - no direction needed
+# Arabic text is automatically reversed
+Canvas().render("Hello مرحبا World").save("auto_bidi.png")
+
+# RTL base direction - affects alignment and layout
 container = (
     Column(
-        Text("مرحبا بك"),  # Inherits RTL
-        Text("Welcome").direction("ltr"), # Explicit override
+        # This Row will be mirrored: [B] [A]
+        Row(
+            Text("A").background_color("red").padding(5),
+            Text("B").background_color("blue").padding(5),
+        ).gap(10),
+
+        # This text will be right-aligned automatically
+        Text("Right-aligned text").size(width=400), 
+        
+        # Explicit override to LTR
+        Text("LTR Override").direction("ltr"), 
     )
     .direction("rtl")
     .padding(20)
+    .gap(20)
 )
 
 Canvas().render(container).save("direction_example.png")

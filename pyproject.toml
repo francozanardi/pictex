@@ -33,7 +33,8 @@ dependencies = [
   "typing_extensions >=4.0; python_version < '3.11'",
   "importlib_resources >=5.0; python_version < '3.10'",
   "regex",
-  "uharfbuzz"
+  "uharfbuzz",
+  "python-bidi"
 ]
 
 [project.urls]

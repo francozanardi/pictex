@@ -28,14 +28,14 @@ class Style:
     font_weight: StyleProperty[FontWeight] = field(default_factory=lambda: StyleProperty(FontWeight.NORMAL))
     font_style: StyleProperty[FontStyle] = field(default_factory=lambda: StyleProperty(FontStyle.NORMAL))
     line_height: StyleProperty[float] = field(default_factory=lambda: StyleProperty(1.0))  # Multiplier for the font size, like in CSS
-    text_align: StyleProperty[TextAlign] = field(default_factory=lambda: StyleProperty(TextAlign.LEFT))
+    text_align: StyleProperty[Optional[TextAlign]] = field(default_factory=lambda: StyleProperty(None))
     color: StyleProperty[PaintSource] = field(default_factory=lambda: StyleProperty(SolidColor(0, 0, 0)))
     text_shadows: StyleProperty[list[Shadow]] = field(default_factory=lambda: StyleProperty([]))
     text_stroke: StyleProperty[Optional[OutlineStroke]] = field(default_factory=lambda: StyleProperty(None))
     underline: StyleProperty[Optional[TextDecoration]] = field(default_factory=lambda: StyleProperty(None))
     strikethrough: StyleProperty[Optional[TextDecoration]] = field(default_factory=lambda: StyleProperty(None))
     text_wrap: StyleProperty[TextWrap] = field(default_factory=lambda: StyleProperty(TextWrap.NORMAL))
-    direction: StyleProperty[TextDirection] = field(default_factory=lambda: StyleProperty(None))
+    direction: StyleProperty[Optional[TextDirection]] = field(default_factory=lambda: StyleProperty(None))
 
     # Properties that cannot be inherited.
     box_shadows: StyleProperty[list[Shadow]] = field(default_factory=lambda: StyleProperty([], inheritable=False))

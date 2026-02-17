@@ -36,14 +36,13 @@ class HarfBuzzShaper:
     def __init__(self):
         self._font_cache: dict[tuple[int, float], tuple[hb.Font, int, object]] = {}
     
-    def shape(self, text: str, font: skia.Font, direction: Optional[TextDirection] = None) -> ShapedText:
+    def shape(self, text: str, font: skia.Font) -> ShapedText:
         """
         Shape text using HarfBuzz.
         
         Args:
             text: The text to shape
             font: The Skia font to use for shaping
-            direction: The text direction (LTR or RTL).
         
         Returns:
             ShapedText with glyphs and total width
@@ -51,28 +50,30 @@ class HarfBuzzShaper:
         hb_font, upem = self._get_or_create_hb_font(font)
         font_size = font.getSize()
         
-        buffer = self._create_buffer(text, direction)
+        buffer = self._create_buffer(text)
         hb.shape(hb_font, buffer)
         
         return self._process_shaped_buffer(buffer, hb_font, font_size, upem)
     
-    def _create_buffer(self, text: str, direction: Optional[TextDirection] = None) -> hb.Buffer:
+    def _create_buffer(self, text: str) -> hb.Buffer:
         """Create and configure HarfBuzz buffer for text.
         
         Args:
             text: The text to shape
-            direction: The text direction (LTR or RTL).
+            
+        Note:
+            After BiDi processing, text is in visual order (left-to-right),
+            so we force LTR direction regardless of script. HarfBuzz will
+            still apply correct contextual forms based on script.
         """
         buffer = hb.Buffer()
         buffer.add_str(text)
         buffer.guess_segment_properties()
         
-        # This overrides guess_segment_properties() if direction is specified
-        if direction == TextDirection.RTL:
-            buffer.direction = "rtl"
-        elif direction == TextDirection.LTR:
-            buffer.direction = "ltr"
-        
+        # Force LTR because BiDi already reordered the text visually
+        # This prevents double-reversal of RTL text
+        buffer.direction = "ltr"
+
         return buffer
     
     def _process_shaped_buffer(

@@ -41,12 +41,20 @@ class LayoutEngine:
 
     def _build_stretchable_tree(self, node: 'Node') -> StretchableNode:
         """Recursively build stretchable node tree from pictex node tree."""
+        from ..nodes import RowNode
+        from ..models import TextDirection
+
         style = self._create_style_for_node(node)
         measure_fn = self._create_measure_function(node)
         stretchable_node = StretchableNode(style=style, measure=measure_fn)
         self._node_map[node] = stretchable_node
         
-        for child in node.children:
+        children = node.children
+        # CSS mirror effect: if Row and direction is RTL, reverse children
+        if isinstance(node, RowNode) and node.computed_styles.direction.get() == TextDirection.RTL:
+            children = list(reversed(children))
+
+        for child in children:
             child_stretchable = self._build_stretchable_tree(child)
             stretchable_node.add(child_stretchable)
         

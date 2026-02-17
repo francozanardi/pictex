@@ -92,3 +92,45 @@ def test_mixed_direction_explicit(file_regression, render_engine):
     render_func, check_func = render_engine
     image = render_func(canvas, container)
     check_func(file_regression, image)
+
+def test_bidi_punctuation(file_regression, render_engine):
+    """
+    Tests that punctuation characters are correctly positioned by the BiDi algorithm.
+    In RTL, 'Hello!' should visually show the '!' at the left.
+    """
+    canvas = Canvas().padding(20).font_size(40)
+    
+    # In RTL context, the exclamation mark should move to the left
+    text = Text("Hello World!").direction("rtl").size(width=300).background_color("#f1f1f1")
+    
+    render_func, check_func = render_engine
+    image = render_func(canvas, text)
+    check_func(file_regression, image)
+
+def test_automatic_text_align_resolution(file_regression, render_engine):
+    """
+    Tests that direction("rtl") automatically resolves to right text alignment
+    if no explicit alignment is provided.
+    """
+    canvas = Canvas().padding(20).font_size(30)
+    
+    # This text should be right-aligned within its 400px width because of direction("rtl")
+    text = Text("This text should be right-aligned automatically").direction("rtl").size(width=400).background_color("#eef")
+    
+    render_func, check_func = render_engine
+    image = render_func(canvas, text)
+    check_func(file_regression, image)
+
+def test_complex_mixed_bidi(file_regression, render_engine):
+    """
+    Tests complex mixed LTR/RTL text in a single Text node.
+    """
+    canvas = Canvas().padding(20).font_size(30)
+    
+    # English + Arabic + English
+    text = Text("English مرحبا World").direction("ltr").size(width=400).background_color("#fee")
+    
+    render_func, check_func = render_engine
+    image = render_func(canvas, text)
+    check_func(file_regression, image)
+
