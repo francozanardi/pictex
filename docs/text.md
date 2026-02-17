@@ -182,6 +182,30 @@ canvas.render(text).save("alignment_example.png")
 
 ![Multiline result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754102754/alignment_example_dnk5t4.png)
 
+## Text Direction (LTR / RTL)
+
+PicTex supports bidirectional text rendering through the `.direction()` method. This allows you to explicitly set the base direction of a text block or an entire container.
+
+-   **Automatic BiDi**: Even without setting a direction, PicTex uses a BiDi algorithm to properly order characters in mixed scripts (e.g., English + Arabic).
+-   **Manual Override**: Use `.direction("rtl")` to force right-to-left context, which also affects Flexbox alignment and item order in `Row` containers.
+-   **Inheritance**: The direction property is inherited by all children within a container.
+
+```python
+from pictex import Canvas, Column, Text
+
+# RTL column with inherited direction
+container = (
+    Column(
+        Text("مرحبا بك"),  # Inherits RTL
+        Text("Welcome").direction("ltr"), # Explicit override
+    )
+    .direction("rtl")
+    .padding(20)
+)
+
+Canvas().render(container).save("direction_example.png")
+```
+
 ### Text Wrapping
 
 When text is placed inside containers with fixed widths, it can automatically wrap to multiple lines:
