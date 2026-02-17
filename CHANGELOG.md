@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+
+### Added
+- **HarfBuzz Text Shaping**: Integrated `uharfbuzz` for professional text shaping, replacing default Skia shaping.
+  - Accurate width calculation for zero-width characters (ZWJ, ZWNJ, BiDi controls).
+  - Proper composition of complex emoji sequences (e.g., 👨‍👩‍👧‍👦).
+  - Precision glyph positioning using HarfBuzz x/y offsets.
+- **Text Direction**: Added `.direction()` method to control horizontal text flow (`"ltr"`, `"rtl"`). Supports inheritance and automatic Flexbox reversing.
+
+### Fixed
+- **Text Wrapping**: Fully refactored word wrapping to use HarfBuzz shaping for all token measurements, ensuring pixel-perfect layout.
+- **Baseline Alignment**: Fixed vertical alignment issues in lines with multiple fonts by enforcing a common baseline derived from the primary font.
+
 ## [2.0.2] - 2026-02-09
 
 ### Added
