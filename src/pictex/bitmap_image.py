@@ -155,7 +155,7 @@ class BitmapImage:
             )
 
         rgba_array = self.to_numpy('RGBA')
-        return PillowImage.fromarray(rgba_array, mode='RGBA')
+        return PillowImage.fromarray(rgba_array)
 
     def save(self, output_path: str, quality: int = 100) -> None:
         """Saves the image to a file.
