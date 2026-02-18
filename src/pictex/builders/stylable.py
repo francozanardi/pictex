@@ -51,15 +51,22 @@ class Stylable:
         self._style.font_size.set(size)
         return self
 
-    def font_weight(self, weight: Union[FontWeight, int]) -> Self:
+    def font_weight(self, weight: Union[FontWeight, int, str]) -> Self:
         """Sets the font weight.
 
         Args:
-            weight: The font weight, e.g., `FontWeight.BOLD` or `700`.
+            weight: The font weight, e.g., `FontWeight.BOLD`, `700` or `"bold"`.
 
         Returns:
             The `Self` instance for chaining.
         """
+        if isinstance(weight, str):
+            try:
+                name = weight.upper().replace("-", "_")
+                weight = FontWeight[name]
+            except KeyError:
+                raise ValueError(f"Invalid font weight: {weight}. Valid values are: {', '.join(FontWeight)}")
+
         self._style.font_weight.set(weight if isinstance(weight, FontWeight) else FontWeight(weight))
         return self
 
