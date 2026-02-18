@@ -6,7 +6,7 @@ the Unicode Bidirectional Algorithm (UAX #9), which is essential for proper
 rendering of mixed LTR/RTL text.
 """
 from typing import NamedTuple, Optional
-from bidi.algorithm import get_display
+from bidi import get_display
 from ..models.public.text_direction import TextDirection
 
 
@@ -55,5 +55,15 @@ class BiDiProcessor:
         else:
             base_level = None
         
+        # We explicitly use the Rust-backed implementation (`bidi.get_display`) instead of the
+        # pure Python one (`bidi.algorithm.get_display`). The pure Python implementation has a known
+        # issue where it strips "Boundary Neutral" characters like ZWJ (Zero Width Joiner, \u200d)
+        # and ZWNJ (Zero Width Non-Joiner, \u200c).
+        #
+        # These characters are essential for:
+        # 1. Complex emojis (e.g. Family emoji 👨‍👩‍👧‍👦 is a sequence joined by ZWJs)
+        # 2. Correct rendering of some languages (e.g. Persian/Farsi uses ZWNJ for spacing)
+        #
+        # The Rust implementation preserves these characters correctly.
         return get_display(text, base_dir=base_level)
 
