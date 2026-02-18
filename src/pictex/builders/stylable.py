@@ -65,7 +65,7 @@ class Stylable:
                 name = weight.upper().replace("-", "_")
                 weight = FontWeight[name]
             except KeyError:
-                raise ValueError(f"Invalid font weight: {weight}. Valid values are: {', '.join(FontWeight)}")
+                raise ValueError(f"Invalid font weight: {weight}")
 
         self._style.font_weight.set(weight if isinstance(weight, FontWeight) else FontWeight(weight))
         return self

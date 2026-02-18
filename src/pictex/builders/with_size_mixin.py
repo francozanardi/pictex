@@ -6,6 +6,8 @@ try:
 except ImportError:
     from typing_extensions import Self
 
+SizeInput = Union[float, int, Literal['auto', 'fit-content', 'fit-background-image']]
+
 class WithSizeMixin:
     _style: Style
 
@@ -24,8 +26,8 @@ class WithSizeMixin:
 
     def size(
             self,
-            width: Optional[Union[float, int, Literal['auto', 'fit-content', 'fit-background-image']]] = None,
-            height: Optional[Union[float, int, Literal['auto', 'fit-content', 'fit-background-image']]] = None,
+            width: Optional[SizeInput] = None,
+            height: Optional[SizeInput] = None,
     ) -> Self:
         """Sets the explicit size of the element's box using the border-box model.
 
@@ -73,6 +75,32 @@ class WithSizeMixin:
             self._style.height.set(parsed_height)
 
         return self
+
+    def width(self, value: SizeInput) -> Self:
+        """Sets the explicit width of the element's box.
+
+        This is a convenience method that is equivalent to calling `size(width=value)`.
+
+        Args:
+            value: The horizontal size value. See `size()` for supported formats.
+
+        Returns:
+            Self: The instance for method chaining.
+        """
+        return self.size(width=value)
+
+    def height(self, value: SizeInput) -> Self:
+        """Sets the explicit height of the element's box.
+
+        This is a convenience method that is equivalent to calling `size(height=value)`.
+
+        Args:
+            value: The vertical size value. See `size()` for supported formats.
+
+        Returns:
+            Self: The instance for method chaining.
+        """
+        return self.size(height=value)
 
     def fit_background_image(self) -> Self:
         """Adjusts the element's size to match its background image dimensions.

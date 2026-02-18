@@ -191,6 +191,19 @@ def test_size():
     assert canvas._style.width == SizeValue(SizeValueMode.FIT_BACKGROUND_IMAGE)
     assert canvas._style.height == SizeValue(SizeValueMode.FIT_BACKGROUND_IMAGE)
 
+def test_width_and_height_sugar():
+    canvas = Canvas()
+    canvas.width(500)
+    assert canvas._style.width == SizeValue(SizeValueMode.ABSOLUTE, 500)
+    assert canvas._style.height == None
+    
+    canvas.height("50%")
+    assert canvas._style.width == SizeValue(SizeValueMode.ABSOLUTE, 500)
+    assert canvas._style.height == SizeValue(SizeValueMode.PERCENT, 50)
+    
+    canvas.width("fit-content")
+    assert canvas._style.width == SizeValue(SizeValueMode.FIT_CONTENT)
+
 def test_position():
     builder = Text("")
     
