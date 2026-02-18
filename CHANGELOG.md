@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Processes BiDi control characters (U+202B, U+202A, U+202C).
   - Automatic detection of text direction from content.
 - **Text Direction**: Added `.direction()` method to control horizontal text flow (`"ltr"`, `"rtl"`).
+- **`font_weight()`**: Added support for CSS-style string values (e.g., `"bold"`, `"extra-bold"`).
+- **Size Methods**: Added `.width()` and `.height()` convenience methods.
 
 ### Fixed
 - **Text Wrapping**: Fully refactored word wrapping to use HarfBuzz shaping for all token measurements, ensuring pixel-perfect layout.
