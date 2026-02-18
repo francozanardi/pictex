@@ -191,6 +191,19 @@ def test_size():
     assert canvas._style.width == SizeValue(SizeValueMode.FIT_BACKGROUND_IMAGE)
     assert canvas._style.height == SizeValue(SizeValueMode.FIT_BACKGROUND_IMAGE)
 
+def test_width_and_height_sugar():
+    canvas = Canvas()
+    canvas.width(500)
+    assert canvas._style.width == SizeValue(SizeValueMode.ABSOLUTE, 500)
+    assert canvas._style.height == None
+    
+    canvas.height("50%")
+    assert canvas._style.width == SizeValue(SizeValueMode.ABSOLUTE, 500)
+    assert canvas._style.height == SizeValue(SizeValueMode.PERCENT, 50)
+    
+    canvas.width("fit-content")
+    assert canvas._style.width == SizeValue(SizeValueMode.FIT_CONTENT)
+
 def test_position():
     builder = Text("")
     
@@ -224,3 +237,33 @@ def test_font_paths_can_be_object():
     style = canvas._style
     assert style.font_family == "myfont1.ttf"
     assert style.font_fallbacks == ["myfont2.ttf", "myfont3.ttf", "myfont4.ttf"]
+
+def test_font_weight():
+    text = Text("test")
+    
+    # Enum
+    text.font_weight(FontWeight.BOLD)
+    assert text._style.font_weight == FontWeight.BOLD
+    
+    # Integer
+    text.font_weight(400)
+    assert text._style.font_weight == FontWeight.NORMAL
+    
+    # String - exact name
+    text.font_weight("BLACK")
+    assert text._style.font_weight == FontWeight.BLACK
+    
+    # String - lowercase name
+    text.font_weight("bold")
+    assert text._style.font_weight == FontWeight.BOLD
+    
+    # String - CSS style name
+    text.font_weight("extra-bold")
+    assert text._style.font_weight == FontWeight.EXTRA_BOLD
+    
+    import pytest
+    
+    # Invalid string should raise ValueError
+    with pytest.raises(ValueError) as excinfo:
+        text.font_weight("invalid-weight")
+    assert "Invalid font weight" in str(excinfo.value)

@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="554" height="84"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="553" height="84"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('Lato-BoldItalic.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="554" height="84" />
-	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="0, 42.245102, 79.870193, 107.34526, 132.16032, 167.86041, 223.19554, 236.70558, 271.32068, 296.13574, 332.36084, 357.1759, 375.20093, 405.686, 419.19604, 453.07611, 488.77618, 526.47131, " y="69.089996, ">
+	<rect fill-opacity="0" width="553" height="84" />
+	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="0, 42.244999, 79.870003, 107.345, 132.16, 167.86, 223.19501, 236.705, 271.32001, 296.13501, 332.35999, 357.17499, 375.20001, 405.685, 419.19501, 453.07501, 488.77499, 526.46997, " y="69.089996, ">
 			Custom Static Font
 	</text>
 </svg>

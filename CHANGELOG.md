@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+
+### Added
+- **HarfBuzz Text Shaping**: Integrated `uharfbuzz` for professional text shaping, replacing default Skia shaping.
+  - Accurate width calculation for zero-width characters (ZWJ, ZWNJ, BiDi controls).
+  - Proper composition of complex emoji sequences (e.g., 👨‍👩‍👧‍👦).
+  - Precision glyph positioning using HarfBuzz x/y offsets.
+- **BiDi Algorithm**: Automatic Unicode Bidirectional Algorithm (UAX #9) for all text using `python-bidi`.
+  - Properly reorders mixed LTR/RTL text (e.g., English + Arabic).
+  - Processes BiDi control characters (U+202B, U+202A, U+202C).
+  - Automatic detection of text direction from content.
+- **Text Direction**: Added `.direction()` method to control horizontal text flow (`"ltr"`, `"rtl"`).
+- **`font_weight()`**: Added support for CSS-style string values (e.g., `"bold"`, `"extra-bold"`).
+- **Size Methods**: Added `.width()` and `.height()` convenience methods.
+
+### Fixed
+- **Text Wrapping**: Fully refactored word wrapping to use HarfBuzz shaping for all token measurements, ensuring pixel-perfect layout.
+- **Baseline Alignment**: Fixed vertical alignment issues in lines with multiple fonts by enforcing a common baseline derived from the primary font.
+
 ## [2.0.2] - 2026-02-09
 
 ### Added
@@ -15,7 +34,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Positioning**: Fixed null layout_result error when using positioning methods.
 - **Image Export**: Fixed color type and alpha type conversions when exporting to bytes.
 - **to_pillow**: Removed redundant unpremultiply logic since to_numpy now returns unpremultiplied BGRA format.
-
 
 ## [2.0.1] - 2026-01-10
 

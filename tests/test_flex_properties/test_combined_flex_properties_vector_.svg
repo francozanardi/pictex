@@ -14,12 +14,12 @@
 	<text font-size="50" font-family="pictex-InterVariable" x="10, 39.516602, 51.625977, 77.797852, 106.94824, " y="58.4375, ">
 			Fixed
 	</text>
-	<rect fill="#E74C3C" x="80" width="212" height="81" />
+	<rect fill="#E74C3C" x="80" width="211" height="81" />
 	<text font-size="50" font-family="pictex-InterVariable" x="90, 119.5166, 131.62598, 159.65332, 186.94824, 199.05762, 229.67285, 241.78223, " y="58.4375, ">
 			Flexible
 	</text>
-	<rect fill="#2ECC71" x="292" y="69" width="208" height="81" />
-	<text font-size="50" font-family="pictex-InterVariable" x="302, 336.49707, 348.60645, 360.71582, 391.37988, 420.9209, 450.07129, " y="127.4375, ">
+	<rect fill="#2ECC71" x="291" y="69" width="209" height="81" />
+	<text font-size="50" font-family="pictex-InterVariable" x="301, 335.49707, 347.60645, 359.71582, 390.37988, 419.9209, 449.07129, " y="127.4375, ">
 			Aligned
 	</text>
 </svg>

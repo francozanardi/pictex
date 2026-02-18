@@ -39,7 +39,7 @@
 	<text font-size="50" font-family="pictex-InterVariable" x="70, 106.52344, 135.67383, 165.21484, 181.08398, 210.23438, " y="117.4375, ">
 			Center
 	</text>
-	<rect fill="#F1C40F" x="50" y="50" width="148" height="61" />
+	<rect fill="#F1C40F" x="50" y="50" width="145" height="61" />
 	<text font-size="50" font-family="pictex-InterVariable" x="50, 88.232422, 104.78516, 122.16797, 148.55957, 177.70996, " y="98.4375, ">
 			Offset
 	</text>

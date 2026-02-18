@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="290" height="148"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="290" height="148" />
+	<text font-size="40" font-family="pictex-InterVariable" x="20.261719, 47.859375, 62.917969, 85.378906, 109.87109, 119.55859, 142.41016, 153.66016, 176.35547, 198.77734, 221.39453, 234.48047, 245.73047, " y="58.75, ">
+			Arabic Text 1
+	</text>
+	<text font-size="40" font-family="pictex-InterVariable" x="20.136719, 47.734375, 62.792969, 85.253906, 109.74609, 119.43359, 142.28516, 153.53516, 176.23047, 198.65234, 221.26953, 234.35547, 245.60547, " y="117.75, ">
+			Arabic Text 2
+	</text>
+</svg>

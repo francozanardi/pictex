@@ -5,7 +5,7 @@
 [![Codecov](https://codecov.io/gh/francozanardi/pictex/branch/main/graph/badge.svg)](https://codecov.io/gh/francozanardi/pictex)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Programmatically generate high-quality images using standard CSS Flexbox layouts. Powered by Skia and Taffy.
+Programmatically generate high-quality images using standard CSS Flexbox layouts. Powered by Skia, Taffy and HarfBuzz.
 
 ![PicTex](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1753831765/readme-1_vqnohh.png)
 
@@ -16,8 +16,9 @@ A Python library for efficient image generation using CSS Flexbox. Build complex
 -   **CSS Flexbox Layout**: Built on industry-standard CSS Flexbox principles with near-complete property support. If you know CSS, you know PicTex. See the [CSS Flexbox Compliance](#css-flexbox-compliance) table below. Powered by **Taffy** layout engine (via `stretchable`).
 -   **Component-Based Design**: Compose complex visuals by nesting powerful layout primitives like `Row`, `Column`, and `Image`.
 -   **Rich Styling**: Gradients, multiple shadows, borders with rounded corners, and text decorations.
--   **Advanced Typography**: Custom fonts, variable fonts, line height, alignment, and text shaping with kerning and ligatures.
+-   **Advanced Typography**: Custom fonts, variable fonts, line height, alignment, and professional text shaping using **HarfBuzz** for kerning, ligatures, and complex scripts.
 -   **Automatic Font Fallback**: Seamlessly render emojis and multilingual text.
+-   **Bidirectional Text (BiDi)**: Automatic Unicode BiDi algorithm for proper LTR/RTL mixed text rendering.
 -   **Flexible Output**: 
     -   **Raster**: Save as PNG/JPEG/WebP, or convert to NumPy/Pillow.
     -   **Vector**: Export to a clean, scalable SVG file with font embedding.
@@ -140,6 +141,7 @@ PicTex v2.0 implements CSS Flexbox layout with high fidelity. If you're familiar
 | `align-items` | ✅ | `.align_items()` | All standard values supported |
 | `align-content` | ⚠️ | Not yet | Planned for multi-line flex containers |
 | `gap` | ✅ | `.gap()` | Unified gap (not split into row-gap/column-gap) |
+| `direction` | ✅ | `.direction()` | Supports `ltr` and `rtl` with inheritance |
 
 ### Item Properties
 

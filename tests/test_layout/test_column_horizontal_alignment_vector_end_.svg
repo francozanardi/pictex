@@ -10,8 +10,8 @@
 }</style></defs>
 	<rect fill-opacity="0" width="409" height="243" />
 	<rect fill="#ECF0F1" transform="translate(109 0)" width="300" height="243" />
-	<rect fill="#3498DB" transform="translate(109 0)" x="153" width="147" height="81" />
-	<text transform="translate(109 0)" font-size="50" font-family="pictex-InterVariable" x="163, 195.08008, 224.64551, 254.62598, 274.23047, " y="58.4375, ">
+	<rect fill="#3498DB" transform="translate(109 0)" x="152" width="148" height="81" />
+	<text transform="translate(109 0)" font-size="50" font-family="pictex-InterVariable" x="162, 194.08008, 223.64551, 253.62598, 273.23047, " y="58.4375, ">
 			Short
 	</text>
 	<rect fill="#E74C3C" transform="translate(109 0)" x="-109" y="81" width="409" height="81" />

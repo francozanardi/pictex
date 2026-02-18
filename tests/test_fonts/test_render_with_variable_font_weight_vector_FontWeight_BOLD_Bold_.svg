@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="363" height="104"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="362" height="104"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Oswald';
     src: url('Oswald-VariableFont_wght.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="363" height="104" />
-	<text font-size="70" font-weight="700" font-family="pictex-Oswald" x="0, 47.669937, 80.569901, 99.119888, 134.25986, 169.88982, 194.45979, 213.91977, 231.83975, 272.99969, 306.80966, 325.98962, " y="83.509995, ">
+	<rect fill-opacity="0" width="362" height="104" />
+	<text font-size="70" font-weight="700" font-family="pictex-Oswald" x="0, 47.669998, 80.57, 99.120003, 134.25999, 169.89, 194.46001, 213.92, 231.84, 273, 306.81, 325.98999, " y="83.509995, ">
 			Weight: Bold
 	</text>
 </svg>

@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="447" height="178">
-	<rect fill-opacity="0" width="447" height="178" />
-	<rect fill="#222" width="447" height="178" />
+<svg xmlns="http://www.w3.org/2000/svg" width="445" height="178">
+	<rect fill-opacity="0" width="445" height="178" />
+	<rect fill="#222" width="445" height="178" />
 	<defs>
-		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="20" y1="88.994141" x2="426.75781" y2="88.994141">
+		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="20" y1="88.994141" x2="424.58984" y2="88.994141">
 			<stop offset="0" stop-color="#E96443" />
 			<stop offset="0.2" stop-color="#E96443" />
 			<stop offset="0.80000001" stop-color="#904E95" />

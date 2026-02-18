@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="326" height="119"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="325" height="119"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Oswald';
     src: url('Oswald-VariableFont_wght.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="326" height="119" />
-	<rect fill="#C0392B" width="326" height="119" />
-	<text fill="white" font-size="80" font-family="pictex-Oswald" x="0, 42.23996, 76.239929, 94.559906, 130.95987, 163.67984, 199.03981, 234.39978, 252.71976, 287.83972, " y="95.439995, ">
+	<rect fill-opacity="0" width="325" height="119" />
+	<rect fill="#C0392B" width="325" height="119" />
+	<text fill="white" font-size="80" font-family="pictex-Oswald" x="0, 42.240002, 76.239998, 94.559998, 130.96001, 163.67999, 199.03999, 234.39999, 252.72, 287.84, " y="95.439995, ">
 			No Padding
 	</text>
 </svg>

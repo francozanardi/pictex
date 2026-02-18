@@ -18,6 +18,7 @@ __all__ = [
     "Shadow", "OutlineStroke", "StrokeMode",
     "Style",
     "FontStyle", "FontWeight", "FontSmoothing", "TextAlign", "TextWrap",
+    "TextDirection",
     "PaintSource",
     "SolidColor", "NamedColor",
     "LinearGradient",

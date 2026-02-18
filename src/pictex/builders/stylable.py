@@ -51,15 +51,22 @@ class Stylable:
         self._style.font_size.set(size)
         return self
 
-    def font_weight(self, weight: Union[FontWeight, int]) -> Self:
+    def font_weight(self, weight: Union[FontWeight, int, str]) -> Self:
         """Sets the font weight.
 
         Args:
-            weight: The font weight, e.g., `FontWeight.BOLD` or `700`.
+            weight: The font weight, e.g., `FontWeight.BOLD`, `700` or `"bold"`.
 
         Returns:
             The `Self` instance for chaining.
         """
+        if isinstance(weight, str):
+            try:
+                name = weight.upper().replace("-", "_")
+                weight = FontWeight[name]
+            except KeyError:
+                raise ValueError(f"Invalid font weight: {weight}")
+
         self._style.font_weight.set(weight if isinstance(weight, FontWeight) else FontWeight(weight))
         return self
 
@@ -419,6 +426,30 @@ class Stylable:
         """
         self._style.text_wrap.set(wrap if isinstance(wrap, TextWrap) else TextWrap(wrap))
         return self
+
+    def direction(self, value: Union[TextDirection, Literal["ltr", "rtl"]]) -> Self:
+        """Sets the text direction (horizontal flow).
+        
+        BiDi algorithm runs automatically regardless of this setting.
+        This property is inherited by child elements.
+
+        Args:
+            value: The text direction, either "ltr" (left-to-right) or "rtl" (right-to-left).
+                   Can be a TextDirection enum or a string.
+
+        Returns:
+            The `Self` instance for chaining.
+        
+        Example:
+            >>> Text("مرحبا").direction("rtl")
+            >>> Column(
+            ...     Text("Text 1"),  # inherits RTL
+            ...     Text("Text 2")   # inherits RTL
+            ... ).direction("rtl")
+        """
+        self._style.direction.set(value if isinstance(value, TextDirection) else TextDirection(value))
+        return self
+
 
     def flex_grow(self, value: float) -> Self:
         """Sets the flex grow factor for this element (CSS flex-grow).

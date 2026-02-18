@@ -170,6 +170,17 @@ class Node(Cacheable):
             parent_field_value = deepcopy(getattr(parent_computed_styles, field_name))
             setattr(computed_styles, field_name, parent_field_value)
 
+        # CSS compliance: resolve text_align based on direction if not set
+        if computed_styles.text_align.get() is None:
+            from ..models import TextDirection, TextAlign
+            direction = computed_styles.direction.get()
+            if direction == TextDirection.RTL:
+                computed_styles.text_align.set(TextAlign.RIGHT)
+                computed_styles.text_align._was_set = False # Don't mark as explicit
+            else:
+                computed_styles.text_align.set(TextAlign.LEFT)
+                computed_styles.text_align._was_set = False # Don't mark as explicit
+
         return computed_styles
 
     def _set_children(self, nodes: list[Node]) -> None:

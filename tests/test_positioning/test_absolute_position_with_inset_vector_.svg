@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="324" height="200"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="323" height="200"><defs><style type="text/css">@font-face {
     font-family: 'pictex-InterVariable';
     src: url('InterVariable.ttf');
 }@font-face {
     font-family: 'pictex-InterVariable';
     src: url('InterVariable.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="324" height="200" />
-	<rect fill="#ECF0F1" transform="translate(24 0)" width="300" height="200" />
-	<rect fill="#3498DB" transform="translate(24 0)" x="10" y="10" width="209" height="61" />
-	<text transform="translate(24 0)" font-size="50" font-family="pictex-InterVariable" x="10, 38.369141, 68.349609, 98.964844, 121.96289, 150.23438, 179.38477, 196.18164, " y="58.4375, ">
+	<rect fill-opacity="0" width="323" height="200" />
+	<rect fill="#ECF0F1" transform="translate(23 0)" width="300" height="200" />
+	<rect fill="#3498DB" transform="translate(23 0)" x="10" y="10" width="203" height="61" />
+	<text transform="translate(23 0)" font-size="50" font-family="pictex-InterVariable" x="10, 38.369141, 68.349609, 98.964844, 121.96289, 150.23438, 179.38477, 196.18164, " y="58.4375, ">
 			Top-Left
 	</text>
-	<rect fill="#E74C3C" transform="translate(24 0)" x="-24" y="129" width="314" height="61" />
-	<text transform="translate(24 0)" font-size="50" font-family="pictex-InterVariable" x="-24, 8.7148438, 38.695312, 55.052734, 70.921875, 100.90234, 144.70117, 167.69922, 199.87695, 211.98633, 242.65039, 272.21582, " y="177.4375, ">
+	<rect fill="#E74C3C" transform="translate(23 0)" x="-23" y="129" width="313" height="61" />
+	<text transform="translate(23 0)" font-size="50" font-family="pictex-InterVariable" x="-23, 9.7148438, 39.695312, 56.052734, 71.921875, 101.90234, 145.70117, 168.69922, 200.87695, 212.98633, 243.65039, 273.21582, " y="177.4375, ">
 			Bottom-Right
 	</text>
 </svg>

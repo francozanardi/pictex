@@ -3,8 +3,8 @@
     src: url('Lato-BoldItalic.ttf');
 }</style></defs>
 	<rect fill-opacity="0" width="372" height="96" />
-	<text fill="#2980B9" font-size="80" font-style="italic" font-family="pictex-Lato" x="0, 53.519943, 96.599899, 139.71986, 177.55983, 206.6398, 226.59978, 247.19975, 290.27972, 328.11969, " y="78.959999, ">
+	<text fill="#2980B9" font-size="80" font-style="italic" font-family="pictex-Lato" x="0, 53.52, 96.599998, 139.72, 177.56, 206.64, 226.60001, 247.2, 290.28, 328.12, " y="78.959999, ">
 			Underlined
 	</text>
-	<path fill="none" stroke="#2980B9" stroke-width="4" stroke-miterlimit="4" d="M0 83.879997L371.23962 83.879997" />
+	<path fill="none" stroke="#2980B9" stroke-width="4" stroke-miterlimit="4" d="M0 83.879997L371.23999 83.879997" />
 </svg>

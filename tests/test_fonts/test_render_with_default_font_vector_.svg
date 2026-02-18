@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="390" height="85"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="388" height="85"><defs><style type="text/css">@font-face {
     font-family: 'pictex-InterVariable';
     src: url('InterVariable.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="390" height="85" />
+	<rect fill-opacity="0" width="388" height="85" />
 	<text fill="#FFA500" font-size="70" font-family="pictex-InterVariable" x="0, 50.517578, 91.328125, 116.14258, 155.44922, 196.84082, 214.81934, 237.71973, 257.40723, 281.26465, 323.2373, 364.59473, " y="67.8125, ">
 			Default font
 	</text>

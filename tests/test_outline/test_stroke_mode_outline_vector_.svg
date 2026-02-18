@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="489" height="160"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="491" height="160"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('Lato-BoldItalic.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="489" height="160" />
-	<text fill="none" stroke="#FFA500" stroke-width="16" stroke-miterlimit="4" transform="translate(8 8)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 87.83992, 168.11984, 233.87978, 290.99973, 325.79968, 409.31961, " y="118.44, ">
+	<rect fill-opacity="0" width="491" height="160" />
+	<text fill="none" stroke="#FFA500" stroke-width="16" stroke-miterlimit="4" transform="translate(8 8)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 87.839996, 168.12, 233.88, 291, 325.79999, 409.32001, " y="118.44, ">
 			OUTLINE
 	</text>
-	<text fill="blue" transform="translate(8 8)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 87.83992, 168.11984, 233.87978, 290.99973, 325.79968, 409.31961, " y="118.44, ">
+	<text fill="blue" transform="translate(8 8)" font-size="120" font-style="italic" font-family="pictex-Lato" x="0, 87.839996, 168.12, 233.88, 291, 325.79999, 409.32001, " y="118.44, ">
 			OUTLINE
 	</text>
 </svg>

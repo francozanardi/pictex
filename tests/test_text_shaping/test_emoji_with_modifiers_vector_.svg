@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="186"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="880" height="186" />
+	<rect fill="#F5F5DC" width="880" height="186" />
+	<text fill="blue" font-size="120" font-family="pictex-InterVariable" x="20, 109.17969, 179.14062, 208.20312, 237.26562, 309.21875, " y="136.25, ">
+			Hello 
+	</text>
+	<text fill="blue" font-size="120" font-family="Noto Color Emoji" x="" y="">
+			
+	</text>
+	<text fill="blue" font-size="120" font-family="pictex-InterVariable" x="526.13281, 638.28125, 710.23438, 757.28516, 786.34766, " y="136.25, ">
+			World
+	</text>
+</svg>

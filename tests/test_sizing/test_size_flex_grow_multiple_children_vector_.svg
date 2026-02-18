@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="332" height="411"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="331" height="411"><defs><style type="text/css">@font-face {
     font-family: 'pictex-InterVariable';
     src: url('InterVariable.ttf');
 }@font-face {
@@ -11,21 +11,21 @@
     font-family: 'pictex-InterVariable';
     src: url('InterVariable.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="332" height="411" />
+	<rect fill-opacity="0" width="331" height="411" />
 	<rect fill="#ECF0F1" width="300" height="400" />
-	<rect fill="#F39C12" x="20" y="20" width="236" height="50" />
+	<rect fill="#F39C12" x="20" y="20" width="231" height="50" />
 	<text font-size="50" font-family="pictex-InterVariable" x="20, 49.516602, 61.625977, 87.797852, 116.94824, 147.56348, 161.62598, 189.99512, 219.97559, " y="68.4375, ">
 			Fixed Top
 	</text>
-	<rect fill="#2980B9" x="20" y="80" width="217" height="125" />
+	<rect fill="#2980B9" x="20" y="80" width="216" height="125" />
 	<text font-size="50" font-family="pictex-InterVariable" x="20, 49.516602, 61.625977, 89.65332, 116.94824, 129.05762, 159.67285, 171.78223, 200.93262, 214.99512, " y="128.4375, ">
 			Flexible 1
 	</text>
-	<rect fill="#8E44AD" x="20" y="215" width="227" height="125" />
+	<rect fill="#8E44AD" x="20" y="215" width="226" height="125" />
 	<text font-size="50" font-family="pictex-InterVariable" x="20, 49.516602, 61.625977, 89.65332, 116.94824, 129.05762, 159.67285, 171.78223, 200.93262, 214.99512, " y="263.4375, ">
 			Flexible 2
 	</text>
-	<rect fill="#F39C12" x="20" y="350" width="312" height="30" />
+	<rect fill="#F39C12" x="20" y="350" width="311" height="30" />
 	<text font-size="50" font-family="pictex-InterVariable" x="20, 49.516602, 61.625977, 87.797852, 116.94824, 147.56348, 161.62598, 194.34082, 224.32129, 240.67871, 256.54785, 286.52832, " y="398.4375, ">
 			Fixed Bottom
 	</text>
