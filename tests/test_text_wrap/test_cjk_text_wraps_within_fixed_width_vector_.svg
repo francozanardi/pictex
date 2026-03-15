@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="128"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-NotoSansJP';
+    src: url('NotoSansJP-Regular.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="512" height="128" />
+	<rect fill="white" width="512" height="128" />
+	<text fill="blue" font-size="30" font-family="pictex-NotoSansJP" x="10, 40, 70, 100, 130, 160, 190, 220, 250, 280, 310, 340, 370, 399.10001, 429.10001, 459.10001, " y="44.799999, ">
+			これはテスト⽤の⽇本語テキストで
+	</text>
+	<text fill="blue" font-size="30" font-family="pictex-NotoSansJP" x="10, 37, 67, 97, 127, 157, 187, 217, 247, 277, 307, 336.39999, 366.39999, 396.39999, 426.39999, 456.39999, " y="74.800003, ">
+			す。⽂字ごとに改⾏できるか確認し
+	</text>
+	<text fill="blue" font-size="30" font-family="pictex-NotoSansJP" x="10, 40, 67, " y="104.8, ">
+			ます。
+	</text>
+</svg>
