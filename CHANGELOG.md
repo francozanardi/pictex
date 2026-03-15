@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - **Text Wrapping**: Fixed false word-wrapping when no width constraint is set, caused by floating-point precision mismatch between glyph advance measurement and wrapping logic.
+- **Text Wrapping**: Fixed CJK text not wrapping within fixed-width containers. Characters from Han, Hiragana, Katakana, and Hangul scripts are now treated as individual breakable units.
 
 ## [2.1.0] - 2026-02-18
 
