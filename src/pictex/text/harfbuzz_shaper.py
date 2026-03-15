@@ -106,16 +106,20 @@ class HarfBuzzShaper:
         font_size: float,
         upem: int
     ) -> ShapedGlyph:
-        """Convert HarfBuzz font units to points."""
-        scale_factor = font_size / upem
-        
+        """Convert HarfBuzz font units to points.
+
+        Uses (value * font_size) / upem instead of value * (font_size / upem)
+        to minimize floating-point error. The former keeps intermediate products
+        as exact integers (font units * font size) before a single division,
+        while the latter pre-divides and accumulates rounding error per glyph.
+        """
         return ShapedGlyph(
             glyph_id=info.codepoint,
             cluster=info.cluster,
-            x_advance=pos.x_advance * scale_factor,
-            y_advance=pos.y_advance * scale_factor,
-            x_offset=pos.x_offset * scale_factor,
-            y_offset=pos.y_offset * scale_factor
+            x_advance=(pos.x_advance * font_size) / upem,
+            y_advance=(pos.y_advance * font_size) / upem,
+            x_offset=(pos.x_offset * font_size) / upem,
+            y_offset=(pos.y_offset * font_size) / upem,
         )
     
     def _compute_visual_width(
@@ -141,13 +145,11 @@ class HarfBuzzShaper:
         if extents is None:
             return advance_width
         
-        scale_factor = font_size / upem
-        
         # Position of the last glyph's origin
         last_glyph_x = advance_width - last_glyph.x_advance + last_glyph.x_offset
-        
+
         # Visual right edge = glyph origin + bearing + width (all in points)
-        visual_right = last_glyph_x + (extents.x_bearing + extents.width) * scale_factor
+        visual_right = last_glyph_x + ((extents.x_bearing + extents.width) * font_size) / upem
         
         return max(advance_width, visual_right)
     

@@ -112,8 +112,18 @@ class TextNode(Node):
         return to_int_skia_rect(content_bounds)
     
     def compute_intrinsic_width(self) -> int:
-        """Intrinsic width for stretchable measure function."""
-        return self._compute_intrinsic_content_bounds().width()
+        """Intrinsic width for stretchable measure function.
+
+        Uses line advance widths (float64) directly instead of going through
+        _compute_intrinsic_content_bounds which stores values in skia.Rect
+        (float32). This ensures the width reported to stretchable uses the
+        same precision as the word-wrapping logic, preventing false wrapping
+        at boundary widths.
+        """
+        from math import ceil
+        if not self.shaped_lines:
+            return 0
+        return ceil(max(line.width for line in self.shaped_lines))
     
     def compute_intrinsic_height(self) -> int:
         """Intrinsic height for stretchable measure function."""
