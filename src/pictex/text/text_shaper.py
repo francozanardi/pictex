@@ -6,8 +6,22 @@ from .harfbuzz_shaper import HarfBuzzShaper, ShapedGlyph
 from ..models import Style, Line, TextRun
 from .bidi_processor import BiDiProcessor
 from .. import utils
-import re
 import regex
+
+_CJK_PROPS = (
+    r'\p{Script=Han}'
+    r'\p{Script=Hiragana}'
+    r'\p{Script=Katakana}'
+    r'\p{Script=Hangul}'
+    r'\p{Block=CJK_Symbols_And_Punctuation}'
+    r'\p{Block=Halfwidth_And_Fullwidth_Forms}'
+)
+_WRAP_TOKEN_PATTERN = regex.compile(
+    rf'[{_CJK_PROPS}]'             # Each CJK character is its own breakable token
+    rf'|[^\s{_CJK_PROPS}]+'        # Non-CJK, non-whitespace grouped as a word
+    r'|\s+'                         # Whitespace grouped together
+)
+
 
 class TextShaper:
     def __init__(self, style: Style, font_manager: FontManager):
@@ -188,14 +202,15 @@ class TextShaper:
     def _wrap_line_to_width(self, text: str, max_width: float) -> List[str]:
         """
         Wraps a single line of text to fit within the specified width.
-        Words are treated as indivisible units.
-        
+        Words are treated as indivisible units, except for CJK characters
+        which are each a valid line break point.
+
         Token widths are derived by splitting the text into font-fallback
         runs, shaping each run with its actual font, and then mapping
         glyph clusters back to token boundaries. This ensures characters
         that require fallback fonts (e.g. emojis) are measured accurately.
         """
-        tokens: list[str] = re.findall(r'\S+|\s+', text)
+        tokens: list[str] = self._tokenize_for_wrapping(text)
         if not tokens:
             return ['']
 
@@ -289,4 +304,12 @@ class TextShaper:
             char_offset = token_end
 
         return token_widths
+
+    def _tokenize_for_wrapping(self, text: str) -> list[str]:
+        """Tokenize text for word wrapping.
+
+        Latin/non-CJK words are kept as indivisible units (break at spaces).
+        CJK characters are each their own token (break between any two).
+        """
+        return _WRAP_TOKEN_PATTERN.findall(text)
     
