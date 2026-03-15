@@ -28,7 +28,7 @@ classifiers = [
 ]
 
 dependencies = [
-  "skia-python",
+  "skia-python==138.*",
   "stretchable>=0.3.0",
   "typing_extensions >=4.0; python_version < '3.11'",
   "importlib_resources >=5.0; python_version < '3.10'",
