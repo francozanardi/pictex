@@ -1,6 +1,6 @@
 import pytest
 from pictex import Canvas, Text, Column, Row
-from .conftest import STATIC_FONT_PATH, FONT_WITH_LIGATURES_PATH
+from .conftest import STATIC_FONT_PATH, FONT_WITH_LIGATURES_PATH, JAPANESE_FONT_PATH
 
 # Long text for wrapping tests
 LONG_TEXT = "This is a very long sentence that will demonstrate text wrapping behavior when placed inside containers with various width constraints and settings."
@@ -150,7 +150,7 @@ def test_text_wrap_with_styling(file_regression, render_engine):
 def test_no_false_wrap_without_width_constraint(file_regression, render_engine):
     """Text should not word-wrap when no width is set on the canvas or container.
 
-    Regression test: with a monospace font (FiraCode) at size 35, the 15-glyph
+    With a monospace font (FiraCode) at size 35, the 15-glyph
     text "shipment cdncdi" has an advance width that triggers a floating-point
     mismatch between the intrinsic width measurement path (which passed through
     skia.Rect float32) and the wrapping logic (float64). This caused text to
@@ -166,6 +166,27 @@ def test_no_false_wrap_without_width_constraint(file_regression, render_engine):
         .padding(25)
     )
     image = render_func(canvas, "shipment cdncdi")
+    check_func(file_regression, image)
+
+
+def test_cjk_text_wraps_within_fixed_width(file_regression, render_engine):
+    """CJK text should wrap character-by-character within a fixed-width container.
+
+    CJK characters don't have spaces between them, so the
+    tokenizer must treat each character as an individual breakable unit.
+    Without this, a long CJK string is treated as a single unbreakable word
+    and overflows the container instead of wrapping.
+    """
+    render_func, check_func = render_engine
+
+    cjk_text = Text(
+        "これはテスト用の日本語テキストです。文字ごとに改行できるか確認します。"
+    ).font_size(30).color("blue")
+
+    container = Column(cjk_text).font_family(JAPANESE_FONT_PATH).size(width=512, height=128).padding(10)
+
+    canvas = Canvas().background_color("white")
+    image = render_func(canvas, container)
     check_func(file_regression, image)
 
 
