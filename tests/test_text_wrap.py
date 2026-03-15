@@ -1,6 +1,6 @@
 import pytest
 from pictex import Canvas, Text, Column, Row
-from .conftest import STATIC_FONT_PATH
+from .conftest import STATIC_FONT_PATH, FONT_WITH_LIGATURES_PATH
 
 # Long text for wrapping tests
 LONG_TEXT = "This is a very long sentence that will demonstrate text wrapping behavior when placed inside containers with various width constraints and settings."
@@ -146,6 +146,28 @@ def test_text_wrap_with_styling(file_regression, render_engine):
     canvas = Canvas().font_family(STATIC_FONT_PATH)
     image = render_func(canvas, container)
     check_func(file_regression, image)
+
+def test_no_false_wrap_without_width_constraint(file_regression, render_engine):
+    """Text should not word-wrap when no width is set on the canvas or container.
+
+    Regression test: with a monospace font (FiraCode) at size 35, the 15-glyph
+    text "shipment cdncdi" has an advance width that triggers a floating-point
+    mismatch between the intrinsic width measurement path (which passed through
+    skia.Rect float32) and the wrapping logic (float64). This caused text to
+    wrap even when it fit on a single line.
+    """
+    render_func, check_func = render_engine
+
+    canvas = (
+        Canvas()
+        .font_family(FONT_WITH_LIGATURES_PATH)
+        .font_size(35)
+        .background_color("#ffffff")
+        .padding(25)
+    )
+    image = render_func(canvas, "shipment cdncdi")
+    check_func(file_regression, image)
+
 
 def test_two_sibling_texts_using_width_limited_by_ancestor(file_regression, render_engine):
     render_func, check_func = render_engine

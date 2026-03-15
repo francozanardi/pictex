@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="365" height="96"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-FiraCodeMediumFiraCode';
+    src: url('FiraCode-Medium.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="365" height="96" />
+	<rect fill="white" width="365" height="96" />
+	<text font-size="35" font-family="pictex-FiraCodeMediumFiraCode" x="25, 46, 67, 88, 109, 130, 151, 172, 193, 214, 235, 256, 277, 298, 319, " y="59.650002, ">
+			shipment cdncdi
+	</text>
+</svg>

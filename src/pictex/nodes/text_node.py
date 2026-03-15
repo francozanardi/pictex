@@ -112,8 +112,20 @@ class TextNode(Node):
         return to_int_skia_rect(content_bounds)
     
     def compute_intrinsic_width(self) -> int:
-        """Intrinsic width for stretchable measure function."""
-        return self._compute_intrinsic_content_bounds().width()
+        """Intrinsic width for stretchable measure function.
+
+        Uses the maximum of each line's advance width (float64) and visual
+        bounds width. The advance width (line.width) ensures consistency with
+        the word-wrapping logic, preventing false wrapping at boundary widths.
+        The visual bounds width (line.bounds) accounts for glyph overhang
+        (e.g. the last glyph extending beyond its advance), preventing clipping.
+        """
+        from math import ceil
+        if not self.shaped_lines:
+            return 0
+        return ceil(max(
+            max(line.width, line.bounds.width()) for line in self.shaped_lines
+        ))
     
     def compute_intrinsic_height(self) -> int:
         """Intrinsic height for stretchable measure function."""

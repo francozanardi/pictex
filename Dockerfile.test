@@ -16,8 +16,19 @@ RUN apt-get update && \
         wget \
         cabextract \
         ttf-mscorefonts-installer && \
-    fc-cache -f -v && \
     rm -rf /var/lib/apt/lists/*
+
+# ttf-mscorefonts-installer downloads fonts from SourceForge, which is
+# unreliable (mirrors go down, timeouts). Retry the download up to 3 times
+# and verify that Arial (a core font) is actually installed.
+RUN for attempt in 1 2 3; do \
+        echo "MS fonts download attempt $attempt..." && \
+        /usr/lib/msttcorefonts/update-ms-fonts && \
+        fc-cache -f && \
+        fc-match Arial | grep -qi arial && break; \
+        echo "Attempt $attempt failed, retrying in 5s..." && sleep 5; \
+    done && \
+    fc-match Arial | grep -qi arial || (echo "ERROR: MS Core Fonts failed to install" && exit 1)
 
 # Install Python 3.11 and set as default
 RUN apt-get update && \

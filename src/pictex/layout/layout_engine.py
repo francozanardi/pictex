@@ -95,12 +95,12 @@ class LayoutEngine:
                     wrap_width = available_space.width.value
                 elif available_space.width.scale == Scale.MIN_CONTENT:
                     wrap_width = 0
-            
+
             if wrap_width is not None:
                 # We need to use ceil here since the text content bounds are computed using ceil
                 # If we use floor (or the float value) here, the text may be cut off in some edge cases
                 text_node.set_text_wrap_width(ceil(wrap_width))
-            
+
             width = text_node.compute_intrinsic_width()
             height = text_node.compute_intrinsic_height()
             text_node._clear_bounds()
