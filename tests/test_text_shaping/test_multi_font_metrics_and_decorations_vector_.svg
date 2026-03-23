@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1140" height="230">
+	<rect fill-opacity="0" width="1140" height="230" />
+	<rect fill="#F5F5DC" width="1140" height="230" />
+	<text fill="blue" font-size="120" font-family="Arial" x="20, 106.66016, 173.39844, 200.05859, 226.71875, 293.45703, 326.79688, 437.89062, 504.62891, 544.58984, 571.25, 637.98828, " y="131.19266, ">
+			Hello World 
+	</text>
+	<text fill="blue" font-size="120" font-family="Noto Color Emoji" x="671.32812, 820.74219, 970.15625, " y="131.19266, ">
+			🛒🧗🚚
+	</text>
+	<path fill="none" stroke="red" stroke-width="10" stroke-miterlimit="4" d="M20 204.08328L1119.5703 204.08328" />
+</svg>

@@ -6,19 +6,19 @@
     src: url('NotoSansJP-Regular.ttf');
 }</style></defs>
 	<rect fill-opacity="0" width="859" height="102" />
-	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="0, 40.424999, 76.544998, 90.055, 111.055, " y="69.089996, ">
+	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="0, 40.424999, 76.544998, 90.055, 111.055, " y="81.199997, ">
 			PF | 
 	</text>
-	<text font-size="70" font-family="pictex-NotoSansJP" x="124.565, 194.565, " y="69.089996, ">
+	<text font-size="70" font-family="pictex-NotoSansJP" x="124.565, 194.565, " y="81.199997, ">
 			世界
 	</text>
-	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="278.07501, 299.07501, 312.58499, 357.48999, 391.44, 427.66501, 445.69, 483.38501, 499.13501, 512.64502, 553.07001, 589.19, 602.70001, 623.70001, " y="69.089996, ">
+	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="278.07501, 299.07501, 312.58499, 357.48999, 391.44, 427.66501, 445.69, 483.38501, 499.13501, 512.64502, 553.07001, 589.19, 602.70001, 623.70001, " y="81.199997, ">
 			| Again, PF | 
 	</text>
-	<text font-size="70" font-family="Noto Color Emoji" x="637.21002, " y="69.089996, ">
+	<text font-size="70" font-family="Noto Color Emoji" x="637.21002, " y="81.199997, ">
 			✨
 	</text>
-	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="737.87823, 758.87823, 772.38824, 812.81323, 842.63324, " y="69.089996, ">
+	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="737.87823, 758.87823, 772.38824, 812.81323, 842.63324, " y="81.199997, ">
 			| PF.
 	</text>
 </svg>
