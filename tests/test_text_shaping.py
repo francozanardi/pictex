@@ -115,3 +115,24 @@ def test_emoji_with_modifiers(file_regression, render_engine):
     # 👋 (U+1F44B) + 🏽 (U+1F3FD skin tone modifier)
     image = render_func(canvas, "Hello 👋🏽 World")
     check_func(file_regression, image)
+
+def test_multi_font_metrics_and_decorations(file_regression, render_engine):
+    """
+    Tests that elements with mixed fonts (e.g., standard text and tall fallback emojis)
+    correctly calculate the common line height, baseline alignment, and underline position 
+    based on all fonts in the line, rather than just the primary font.
+
+    **NOTE**: The Noto Color Emoji font has a very large underline position, so there will be a blank space below the text.
+    """
+    canvas = (
+        Canvas()
+        .font_size(120)
+        .font_family("Arial")
+        .color(NamedColor.BLUE)
+        .background_color(NamedColor.BEIGE)
+        .padding(20)
+        .underline(thickness=10.0, color=NamedColor.RED)
+    )
+    render_func, check_func = render_engine
+    image = render_func(canvas, "Hello World 🛒🧗🚚")
+    check_func(file_regression, image)
