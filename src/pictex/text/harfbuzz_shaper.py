@@ -36,13 +36,14 @@ class HarfBuzzShaper:
     def __init__(self) -> None:
         self._font_cache: dict[tuple[int, float], tuple[hb.Font, int, object]] = {}
     
-    def shape(self, text: str, font: skia.Font) -> ShapedText:
+    def shape(self, text: str, font: skia.Font, direction: TextDirection = TextDirection.LTR) -> ShapedText:
         """
         Shape text using HarfBuzz.
         
         Args:
             text: The text to shape
             font: The Skia font to use for shaping
+            direction: The logical direction of the text
         
         Returns:
             ShapedText with glyphs and total width
@@ -50,30 +51,16 @@ class HarfBuzzShaper:
         hb_font, upem = self._get_or_create_hb_font(font)
         font_size = font.getSize()
         
-        buffer = self._create_buffer(text)
+        buffer = self._create_buffer(text, direction)
         hb.shape(hb_font, buffer)
         
-        return self._process_shaped_buffer(buffer, hb_font, font_size, upem)
+        return self._process_shaped_buffer(buffer, hb_font, font_size, upem, direction)
     
-    def _create_buffer(self, text: str) -> hb.Buffer:
-        """Create and configure HarfBuzz buffer for text.
-        
-        Args:
-            text: The text to shape
-            
-        Note:
-            After BiDi processing, text is in visual order (left-to-right),
-            so we force LTR direction regardless of script. HarfBuzz will
-            still apply correct contextual forms based on script.
-        """
+    def _create_buffer(self, text: str, direction: TextDirection) -> hb.Buffer:
         buffer = hb.Buffer()
         buffer.add_str(text)
         buffer.guess_segment_properties()
-        
-        # Force LTR because BiDi already reordered the text visually
-        # This prevents double-reversal of RTL text
-        buffer.direction = "ltr"
-
+        buffer.direction = direction.value
         return buffer
     
     def _process_shaped_buffer(
@@ -81,7 +68,8 @@ class HarfBuzzShaper:
         buffer: hb.Buffer,
         hb_font: hb.Font,
         font_size: float, 
-        upem: int
+        upem: int,
+        direction: TextDirection
     ) -> ShapedText:
         """Convert HarfBuzz buffer results to ShapedText."""
         infos = buffer.glyph_infos
@@ -95,7 +83,7 @@ class HarfBuzzShaper:
             glyphs.append(glyph)
             total_width += glyph.x_advance
         
-        visual_width = self._compute_visual_width(glyphs, hb_font, font_size, upem)
+        visual_width = self._compute_visual_width(glyphs, hb_font, font_size, upem, direction)
         
         return ShapedText(glyphs=glyphs, width=total_width, visual_width=visual_width)
     
@@ -127,28 +115,21 @@ class HarfBuzzShaper:
         glyphs: list[ShapedGlyph],
         hb_font: hb.Font,
         font_size: float,
-        upem: int
+        upem: int,
+        direction: TextDirection
     ) -> float:
-        """Compute visual width accounting for last glyph overhang.
-        
-        For italic fonts the last glyph often extends visually beyond its
-        advance width. This method checks the actual glyph extents of the
-        last glyph to capture that overhang.
-        """
+        """Compute visual width accounting for overhang."""
         if not glyphs:
             return 0.0
         
         advance_width = sum(g.x_advance for g in glyphs)
         
-        last_glyph = glyphs[-1]
+        last_glyph = glyphs[0] if direction == TextDirection.RTL else glyphs[-1]
         extents = hb_font.get_glyph_extents(last_glyph.glyph_id)
         if extents is None:
             return advance_width
         
-        # Position of the last glyph's origin
         last_glyph_x = advance_width - last_glyph.x_advance + last_glyph.x_offset
-
-        # Visual right edge = glyph origin + bearing + width (all in points)
         visual_right = last_glyph_x + ((extents.x_bearing + extents.width) * font_size) / upem
         
         return max(advance_width, visual_right)

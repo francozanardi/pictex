@@ -5,16 +5,8 @@ This module provides utilities to analyze and reorder text according to
 the Unicode Bidirectional Algorithm (UAX #9), which is essential for proper
 rendering of mixed LTR/RTL text.
 """
-from typing import NamedTuple, Optional
-from ..models.public.text_direction import TextDirection
-
-
-class BiDiRun(NamedTuple):
-    """A segment of text with uniform direction."""
-    text: str
-    start: int  # Start position in original string
-    end: int    # End position in original string
-    level: int  # BiDi embedding level (even = LTR, odd = RTL)
+from typing import Optional
+from ..models import BiDiFragment, TextDirection
 
 
 class BiDiProcessor:
@@ -25,27 +17,22 @@ class BiDiProcessor:
     contains both LTR and RTL runs (e.g., English + Arabic).
     """
     
-    def process(self, text: str, base_direction: Optional[TextDirection] = None) -> str:
+    def get_bidi_fragments(self, text: str, base_direction: Optional[TextDirection] = None) -> list[BiDiFragment]:
         """
-        Apply BiDi algorithm to reorder text for visual display.
+        Apply BiDi algorithm to split text into uniform-direction fragments,
+        sorted in their final visual order (Left-to-Right layout sequence).
         
         Args:
-            text: The input text to process
+            text: The input logical text to process
             base_direction: The base paragraph direction (LTR or RTL).
-                           If None, the algorithm auto-detects from the text.
+                            If None, the algorithm auto-detects from the text.
         
         Returns:
-            The visually reordered text ready for rendering
-        
-        Example:
-            >>> processor = BiDiProcessor()
-            >>> # Mixed English and Arabic
-            >>> text = "Hello مرحبا World"
-            >>> result = processor.process(text)
-            >>> # Arabic word is now visually reversed
+            A list of BiDiFragment objects representing the logical text 
+            chunks sorted dynamically for LTR physical drawing.
         """
         if not text:
-            return text
+            return []
         
         if base_direction == TextDirection.RTL:
             base_level = 'R'
@@ -54,44 +41,35 @@ class BiDiProcessor:
         else:
             base_level = None
         
-        # NOTE: We are intentionally using the pure Python implementation (`bidi.algorithm.get_display`)
-        # instead of the Rust-backed one (`bidi.get_display`).
-        #
-        # Although the Rust implementation correctly preserves ZWJ and ZWNJ characters (essential for emojis),
-        # it fails to correctly handle character mirroring (e.g., parentheses in RTL contexts).
-        # For example, "العربية (RTL Override)" renders with inverted parentheses in the Rust version.
-        #
-        # To get the best of both worlds (correct structure/mirroring from Python + correct emojis),
-        # we use the Python implementation but manually patch the ZWJ/ZWNJ stripping issue
-        # by temporarily replacing them with safe Private Use Area (PUA) characters.
-        
-        return self._process_with_preserved_joiners(text, base_level)
+        return self._get_fragments_with_preserved_joiners(text, base_level)
 
-    def _process_with_preserved_joiners(self, text: str, base_level: Optional[str]) -> str:
+    def _get_fragments_with_preserved_joiners(self, text: str, base_level: Optional[str]) -> list[BiDiFragment]:
         """
-        Process text with `bidi.algorithm.get_display` while preserving ZWJ and ZWNJ.
-        
-        The python-bidi library strips "Boundary Neutral" characters like:
-        - ZWJ (Zero Width Joiner, \u200d) -> Breaks complex emojis
-        - ZWNJ (Zero Width Non-Joiner, \u200c) -> Breaks ligatures (e.g. Persian/Farsi)
-        
-        This method replaces them with PUA characters before processing and restores them after.
+        Process text with bidi algorithm to get visual fragments while preserving ZWJ and ZWNJ.
         """
-        from bidi.algorithm import get_display
+        temp_text, replacements = self._hide_joiners(text)
+        
+        # We unroll `bidi.algorithm.get_display()` here to intercept the algorithmic `storage`
+        # halfway through (right after mirroring but before it gets flattened into a string).
+        storage = self._run_bidi_pipeline(temp_text, base_level)
+        
+        visual_fragments = self._extract_fragments_from_storage(temp_text, storage)
+        
+        self._restore_joiners(visual_fragments, replacements)
+        return visual_fragments
 
-        replacements = []
+    def _hide_joiners(self, text: str) -> tuple[str, list[tuple[str, str]]]:
+        """Temporarily mask ZWJ and ZWNJ with Private Use Area chars to survive BiDi processing."""
+        replacements: list[tuple[str, str]] = []
         chars_to_preserve = ['\u200d', '\u200c']
-        
         temp_text = text
         pua_code = 0xE000
         
         for char in chars_to_preserve:
             if char in temp_text:
-                # Find a safe PUA char range that isn't used in the text
                 while chr(pua_code) in temp_text:
                     pua_code += 1
                     if pua_code > 0xF8FF:
-                        # Fallback if no PUA available (extremely unlikely)
                         break
                 
                 if pua_code <= 0xF8FF:
@@ -99,12 +77,80 @@ class BiDiProcessor:
                     temp_text = temp_text.replace(char, pua_char)
                     replacements.append((pua_char, char))
                     pua_code += 1
+                    
+        return temp_text, replacements
 
-        processed = get_display(temp_text, base_dir=base_level)
+    def _run_bidi_pipeline(self, text: str, base_level: Optional[str]) -> dict:
+        """
+        Executes the sequential Unicode BiDi Algorithm steps exactly as `bidi.algorithm.get_display()` does.
+        By calling these steps manually, we retain access to the internal `storage` dictionary,
+        which contains the exact physical layout positions and resolving levels.
+        """
+        from bidi.algorithm import (
+            get_empty_storage, get_base_level, get_embedding_levels,
+            explicit_embed_and_overrides, resolve_weak_types,
+            resolve_neutral_types, resolve_implicit_levels,
+            reorder_resolved_levels, apply_mirroring
+        )
         
-        # Restore characters
-        for pua_char, original_char in replacements:
-            processed = processed.replace(pua_char, original_char)
+        storage = get_empty_storage()
+        storage["base_level"] = get_base_level(text, upper_is_rtl=False) if base_level is None else (1 if base_level == "R" else 0)
+        storage["base_dir"] = ("L", "R")[storage["base_level"]]
+        
+        # 1. Determine embedding levels for each logical character
+        get_embedding_levels(text, storage, upper_is_rtl=False, debug=False)
+        
+        # 2. Resolve embedding boundaries and contextual overrides
+        explicit_embed_and_overrides(storage, debug=False)
+        resolve_weak_types(storage, debug=False)
+        resolve_neutral_types(storage, debug=False)
+        resolve_implicit_levels(storage, debug=False)
+        
+        # We inject original logical index tracking before characters are visually shuffled
+        for i, ch in enumerate(storage["chars"]):
+            ch["idx"] = i
             
-        return processed
+        # 3. Physically reorder the characters list into Left-to-Right visual display sequence
+        reorder_resolved_levels(storage, debug=False)
+        apply_mirroring(storage, debug=False)
+        
+        return storage
 
+    def _extract_fragments_from_storage(self, original_text: str, storage: dict) -> list[BiDiFragment]:
+        """
+        Groups characters with the same BiDi embedding level into contiguous `BiDiFragment`s.
+        Because `storage['chars']` is visually ordered, the returned list is in Left-To-Right sequence.
+        """
+        fragments: list[BiDiFragment] = []
+        if not storage["chars"]:
+            return fragments
+            
+        current_level = storage["chars"][0]["level"]
+        run_indices: list[int] = []
+        
+        for ch in storage["chars"]:
+            if ch["level"] != current_level:
+                fragments.append(self._create_fragment(original_text, run_indices, current_level))
+                current_level = ch["level"]
+                run_indices = []
+            run_indices.append(ch["idx"])
+            
+        if run_indices:
+            fragments.append(self._create_fragment(original_text, run_indices, current_level))
+            
+        return fragments
+
+    def _create_fragment(self, text: str, indices: list[int], level: int) -> BiDiFragment:
+        min_idx = min(indices)
+        max_idx = max(indices)
+        frag_text = text[min_idx:max_idx+1]
+        
+        # Even layers are LTR, odd layers are RTL
+        direction = TextDirection.RTL if level % 2 != 0 else TextDirection.LTR
+        return BiDiFragment(text=frag_text, direction=direction, start_index=min_idx)
+
+    def _restore_joiners(self, fragments: list[BiDiFragment], replacements: list[tuple[str, str]]) -> None:
+        """Restores PUA characters back to their original ZWJ/ZWNJ characters."""
+        for fragment in fragments:
+            for pua_char, original_char in replacements:
+                fragment.text = fragment.text.replace(pua_char, original_char)

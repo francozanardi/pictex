@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Line Height Calculation**: Line height calculation is now based on the maximum metrics (ascent, descent, leading) of all fonts used in a single line. Previously, it simply used the primary font's metrics, which could result in wrong line heights when using fallback fonts or multiple fonts in the same line.
 - **Baseline Alignment**: The text baseline within a line is now determined by the highest ascent of all fonts present in that line. Previously, the baseline was dictated solely by the primary font, causing vertical misalignment when rendering taller fallback fonts (like emojis).
 - **Text Decoration Positioning**: The vertical position for underlines and strikethroughs now adapts to the fonts used within the line. Previously, these positions were fixed to the primary font's metrics, which caused decorations to be misaligned or cut through taller fallback characters.
+- **Text Direction**: Fixed RTL text rendering where complex ligatures were broken and diacritics misaligned. HarfBuzz now natively processes logical text instead of pre-reversed strings, restoring OpenType GSUB/GPOS features.
+- **Text Layout**: Corrected HarfBuzz Y-offset coordinate mapping to Skia's Y-axis, fixing vertically displaced Arabic diacritics.
 
 ## [2.1.1] - 2026-03-15
 
