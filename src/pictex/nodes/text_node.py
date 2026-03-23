@@ -85,9 +85,8 @@ class TextNode(Node):
 
         line_gap = self.computed_styles.line_height.get() * self.computed_styles.font_size.get()
         content_bounds = skia.Rect.MakeEmpty()
-        primary_font = self._font_manager.get_primary_font()
-        font_metrics = primary_font.getMetrics()
-        current_y = self.relative_text_bounds.top() - font_metrics.fAscent
+        first_line_ascent = self.shaped_lines[0].metrics.ascent if self.shaped_lines else 0
+        current_y = self.relative_text_bounds.top() + first_line_ascent
 
         for line in self.shaped_lines:
             # This is not correct actually... the X position should be also calculated, doing something similar that the DecorationPainter
@@ -97,13 +96,13 @@ class TextNode(Node):
                 content_bounds, 
                 self.computed_styles.underline.get(), 
                 line_bounds, 
-                current_y + font_metrics.fUnderlinePosition
+                current_y + line.metrics.underline_position
             )
             self._add_decoration_bounds(
                 content_bounds, 
                 self.computed_styles.strikethrough.get(), 
                 line_bounds, 
-                current_y + font_metrics.fStrikeoutPosition
+                current_y + line.metrics.strikeout_position
             )
             current_y += line_gap
 
