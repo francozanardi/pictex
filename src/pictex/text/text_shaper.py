@@ -3,7 +3,7 @@ from typing import List, Optional
 from .typeface_loader import TypefaceLoader
 from .font_manager import FontManager
 from .harfbuzz_shaper import HarfBuzzShaper, ShapedGlyph
-from ..models import Style, Line, TextRun
+from ..models import Style, Line, TextRun, FontMetrics
 from .bidi_processor import BiDiProcessor
 from .. import utils
 import regex
@@ -69,26 +69,28 @@ class TextShaper:
         """Handle empty lines by creating a placeholder with correct height"""
 
         primary_font = self._font_manager.get_primary_font()
+        primary_font_metrics = self._font_manager.get_font_metrics(primary_font)
         # We must give some width to the empty line, otherwise the rect bounds will be empty,
         # and it will cause issues when we will try to join the bounds of this line with the bounds of other lines (the result will ignore the empty line).
         # The width doesn't matter, it won't be rendered, but it must be greater than 0 to avoid empty bounds.
         empty_line_rect = skia.Rect.MakeWH(1, self._font_manager.get_font_height(primary_font))
-        return Line(runs=[], height=empty_line_rect.height(), width=empty_line_rect.width(), bounds=empty_line_rect)
+        return Line(
+            runs=[],
+            height=empty_line_rect.height(),
+            width=empty_line_rect.width(),
+            bounds=empty_line_rect,
+            metrics=primary_font_metrics
+        )
     
     def _create_line(self, runs: list[TextRun]) -> Line:
         line_width = 0.0
-        font_height = 0.0
         last_visual_width = 0.0
-        
-        # Calculate common baseline for entire line from primary font
-        # This ensures all runs are vertically aligned regardless of fallback fonts
-        primary_font = self._font_manager.get_primary_font()
-        common_baseline = self._calculate_baseline_offset(primary_font)
+        line_metrics = self._calculate_line_metrics(runs)
+        line_height = line_metrics.ascent + line_metrics.descent + line_metrics.leading
         
         for run in runs:
-            last_visual_width = self._shape_and_create_blob(run, common_baseline)
+            last_visual_width = self._shape_and_create_blob(run, line_metrics.ascent)
             line_width += run.width
-            font_height = max(font_height, self._font_manager.get_font_height(run.font))
 
         # Use visual_width for the last run to capture italic overhang
         bounds_width = line_width - runs[-1].width + last_visual_width if runs else line_width
@@ -96,29 +98,55 @@ class TextShaper:
         return Line(
             runs=runs,
             width=line_width,
-            height=font_height,
-            bounds=skia.Rect.MakeWH(bounds_width, font_height)
+            height=line_height,
+            bounds=skia.Rect.MakeWH(bounds_width, line_height),
+            metrics=line_metrics
         )
     
-    def _shape_and_create_blob(self, run: TextRun, baseline_y: float) -> float:
+    def _calculate_line_metrics(self, runs: list[TextRun]) -> FontMetrics:
+        """Calculate line metrics using the text runs."""
+        max_ascent = 0.0
+        max_descent = 0.0
+        max_leading = 0.0
+        underline_position = 0.0
+        strikeout_position = self._font_manager.get_font_metrics(self._font_manager.get_primary_font()).strikeout_position
+
+        for run in runs:
+            font_metrics = self._font_manager.get_font_metrics(run.font)
+            max_ascent = max(max_ascent, font_metrics.ascent)
+            max_descent = max(max_descent, font_metrics.descent)
+            max_leading = max(max_leading, font_metrics.leading)
+
+            if font_metrics.underline_position:
+                underline_position = max(underline_position, font_metrics.underline_position)
+
+        return FontMetrics(
+            ascent=max_ascent,
+            descent=max_descent,
+            leading=max_leading,
+            underline_position=underline_position,
+            strikeout_position=strikeout_position
+        )
+    
+    def _shape_and_create_blob(self, run: TextRun, line_ascent: float) -> float:
         """Shape a text run and create its blob. Returns the visual width."""
         shaped = self._hb_shaper.shape(run.text, run.font)
         run.width = shaped.width
         
         if shaped.glyphs:
-            run.blob = self._create_text_blob(shaped.glyphs, run.font, baseline_y)
+            run.blob = self._create_text_blob(shaped.glyphs, run.font, line_ascent)
         else:
             run.blob = None
         
         return shaped.visual_width
     
-    def _create_text_blob(self, glyphs: list, font: skia.Font, baseline_y: float) -> skia.TextBlob:
+    def _create_text_blob(self, glyphs: list, font: skia.Font, line_ascent: float) -> skia.TextBlob:
         import struct
         
         glyph_data = b''.join(
             struct.pack('<H', g.glyph_id) for g in glyphs
         )
-        positions = self._calculate_glyph_positions_with_offsets(glyphs, baseline_y)
+        positions = self._calculate_glyph_positions_with_offsets(glyphs, line_ascent)
         
         return skia.TextBlob.MakeFromPosText(
             glyph_data,
@@ -128,30 +156,27 @@ class TextShaper:
         )
     
     
-    def _calculate_glyph_positions_with_offsets(self, glyphs: list, baseline_y: float) -> list[tuple[float, float]]:
+    def _calculate_glyph_positions_with_offsets(self, glyphs: list, line_ascent: float) -> list[tuple[float, float]]:
         """Calculate (x, y) positions for each glyph, applying HarfBuzz offsets.
         
         Args:
             glyphs: List of shaped glyphs from HarfBuzz
-            baseline_y: Common baseline Y position for the entire line
+            line_ascent: Ascent value for the line
         """
         positions = []
         current_x = 0.0
         
         for glyph in glyphs:
             x = current_x + glyph.x_offset
-            y = baseline_y + glyph.y_offset
+            y = line_ascent + glyph.y_offset
             positions.append((x, y))
             current_x += glyph.x_advance
         
         return positions
-    
-    def _calculate_baseline_offset(self, font: skia.Font) -> float:
-        metrics = font.getMetrics()
-        return -metrics.fAscent
-    
+
     def _split_line_in_runs(self, line_text: str) -> list[TextRun]:
         primary_font = self._font_manager.get_primary_font()
+        primary_font_metrics = self._font_manager.get_font_metrics(primary_font)
         line_runs: list[TextRun] = []
         current_run_text = ""
 
@@ -161,21 +186,22 @@ class TextShaper:
                 continue
 
             if current_run_text:
-                run = TextRun(current_run_text, primary_font)
+                run = TextRun(current_run_text, primary_font, primary_font_metrics)
                 line_runs.append(run)
                 current_run_text = ""
 
             fallback_font = self._get_fallback_font_for_glyph(grapheme, primary_font)
+            fallback_font_metrics = self._font_manager.get_font_metrics(fallback_font)
             is_same_font_than_last_run = len(line_runs) > 0 and line_runs[-1].font.getTypeface() == fallback_font.getTypeface()
             if is_same_font_than_last_run:
                 # we join contiguous runs with same font
-                line_runs[-1] = TextRun(line_runs[-1].text + grapheme, fallback_font)
+                line_runs[-1] = TextRun(line_runs[-1].text + grapheme, fallback_font, fallback_font_metrics)
             else:
-                line_runs.append(TextRun(grapheme, fallback_font))
+                line_runs.append(TextRun(grapheme, fallback_font, fallback_font_metrics))
         
         # Add the last run
         if current_run_text:
-            run = TextRun(current_run_text, primary_font)
+            run = TextRun(current_run_text, primary_font, primary_font_metrics)
             line_runs.append(run)
         
         return line_runs

@@ -3,7 +3,7 @@ import os
 import struct
 from typing import List, Optional
 import warnings
-from ..models import Style, FontStyle, FontSmoothing
+from ..models import Style, FontStyle, FontSmoothing, FontMetrics
 from ..exceptions import FontNotFoundWarning
 from .typeface_loader import TypefaceLoader
 from .. import utils
@@ -13,7 +13,7 @@ class FontManager:
     def __init__(self, style: Style, font_smoothing: FontSmoothing):
         self._style = style
         self._font_smoothing = font_smoothing
-        self._font_heights: dict[str, float] = {}
+        self._font_metrics: dict[str, FontMetrics] = {}
         self._fallback_font_typefaces = self._prepare_fallbacks()
         self._primary_font = self._create_primary_font()
 
@@ -24,14 +24,29 @@ class FontManager:
         return self._fallback_font_typefaces
     
     def get_font_height(self, font: skia.Font) -> float:
-        key: str = font.getTypeface().getFamilyName() + "_" + str(font.getSize())
-        if key in self._font_heights:
-            return self._font_heights[key]
+        font_metrics = self.get_font_metrics(font)
+        return font_metrics.ascent + font_metrics.descent + font_metrics.leading
+    
+    def get_font_metrics(self, font: skia.Font) -> FontMetrics:
+        # NOTE: keep in mind we're ignoring the font style in the cache key,
+        # It could be an issue when we're using a variable typeface (like weight or slant variations) since the metrics could change.
+        # I'm not sure if `font.getSize()` is considering the variations, or it's just returning the received font size.
+
+        # We're going to disable this cache for now, since it could cause these issues, and probably 'getMetrics()' is not an expensive call.
+        # key: str = font.getTypeface().getFamilyName() + "_" + str(font.getSize())
+        # if key in self._font_metrics:
+        #     return self._font_metrics[key]
         
         font_metrics = font.getMetrics()
-        height = -font_metrics.fAscent + font_metrics.fDescent + font_metrics.fLeading
-        self._font_heights[key] = height
-        return height
+        metrics = FontMetrics(
+            ascent=abs(font_metrics.fAscent),
+            descent=font_metrics.fDescent,
+            leading=font_metrics.fLeading,
+            underline_position=font_metrics.fUnderlinePosition,
+            strikeout_position=font_metrics.fStrikeoutPosition
+        )
+        # self._font_metrics[key] = metrics
+        return metrics
     
     def _create_primary_font(self) -> skia.Font:
         font_path_or_name = self._style.font_family.get()
