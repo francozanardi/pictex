@@ -37,6 +37,9 @@ class TextShaper:
         If max_width is provided, performs word wrapping.
         """
 
+        if not text:
+            return []
+
         shaped_lines: list[Line] = []
         
         for line_text in text.split('\n'):
