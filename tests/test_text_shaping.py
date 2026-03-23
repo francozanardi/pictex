@@ -1,5 +1,5 @@
 from pictex import Canvas, NamedColor
-from .conftest import FONT_WITH_LIGATURES_PATH
+from .conftest import FONT_WITH_LIGATURES_PATH, VAZIRMATN_FONT_PATH
 
 # TODO: vector image is actually not working for ligatures
 def test_ligature_rendering(file_regression, render_engine):
@@ -151,4 +151,29 @@ def test_multi_font_metrics_and_decorations(file_regression, render_engine):
     )
     render_func, check_func = render_engine
     image = render_func(canvas, "Hello World 🛒🧗🚚")
+    check_func(file_regression, image)
+
+def test_contextual_joining_across_font_runs(file_regression, render_engine):
+    """
+    Scripts like Arabic form contextual joining shapes (initial, medial, final,
+    isolated) based on neighboring characters. When a word is split across
+    multiple font runs — because one character isn't supported by the primary
+    font and falls back to another — each run must still be shaped with the
+    full word as context so characters at run boundaries take the correct
+    joined form instead of rendering as isolated glyphs.
+
+    "ڥارسا" with Vazirmatn (primary) + DejaVu Sans (fallback): "ڥ" (U+06A5)
+    is not in Vazirmatn, creating a run boundary mid-word.
+    """
+    canvas = (
+        Canvas()
+        .font_family(VAZIRMATN_FONT_PATH)
+        .font_fallbacks("DejaVu Sans")
+        .font_size(100)
+        .color(NamedColor.BLACK)
+        .background_color(NamedColor.WHITE)
+        .padding(20)
+    )
+    render_func, check_func = render_engine
+    image = render_func(canvas, "ڥارسا")
     check_func(file_regression, image)

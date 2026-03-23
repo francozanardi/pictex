@@ -98,10 +98,8 @@ class TextShaper:
         line_height = line_metrics.ascent + line_metrics.descent + line_metrics.leading
         
         for run in runs:
-            print(f"run text: {run.text} | font name: {run.font.getTypeface().getFamilyName()}")
             last_visual_width = self._shape_and_create_blob(run, line_metrics.ascent)
             line_width += run.width
-        print()
 
         # Use visual_width for the last run to capture italic overhang
         bounds_width = line_width - runs[-1].width + last_visual_width if runs else line_width
