@@ -28,9 +28,14 @@ class TextRun:
     text: str
     font: skia.Font
     metrics: FontMetrics
-    direction: TextDirection
+    bidi_fragment: BiDiFragment
+    fragment_offset: int = 0
     blob: Optional[skia.TextBlob] = None
     width: float = 0.0
+
+    @property
+    def direction(self) -> TextDirection:
+        return self.bidi_fragment.direction
 
 @dataclass
 class Line:
