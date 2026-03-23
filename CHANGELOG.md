@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Contextual Shaping Across Font Runs**: Scripts like Arabic and Indic that rely on contextual joining (e.g., initial/medial/final character forms) now shape correctly even when a word is split across multiple font runs due to font fallback. Previously, each run was shaped in isolation, causing characters at run boundaries to render in their disconnected (isolated) form instead of the correct joined form.
 - **Text Wrapping**: Text nodes with first line empty were not calculating their height correctly.
 - **Line Height Calculation**: Line height calculation is now based on the maximum metrics (ascent, descent, leading) of all fonts used in a single line. Previously, it simply used the primary font's metrics, which could result in wrong line heights when using fallback fonts or multiple fonts in the same line.
 - **Baseline Alignment**: The text baseline within a line is now determined by the highest ascent of all fonts present in that line. Previously, the baseline was dictated solely by the primary font, causing vertical misalignment when rendering taller fallback fonts (like emojis).

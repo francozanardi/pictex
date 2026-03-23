@@ -139,7 +139,7 @@ class TextShaper:
     
     def _shape_and_create_blob(self, run: TextRun, line_ascent: float) -> float:
         """Shape a text run and create its blob. Returns the visual width."""
-        shaped = self._hb_shaper.shape(run.text, run.font, run.direction)
+        shaped = self._hb_shaper.shape_text_run(run)
         run.width = shaped.width
         
         if shaped.glyphs:
@@ -164,7 +164,6 @@ class TextShaper:
             encoding=skia.TextEncoding.kGlyphID
         )
     
-    
     def _calculate_glyph_positions_with_offsets(self, glyphs: list, line_ascent: float) -> list[tuple[float, float]]:
         """Calculate (x, y) positions for each glyph, applying HarfBuzz offsets.
         
@@ -188,29 +187,40 @@ class TextShaper:
         primary_font_metrics = self._font_manager.get_font_metrics(primary_font)
         line_runs: list[TextRun] = []
         current_run_text = ""
+        current_run_start = 0
+        char_index = 0
 
         for grapheme in regex.findall(r"\X", fragment.text):
             if utils.is_grapheme_supported_for_typeface(grapheme, primary_font.getTypeface()):
                 current_run_text += grapheme
+                char_index += len(grapheme)
                 continue
 
             if current_run_text:
-                run = TextRun(current_run_text, primary_font, primary_font_metrics, fragment.direction)
+                run = TextRun(current_run_text, primary_font, primary_font_metrics, fragment,
+                              fragment_offset=current_run_start)
                 line_runs.append(run)
                 current_run_text = ""
+                current_run_start = char_index
 
             fallback_font = self._get_fallback_font_for_glyph(grapheme, primary_font)
             fallback_font_metrics = self._font_manager.get_font_metrics(fallback_font)
             is_same_font_than_last_run = len(line_runs) > 0 and line_runs[-1].font.getTypeface() == fallback_font.getTypeface()
             if is_same_font_than_last_run:
                 # we join contiguous runs with same font
-                line_runs[-1] = TextRun(line_runs[-1].text + grapheme, fallback_font, fallback_font_metrics, fragment.direction)
+                line_runs[-1] = TextRun(line_runs[-1].text + grapheme, fallback_font, fallback_font_metrics, fragment,
+                                        fragment_offset=line_runs[-1].fragment_offset)
             else:
-                line_runs.append(TextRun(grapheme, fallback_font, fallback_font_metrics, fragment.direction))
+                line_runs.append(TextRun(grapheme, fallback_font, fallback_font_metrics, fragment,
+                                         fragment_offset=current_run_start))
+            
+            char_index += len(grapheme)
+            current_run_start = char_index
         
         # Add the last run
         if current_run_text:
-            run = TextRun(current_run_text, primary_font, primary_font_metrics, fragment.direction)
+            run = TextRun(current_run_text, primary_font, primary_font_metrics, fragment,
+                          fragment_offset=current_run_start)
             line_runs.append(run)
         
         return line_runs
@@ -307,7 +317,7 @@ class TextShaper:
             char_offset = fragment.start_index
             
             for run in runs:
-                shaped = self._hb_shaper.shape(run.text, run.font, run.direction)
+                shaped = self._hb_shaper.shape_text_run(run)
                 for glyph in shaped.glyphs:
                     all_glyphs.append(ShapedGlyph(
                         glyph_id=glyph.glyph_id,

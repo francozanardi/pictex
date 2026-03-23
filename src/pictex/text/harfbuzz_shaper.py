@@ -3,7 +3,7 @@ import uharfbuzz as hb
 from typing import NamedTuple, Optional
 from dataclasses import dataclass
 from .skia_table_loader import SkiaTableLoader
-from ..models.public.text_direction import TextDirection
+from ..models import TextDirection, TextRun
 
 
 @dataclass
@@ -36,29 +36,46 @@ class HarfBuzzShaper:
     def __init__(self) -> None:
         self._font_cache: dict[tuple[int, float], tuple[hb.Font, int, object]] = {}
     
-    def shape(self, text: str, font: skia.Font, direction: TextDirection = TextDirection.LTR) -> ShapedText:
+    def shape_text_run(self, run: TextRun) -> ShapedText:
         """
-        Shape text using HarfBuzz.
-        
+        Shape a TextRun using HarfBuzz.
+
+        The full bidi fragment text is passed as context so that HarfBuzz can
+        apply cross-run shaping rules (e.g. Arabic ligatures at run boundaries).
+
         Args:
-            text: The text to shape
-            font: The Skia font to use for shaping
-            direction: The logical direction of the text
-        
+            run: The TextRun to shape, carrying text, font, direction, and
+                 its position within the parent BiDiFragment.
+
         Returns:
-            ShapedText with glyphs and total width
+            ShapedText with glyphs and total width.
         """
-        hb_font, upem = self._get_or_create_hb_font(font)
-        font_size = font.getSize()
-        
-        buffer = self._create_buffer(text, direction)
+        hb_font, upem = self._get_or_create_hb_font(run.font)
+        font_size = run.font.getSize()
+
+        buffer = self._create_buffer(
+            run.text, run.direction,
+            full_text=run.bidi_fragment.text,
+            start_index=run.fragment_offset,
+        )
         hb.shape(hb_font, buffer)
-        
-        return self._process_shaped_buffer(buffer, hb_font, font_size, upem, direction)
+
+        return self._process_shaped_buffer(
+            buffer, hb_font, font_size, upem, run.direction, run.fragment_offset
+        )
     
-    def _create_buffer(self, text: str, direction: TextDirection) -> hb.Buffer:
+    def _create_buffer(
+        self, 
+        text: str, 
+        direction: TextDirection, 
+        full_text: Optional[str] = None, 
+        start_index: int = 0
+    ) -> hb.Buffer:
         buffer = hb.Buffer()
-        buffer.add_str(text)
+        if full_text is not None:
+            buffer.add_str(full_text, start_index, len(text))
+        else:
+            buffer.add_str(text)
         buffer.guess_segment_properties()
         buffer.direction = direction.value
         return buffer
@@ -69,7 +86,8 @@ class HarfBuzzShaper:
         hb_font: hb.Font,
         font_size: float, 
         upem: int,
-        direction: TextDirection
+        direction: TextDirection,
+        cluster_offset: int = 0
     ) -> ShapedText:
         """Convert HarfBuzz buffer results to ShapedText."""
         infos = buffer.glyph_infos
@@ -79,7 +97,7 @@ class HarfBuzzShaper:
         total_width = 0.0
         
         for info, pos in zip(infos, positions):
-            glyph = self._create_shaped_glyph(info, pos, font_size, upem)
+            glyph = self._create_shaped_glyph(info, pos, font_size, upem, cluster_offset)
             glyphs.append(glyph)
             total_width += glyph.x_advance
         
@@ -92,7 +110,8 @@ class HarfBuzzShaper:
         info,
         pos,
         font_size: float,
-        upem: int
+        upem: int,
+        cluster_offset: int = 0
     ) -> ShapedGlyph:
         """Convert HarfBuzz font units to points.
 
@@ -103,7 +122,7 @@ class HarfBuzzShaper:
         """
         return ShapedGlyph(
             glyph_id=info.codepoint,
-            cluster=info.cluster,
+            cluster=info.cluster - cluster_offset,
             x_advance=(pos.x_advance * font_size) / upem,
             y_advance=(pos.y_advance * font_size) / upem,
             x_offset=(pos.x_offset * font_size) / upem,

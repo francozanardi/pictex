@@ -10,6 +10,7 @@ STATIC_FONT_PATH = str(ASSETS_DIR / "Lato-BoldItalic.ttf") # No emojies and japa
 VARIABLE_WGHT_FONT_PATH = str(ASSETS_DIR / "Oswald-VariableFont_wght.ttf")
 FONT_WITH_LIGATURES_PATH = str(ASSETS_DIR / "FiraCode-Medium.ttf") # Characters "->" and "=="
 JAPANESE_FONT_PATH = str(ASSETS_DIR / "NotoSansJP-Regular.ttf")
+VAZIRMATN_FONT_PATH = str(ASSETS_DIR / "Vazirmatn-Regular.ttf")  # Arabic font with ligature support (OFL licensed)
 IMAGE_PATH = str(ASSETS_DIR / "image.png")
 
 def check_images_match(image_regression, image: Image):
