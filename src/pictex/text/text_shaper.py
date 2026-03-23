@@ -66,10 +66,11 @@ class TextShaper:
         """Handle empty lines by creating a placeholder with correct height"""
 
         primary_font = self._font_manager.get_primary_font()
-        line = Line(runs=[], height=0, width=0, bounds=skia.Rect.MakeEmpty())
-        font_metrics = primary_font.getMetrics()
-        line.bounds = skia.Rect.MakeLTRB(0, font_metrics.fAscent, 0, font_metrics.fDescent)
-        return line
+        # We must give some width to the empty line, otherwise the rect bounds will be empty,
+        # and it will cause issues when we will try to join the bounds of this line with the bounds of other lines (the result will ignore the empty line).
+        # The width doesn't matter, it won't be rendered, but it must be greater than 0 to avoid empty bounds.
+        empty_line_rect = skia.Rect.MakeWH(1, self._font_manager.get_font_height(primary_font))
+        return Line(runs=[], height=empty_line_rect.height(), width=empty_line_rect.width(), bounds=empty_line_rect)
     
     def _create_line(self, runs: list[TextRun]) -> Line:
         line_width = 0.0

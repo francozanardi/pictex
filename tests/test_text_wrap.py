@@ -205,3 +205,18 @@ def test_two_sibling_texts_using_width_limited_by_ancestor(file_regression, rend
     canvas = Canvas().background_color("#DAE0E6").padding(40)
     image = render_func(canvas, container)
     check_func(file_regression, image)
+
+def test_empty_lines(file_regression, render_engine):
+    """Test that empty lines are included in intrinsic height calculations.
+
+    Empty lines should contribute to the overall height of the text block,
+    even if they have no visible glyphs. This ensures that manual line breaks
+    (e.g. "\n") create appropriate spacing.
+    """
+    render_func, check_func = render_engine
+
+    text_with_empty_lines = Text("\nThis is the second line\n\nThis is the fourth line\n").font_size(30).color("blue")
+    canvas = Canvas().background_color("white")
+
+    image = render_func(canvas, text_with_empty_lines)
+    check_func(file_regression, image)
