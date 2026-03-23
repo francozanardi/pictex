@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- **Text Wrapping**: Text nodes with first line empty were not calculating their height correctly..
+- **Text Wrapping**: Text nodes with first line empty were not calculating their height correctly.
+- **Text Direction**: Fixed RTL text rendering where complex ligatures were broken and diacritics misaligned. HarfBuzz now natively processes logical text instead of pre-reversed strings, restoring OpenType GSUB/GPOS features.
+- **Text Layout**: Corrected HarfBuzz Y-offset coordinate mapping to Skia's Y-axis, fixing vertically displaced Arabic diacritics.
 
 ## [2.1.1] - 2026-03-15
 

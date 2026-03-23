@@ -1,6 +1,18 @@
 from dataclasses import dataclass
 from typing import Optional
 import skia
+from ..public.text_direction import TextDirection
+
+@dataclass
+class BiDiFragment:
+    """
+    A chunk of text sharing a uniform text direction.
+    It represents a logical piece of the original text, sequenced
+    in its final visual left-to-right drawing order.
+    """
+    text: str
+    direction: TextDirection
+    start_index: int
 
 @dataclass(frozen=True)
 class FontMetrics:
@@ -16,6 +28,7 @@ class TextRun:
     text: str
     font: skia.Font
     metrics: FontMetrics
+    direction: TextDirection
     blob: Optional[skia.TextBlob] = None
     width: float = 0.0
 

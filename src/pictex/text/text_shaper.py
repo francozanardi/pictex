@@ -3,7 +3,7 @@ from typing import List, Optional
 from .typeface_loader import TypefaceLoader
 from .font_manager import FontManager
 from .harfbuzz_shaper import HarfBuzzShaper, ShapedGlyph
-from ..models import Style, Line, TextRun, FontMetrics
+from ..models import Style, Line, TextRun, FontMetrics, TextDirection, BiDiFragment
 from .bidi_processor import BiDiProcessor
 from .. import utils
 import regex
@@ -47,20 +47,29 @@ class TextShaper:
                 shaped_lines.append(self._create_empty_line())
                 continue
             
-            direction = self._style.direction.get()
-            visual_text = self._bidi_processor.process(line_text, direction)
             if max_width is not None:
-                wrapped_lines = self._wrap_line_to_width(visual_text, max_width)
-                for wrapped_line_text in wrapped_lines:
-                    if not wrapped_line_text:
-                        shaped_lines.append(self._create_empty_line())
-                        continue
-                    wrapped_runs: list[TextRun] = self._split_line_in_runs(wrapped_line_text)
-                    line = self._create_line(wrapped_runs)
-                    shaped_lines.append(line)
+                wrapped_lines = self._wrap_line_to_width(line_text, max_width)
             else:
-                runs: list[TextRun] = self._split_line_in_runs(visual_text)
-                line = self._create_line(runs)
+                wrapped_lines = [line_text]
+                
+            for wrapped_line_text in wrapped_lines:
+                if not wrapped_line_text:
+                    shaped_lines.append(self._create_empty_line())
+                    continue
+                
+                direction = self._style.direction.get()
+                bidi_fragments = self._bidi_processor.get_bidi_fragments(wrapped_line_text, direction)
+                
+                runs_for_line: list[TextRun] = []
+                for fragment in bidi_fragments:
+                    text_runs = self._split_bidi_fragment(fragment)
+                    
+                    if fragment.direction == TextDirection.RTL:
+                        text_runs.reverse()
+                        
+                    runs_for_line.extend(text_runs)
+                    
+                line = self._create_line(runs_for_line)
                 shaped_lines.append(line)
         
         return shaped_lines
@@ -130,7 +139,7 @@ class TextShaper:
     
     def _shape_and_create_blob(self, run: TextRun, line_ascent: float) -> float:
         """Shape a text run and create its blob. Returns the visual width."""
-        shaped = self._hb_shaper.shape(run.text, run.font)
+        shaped = self._hb_shaper.shape(run.text, run.font, run.direction)
         run.width = shaped.width
         
         if shaped.glyphs:
@@ -168,25 +177,25 @@ class TextShaper:
         
         for glyph in glyphs:
             x = current_x + glyph.x_offset
-            y = line_ascent + glyph.y_offset
+            y = line_ascent - glyph.y_offset
             positions.append((x, y))
             current_x += glyph.x_advance
         
         return positions
 
-    def _split_line_in_runs(self, line_text: str) -> list[TextRun]:
+    def _split_bidi_fragment(self, fragment: BiDiFragment) -> list[TextRun]:
         primary_font = self._font_manager.get_primary_font()
         primary_font_metrics = self._font_manager.get_font_metrics(primary_font)
         line_runs: list[TextRun] = []
         current_run_text = ""
 
-        for grapheme in regex.findall(r"\X", line_text):
+        for grapheme in regex.findall(r"\X", fragment.text):
             if utils.is_grapheme_supported_for_typeface(grapheme, primary_font.getTypeface()):
                 current_run_text += grapheme
                 continue
 
             if current_run_text:
-                run = TextRun(current_run_text, primary_font, primary_font_metrics)
+                run = TextRun(current_run_text, primary_font, primary_font_metrics, fragment.direction)
                 line_runs.append(run)
                 current_run_text = ""
 
@@ -195,13 +204,13 @@ class TextShaper:
             is_same_font_than_last_run = len(line_runs) > 0 and line_runs[-1].font.getTypeface() == fallback_font.getTypeface()
             if is_same_font_than_last_run:
                 # we join contiguous runs with same font
-                line_runs[-1] = TextRun(line_runs[-1].text + grapheme, fallback_font, fallback_font_metrics)
+                line_runs[-1] = TextRun(line_runs[-1].text + grapheme, fallback_font, fallback_font_metrics, fragment.direction)
             else:
-                line_runs.append(TextRun(grapheme, fallback_font, fallback_font_metrics))
+                line_runs.append(TextRun(grapheme, fallback_font, fallback_font_metrics, fragment.direction))
         
         # Add the last run
         if current_run_text:
-            run = TextRun(current_run_text, primary_font, primary_font_metrics)
+            run = TextRun(current_run_text, primary_font, primary_font_metrics, fragment.direction)
             line_runs.append(run)
         
         return line_runs
@@ -289,22 +298,26 @@ class TextShaper:
         Cluster values are reindexed to absolute character positions in the
         full text so callers can map glyphs back to token boundaries.
         """
-        runs = self._split_line_in_runs(text)
+        direction = self._style.direction.get()
+        bidi_fragments = self._bidi_processor.get_bidi_fragments(text, direction)
         all_glyphs: list[ShapedGlyph] = []
-        char_offset = 0
 
-        for run in runs:
-            shaped = self._hb_shaper.shape(run.text, run.font)
-            for glyph in shaped.glyphs:
-                all_glyphs.append(ShapedGlyph(
-                    glyph_id=glyph.glyph_id,
-                    cluster=glyph.cluster + char_offset,
-                    x_advance=glyph.x_advance,
-                    y_advance=glyph.y_advance,
-                    x_offset=glyph.x_offset,
-                    y_offset=glyph.y_offset,
-                ))
-            char_offset += len(run.text)
+        for fragment in bidi_fragments:
+            runs = self._split_bidi_fragment(fragment)
+            char_offset = fragment.start_index
+            
+            for run in runs:
+                shaped = self._hb_shaper.shape(run.text, run.font, run.direction)
+                for glyph in shaped.glyphs:
+                    all_glyphs.append(ShapedGlyph(
+                        glyph_id=glyph.glyph_id,
+                        cluster=glyph.cluster + char_offset,
+                        x_advance=glyph.x_advance,
+                        y_advance=glyph.y_advance,
+                        x_offset=glyph.x_offset,
+                        y_offset=glyph.y_offset,
+                    ))
+                char_offset += len(run.text)
 
         return all_glyphs
 
