@@ -69,6 +69,22 @@ def test_arabic_text_shaping(file_regression, render_engine):
     image = render_func(canvas, "كتاب")
     check_func(file_regression, image)
 
+def test_arabic_text_shaping_with_diacritics(file_regression, render_engine):
+    """
+    Tests that Arabic text with diacritics is properly shaped and rendered.
+    The diacritics should be correctly positioned above the base characters.
+    """
+    canvas = (
+        Canvas()
+        .font_size(105)
+        .color(NamedColor.BLUE)
+        .background_color(NamedColor.BEIGE)
+        .padding(25)
+    )
+    render_func, check_func = render_engine
+    image = render_func(canvas, "کِلْمُنِوهّی")
+    check_func(file_regression, image)
+
 # TODO: vector image is actually not working for this complex emoji
 def test_family_emoji_with_zwj(file_regression, render_engine):
     """
