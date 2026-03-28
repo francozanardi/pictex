@@ -23,10 +23,6 @@ class FontManager:
     def get_fallback_font_typefaces(self) -> List[skia.Typeface]:
         return self._fallback_font_typefaces
     
-    def get_font_height(self, font: skia.Font) -> float:
-        font_metrics = self.get_font_metrics(font)
-        return font_metrics.ascent + font_metrics.descent + font_metrics.leading
-    
     def get_font_metrics(self, font: skia.Font) -> FontMetrics:
         # NOTE: keep in mind we're ignoring the font style in the cache key,
         # It could be an issue when we're using a variable typeface (like weight or slant variations) since the metrics could change.

@@ -13,6 +13,7 @@ from .paint_source import PaintSource
 from .decoration import TextDecoration
 from .color import SolidColor
 from .size import SizeValue
+from .line_height import LineHeight
 
 
 @dataclass
@@ -27,7 +28,7 @@ class Style:
     font_size: StyleProperty[float] = field(default_factory=lambda: StyleProperty(50))
     font_weight: StyleProperty[FontWeight] = field(default_factory=lambda: StyleProperty(FontWeight.NORMAL))
     font_style: StyleProperty[FontStyle] = field(default_factory=lambda: StyleProperty(FontStyle.NORMAL))
-    line_height: StyleProperty[float] = field(default_factory=lambda: StyleProperty(1.0))  # Multiplier for the font size, like in CSS
+    line_height: StyleProperty[LineHeight] = field(default_factory=lambda: StyleProperty(LineHeight.auto()))
     text_align: StyleProperty[Optional[TextAlign]] = field(default_factory=lambda: StyleProperty(None))
     color: StyleProperty[PaintSource] = field(default_factory=lambda: StyleProperty(SolidColor(0, 0, 0)))
     text_shadows: StyleProperty[list[Shadow]] = field(default_factory=lambda: StyleProperty([]))

@@ -1,19 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="107"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="112"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('Lato-BoldItalic.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="400" height="107" />
-	<rect fill="#FFC" width="400" height="107" />
-	<rect fill="#E6FFE6" x="10" y="10" width="266" height="87" />
-	<rect fill="#E6E6FF" x="18" y="18" width="200" height="71" />
-	<rect fill="#FFE6E6" x="26" y="26" width="166" height="55" />
+	<rect fill-opacity="0" width="400" height="112" />
+	<rect fill="#FFC" width="400" height="112" />
+	<rect fill="#E6FFE6" x="10" y="10" width="266" height="92" />
+	<rect fill="#E6E6FF" x="18" y="18" width="200" height="76" />
+	<rect fill="#FFE6E6" x="26" y="26" width="166" height="60" />
 	<text font-size="12" font-style="italic" font-family="pictex-Lato" x="34, 40.576, 47.085999, 50.176003, 54.886002, 57.202, 60.292, 65.001999, 67.318001, 73.528, 75.844002, 81.610001, 87.285995, 91.647995, 97.612, 99.928001, 102.922, 109.042, 115.504, 121.324, 123.64, 128.35001, 134.026, 140.48801, 144.742, 150.418, 156.88, 162.106, " y="45.844002, ">
 			This is a very long sentence
 	</text>
-	<text font-size="12" font-style="italic" font-family="pictex-Lato" x="34, 38.254002, 44.764, 50.973999, 55.228001, 57.543999, 66.346001, 69.436005, 72.43, 75.423996, 77.740005, 84.208, 89.884003, 99.370003, 105.49, 111.952, 116.662, 120.916, 125.038, 131.248, 135.502, 141.17801, 143.494, 147.748, 153.088, 159.12399, " y="57.844002, ">
+	<text font-size="12" font-style="italic" font-family="pictex-Lato" x="34, 38.254002, 44.764, 50.973999, 55.228001, 57.543999, 66.346001, 69.436005, 72.43, 75.423996, 77.740005, 84.208, 89.884003, 99.370003, 105.49, 111.952, 116.662, 120.916, 125.038, 131.248, 135.502, 141.17801, 143.494, 147.748, 153.088, 159.12399, " y="60.244003, ">
 			that will demonstrate text
 	</text>
-	<text font-size="12" font-style="italic" font-family="pictex-Lato" x="34, 42.802002, 46.924, 53.134003, 59.493999, 65.854004, 68.944, 75.405998, 81.225998, 83.542, 89.998001, 95.673996, 102.184, 108.394, 114.358, 117.448, 123.568, 127.93, 130.246, 139.048, 145.558, 151.23401, 157.696, 160.01199, " y="69.844002, ">
+	<text font-size="12" font-style="italic" font-family="pictex-Lato" x="34, 42.802002, 46.924, 53.134003, 59.493999, 65.854004, 68.944, 75.405998, 81.225998, 83.542, 89.998001, 95.673996, 102.184, 108.394, 114.358, 117.448, 123.568, 127.93, 130.246, 139.048, 145.558, 151.23401, 157.696, 160.01199, " y="74.643997, ">
 			wrapping behavior when p
 	</text>
 </svg>

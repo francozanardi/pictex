@@ -8,7 +8,7 @@
 		</radialGradient>
 	</defs>
 	<rect fill="url(#gradient_0)" width="494" height="198" />
-	<text fill="white" font-size="120" font-family="Arial" x="30, 116.66016, 196.69922, 283.35938, 316.69922, 396.73828, " y="138.63281, ">
+	<text fill="white" font-size="120" font-family="Arial" x="30, 116.66016, 196.69922, 283.35938, 316.69922, 396.73828, " y="140.5957, ">
 			RADIAL
 	</text>
 </svg>

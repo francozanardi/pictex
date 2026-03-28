@@ -1,13 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="440" height="107"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="113"><defs><style type="text/css">@font-face {
     font-family: 'pictex-InterVariable';
     src: url('InterVariable.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="440" height="107" />
-	<rect fill="#EEF" x="20" y="20" width="400" height="67" />
+	<rect fill-opacity="0" width="440" height="113" />
+	<rect fill="#EEF" x="20" y="20" width="400" height="73" />
 	<text font-size="30" font-family="pictex-InterVariable" x="150.57129, 169.93652, 187.67578, 194.94141, 210.77637, 219.21387, 228.73535, 245.55176, 262.51465, 272.3291, 280.7666, 296.60156, 314.34082, 332.3291, 350.06836, 357.33398, 375.70312, 384.14062, 402.50977, " y="49.0625, ">
 			This text should be
 	</text>
-	<text font-size="30" font-family="pictex-InterVariable" x="42.070312, 53.657227, 60.922852, 79.321289, 97.060547, 106.28906, 120.08789, 136.93359, 144.19922, 151.46484, 169.86328, 187.58789, 205.07812, 223.44727, 231.88477, 248.73047, 266.46973, 275.99121, 293.97949, 320.25879, 337.10449, 346.91895, 354.18457, 371.61621, 388.46191, 395.72754, 403.13965, " y="79.0625, ">
+	<text font-size="30" font-family="pictex-InterVariable" x="42.070312, 53.657227, 60.922852, 79.321289, 97.060547, 106.28906, 120.08789, 136.93359, 144.19922, 151.46484, 169.86328, 187.58789, 205.07812, 223.44727, 231.88477, 248.73047, 266.46973, 275.99121, 293.97949, 320.25879, 337.10449, 346.91895, 354.18457, 371.61621, 388.46191, 395.72754, 403.13965, " y="85.361328, ">
 			right-aligned automatically
 	</text>
 </svg>

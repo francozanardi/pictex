@@ -1,36 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="300" height="492"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="554"><defs><style type="text/css">@font-face {
     font-family: 'pictex-InterVariable';
     src: url('InterVariable.ttf');
 }@font-face {
     font-family: 'pictex-InterVariable';
     src: url('InterVariable.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="300" height="492" />
+	<rect fill-opacity="0" width="300" height="554" />
 	<rect fill="#ECF0F1" width="300" height="200" />
-	<rect fill="#D35400" x="20" y="20" width="130" height="231" />
+	<rect fill="#D35400" x="20" y="20" width="130" height="262" />
 	<text font-size="50" font-family="pictex-InterVariable" x="30, 59.663086, 91.206055, " y="78.4375, ">
 			50%
 	</text>
-	<text font-size="50" font-family="pictex-InterVariable" x="30, 70.917969, 83.027344, 114.375, 130.73242, 160.29785, " y="128.4375, ">
+	<text font-size="50" font-family="pictex-InterVariable" x="30, 70.917969, 83.027344, 114.375, 130.73242, 160.29785, " y="138.93555, ">
 			width,
 	</text>
-	<text font-size="50" font-family="pictex-InterVariable" x="30, 73.798828, 85.908203, " y="178.4375, ">
+	<text font-size="50" font-family="pictex-InterVariable" x="30, 73.798828, 85.908203, " y="199.43359, ">
 			min
 	</text>
-	<text font-size="50" font-family="pictex-InterVariable" x="30, 50.336914, 81.879883, 113.42285, 142.91504, " y="228.4375, ">
+	<text font-size="50" font-family="pictex-InterVariable" x="30, 50.336914, 81.879883, 113.42285, 142.91504, " y="259.93164, ">
 			100px
 	</text>
-	<rect fill="#2C3E50" x="20" y="261" width="80" height="231" />
-	<text font-size="50" font-family="pictex-InterVariable" x="30, 59.663086, 91.206055, " y="319.4375, ">
+	<rect fill="#2C3E50" x="20" y="292" width="80" height="262" />
+	<text font-size="50" font-family="pictex-InterVariable" x="30, 59.663086, 91.206055, " y="350.4375, ">
 			50%
 	</text>
-	<text font-size="50" font-family="pictex-InterVariable" x="30, 70.917969, 83.027344, 114.375, 130.73242, 160.29785, " y="369.4375, ">
+	<text font-size="50" font-family="pictex-InterVariable" x="30, 70.917969, 83.027344, 114.375, 130.73242, 160.29785, " y="410.93555, ">
 			width,
 	</text>
-	<text font-size="50" font-family="pictex-InterVariable" x="30, 73.798828, 101.875, " y="419.4375, ">
+	<text font-size="50" font-family="pictex-InterVariable" x="30, 73.798828, 101.875, " y="471.43359, ">
 			max
 	</text>
-	<text font-size="50" font-family="pictex-InterVariable" x="30, 60.932617, 92.475586, 121.96777, " y="469.4375, ">
+	<text font-size="50" font-family="pictex-InterVariable" x="30, 60.932617, 92.475586, 121.96777, " y="531.93164, ">
 			80px
 	</text>
 </svg>
