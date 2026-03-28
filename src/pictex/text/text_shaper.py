@@ -86,7 +86,6 @@ class TextShaper:
         """Handle empty lines by creating a placeholder with correct height"""
 
         primary_font = self._font_manager.get_primary_font()
-        primary_font_metrics = self._font_manager.get_font_metrics(primary_font)
         line_metrics = self._calculate_line_metrics([primary_font])
         
         # We must give some width to the empty line, otherwise the rect bounds will be empty,
@@ -98,7 +97,7 @@ class TextShaper:
             height=empty_line_rect.height(),
             width=empty_line_rect.width(),
             bounds=empty_line_rect,
-            metrics=primary_font_metrics
+            metrics=line_metrics
         )
     
     def _create_line(self, runs: list[TextRun]) -> Line:
