@@ -183,7 +183,7 @@ def test_cjk_text_wraps_within_fixed_width(file_regression, render_engine):
         "これはテスト用の日本語テキストです。文字ごとに改行できるか確認します。"
     ).font_size(30).color("blue")
 
-    container = Column(cjk_text).font_family(JAPANESE_FONT_PATH).size(width=512, height=128).padding(10)
+    container = Column(cjk_text).font_family(JAPANESE_FONT_PATH).width(512).padding(10)
 
     canvas = Canvas().background_color("white")
     image = render_func(canvas, container)

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="265" height="320">
+	<rect fill-opacity="0" width="265" height="320" />
+	<rect fill="#FFC0CB" width="265" height="320" />
+	<rect fill="none" stroke="red" stroke-width="10" stroke-miterlimit="4" x="5" y="5" width="255" height="310" />
+	<text font-size="100" font-family="Arial" x="10, 65.615234, 121.23047, 187.92969, " y="119.66797, ">
+			pgÝÁ
+	</text>
+	<text font-size="100" font-family="Arial" x="10, 76.699219, 143.39844, 199.01367, " y="269.66797, ">
+			ÝÁpg
+	</text>
+</svg>
