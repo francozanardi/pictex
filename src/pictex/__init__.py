@@ -36,6 +36,7 @@ __all__ = [
     "Border", "BorderStyle", "BorderRadiusValue", "BorderRadius",
     "RenderNode",
     "NodeType",
+    "LineHeight", "LineHeightMode",
 
     "BitmapImage",
     "VectorImage",

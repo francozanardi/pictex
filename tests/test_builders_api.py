@@ -45,7 +45,7 @@ def test_builders_fluent_api_and_style_building():
         assert style.font_size == 50
         assert style.font_weight == FontWeight.BOLD
         assert style.font_style == FontStyle.ITALIC
-        assert style.line_height == 1.5
+        assert style.line_height == LineHeight.from_multiplier(1.5)
         assert style.text_align == TextAlign('right')
         assert style.color == SolidColor.from_str("#FF0000")
         assert style.text_shadows == [Shadow([1, 1], 1, SolidColor.from_str('black')),
