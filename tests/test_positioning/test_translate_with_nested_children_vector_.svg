@@ -10,7 +10,7 @@
 	<text transform="translate(37 0)" font-size="50" font-family="pictex-InterVariable" x="0, 49.267578, 61.376953, 77.734375, 107.2998, 137.28027, 166.8457, " y="48.4375, ">
 			Without
 	</text>
-	<text transform="translate(37 0)" font-size="50" font-family="pictex-InterVariable" x="0, 16.357422, 35.180664, 63.256836, 92.797852, 119.18945, 131.29883, 159.375, 175.24414, 204.39453, 218.45703, 247.02148, 276.58691, 288.69629, 300.80566, " y="98.4375, ">
+	<text transform="translate(37 0)" font-size="50" font-family="pictex-InterVariable" x="0, 16.357422, 35.180664, 63.256836, 92.797852, 119.18945, 131.29883, 159.375, 175.24414, 204.39453, 218.45703, 247.02148, 276.58691, 288.69629, 300.80566, " y="108.93555, ">
 			translate child
 	</text>
 	<rect fill="#9B59B6" transform="translate(37 0)" x="-37" y="159" width="474" height="82" />

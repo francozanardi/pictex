@@ -4,11 +4,11 @@
 }</style></defs>
 	<rect fill-opacity="0" width="500" height="200" />
 	<rect fill="#ECF0F1" width="500" height="200" />
-	<rect fill="#34495E" x="24" y="20" width="452" height="131" />
+	<rect fill="#34495E" x="24" y="20" width="452" height="141" />
 	<text fill="white" font-size="50" font-family="pictex-InterVariable" x="34, 70.523438, 99.673828, 129.21484, 145.08398, 174.23438, 192.22754, 221.37793, 251.99316, 266.05566, 296.03613, 325.57715, 339.63965, 369.30273, 400.8457, 449.94238, " y="78.4375, ">
 			Centered on 50%,
 	</text>
-	<text fill="white" font-size="50" font-family="pictex-InterVariable" x="34, 64.493164, 96.036133, 125.52832, " y="128.4375, ">
+	<text fill="white" font-size="50" font-family="pictex-InterVariable" x="34, 64.493164, 96.036133, 125.52832, " y="138.93555, ">
 			20px
 	</text>
 </svg>

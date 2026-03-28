@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="206" height="108">
-	<rect fill-opacity="0" width="206" height="108" />
-	<text font-size="50" font-family="Arial" x="0.15576172, 36.26416, 64.071777, 91.879395, 105.771, 133.57861, 150.229, 178.03662, " y="45.263672, ">
+<svg xmlns="http://www.w3.org/2000/svg" width="206" height="115">
+	<rect fill-opacity="0" width="206" height="115" />
+	<text font-size="50" font-family="Arial" x="0.15576172, 36.26416, 64.071777, 91.879395, 105.771, 133.57861, 150.229, 178.03662, " y="46.081543, ">
 			Centered
 	</text>
-	<text font-size="50" font-family="Arial" x="2.9755859, 44.625977, 72.433594, 83.541992, 97.433594, 108.54199, 125.19238, 136.30078, 147.40918, 175.2168, " y="95.263672, ">
+	<text font-size="50" font-family="Arial" x="2.9755859, 44.625977, 72.433594, 83.541992, 97.433594, 108.54199, 125.19238, 136.30078, 147.40918, 175.2168, " y="103.57666, ">
 			Multi-line
 	</text>
 </svg>

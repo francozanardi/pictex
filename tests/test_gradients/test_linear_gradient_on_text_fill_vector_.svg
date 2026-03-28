@@ -6,7 +6,7 @@
 			<stop offset="1" stop-color="#F5AF19" />
 		</linearGradient>
 	</defs>
-	<text fill="url(#gradient_0)" font-size="120" font-family="Arial" x="0, 93.339844, 180, 260.03906, 346.69922, 380.03906, 460.07812, 546.73828, " y="108.63281, ">
+	<text fill="url(#gradient_0)" font-size="120" font-family="Arial" x="0, 93.339844, 180, 260.03906, 346.69922, 380.03906, 460.07812, 546.73828, " y="110.5957, ">
 			GRADIENT
 	</text>
 </svg>

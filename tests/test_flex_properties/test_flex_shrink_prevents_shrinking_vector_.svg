@@ -1,24 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="465" height="131"><defs><style type="text/css">@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="465" height="141"><defs><style type="text/css">@font-face {
     font-family: 'pictex-InterVariable';
     src: url('InterVariable.ttf');
 }@font-face {
     font-family: 'pictex-InterVariable';
     src: url('InterVariable.ttf');
 }</style></defs>
-	<rect fill-opacity="0" width="465" height="131" />
-	<rect fill="#ECF0F1" width="400" height="131" />
-	<rect fill="#3498DB" width="300" height="131" />
+	<rect fill-opacity="0" width="465" height="141" />
+	<rect fill="#ECF0F1" width="400" height="141" />
+	<rect fill="#3498DB" width="300" height="141" />
 	<text font-size="50" font-family="pictex-InterVariable" x="10, 46.083984, 76.064453, 105.60547, 120.5957, " y="58.4375, ">
 			Don't
 	</text>
-	<text font-size="50" font-family="pictex-InterVariable" x="10, 36.391602, 65.957031, 85.268555, 97.37793, 126.91895, " y="108.4375, ">
+	<text font-size="50" font-family="pictex-InterVariable" x="10, 36.391602, 65.957031, 85.268555, 97.37793, 126.91895, " y="118.93555, ">
 			shrink
 	</text>
-	<rect fill="#E74C3C" x="300" width="165" height="131" />
+	<rect fill="#E74C3C" x="300" width="165" height="141" />
 	<text font-size="50" font-family="pictex-InterVariable" x="310, 346.52344, 374.59961, " y="58.4375, ">
 			Can
 	</text>
-	<text font-size="50" font-family="pictex-InterVariable" x="310, 336.3916, 365.95703, 385.26855, 397.37793, 426.91895, " y="108.4375, ">
+	<text font-size="50" font-family="pictex-InterVariable" x="310, 336.3916, 365.95703, 385.26855, 397.37793, 426.91895, " y="118.93555, ">
 			shrink
 	</text>
 </svg>

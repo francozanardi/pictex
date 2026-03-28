@@ -9,7 +9,7 @@
 			<stop offset="1" stop-color="#904E95" />
 		</linearGradient>
 	</defs>
-	<text fill="url(#gradient_0)" font-size="120" font-family="Arial" x="20, 100.03906, 171.17188, 264.51172, 344.55078, " y="128.63281, ">
+	<text fill="url(#gradient_0)" font-size="120" font-family="Arial" x="20, 100.03906, 171.17188, 264.51172, 344.55078, " y="130.5957, ">
 			STOPS
 	</text>
 </svg>
