@@ -19,6 +19,7 @@ from .background import BackgroundImage, BackgroundImageSizeMode
 from .border import Border, BorderStyle, BorderRadiusValue, BorderRadius
 from .render_node import RenderNode
 from .node_type import NodeType
+from .line_height import LineHeight, LineHeightMode
 
 __all__ = [
     "Shadow", "OutlineStroke", "StrokeMode",
@@ -42,4 +43,5 @@ __all__ = [
     "Border", "BorderStyle", "BorderRadiusValue", "BorderRadius",
     "RenderNode",
     "NodeType",
+    "LineHeight", "LineHeightMode",
 ]

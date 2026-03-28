@@ -39,7 +39,6 @@ class TextPainter(Painter):
 
     def _draw_text(self, canvas: skia.Canvas, paint: skia.Paint) -> None:
         current_y = self._text_bounds.top()
-        line_gap = self._style.line_height.get() * self._style.font_size.get()
         block_width = self._parent_bounds.width()
         
         for line in self._lines:
@@ -51,7 +50,7 @@ class TextPainter(Painter):
                 self._render_text_blob(canvas, blob, current_x, current_y, paint)
                 current_x += run.width
             
-            current_y += line_gap
+            current_y += line.metrics.height
 
     def _render_text_blob(
         self, 

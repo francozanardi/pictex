@@ -22,12 +22,18 @@ class FontMetrics:
     underline_position: float
     strikeout_position: float
 
+@dataclass(frozen=True)
+class LineMetrics:
+    height: float
+    baseline: float # distance from top of line to baseline
+    underline: float # distance from top of line to underline position
+    strikeout: float # distance from top of line to strikeout position
+
 @dataclass
 class TextRun:
     """Represents a segment of text that can be rendered with a single font."""
     text: str
     font: skia.Font
-    metrics: FontMetrics
     bidi_fragment: BiDiFragment
     fragment_offset: int = 0  # char offset within bidi_fragment.text where this run starts
     blob: Optional[skia.TextBlob] = None
@@ -44,4 +50,4 @@ class Line:
     width: float
     height: float
     bounds: skia.Rect
-    metrics: FontMetrics
+    metrics: LineMetrics

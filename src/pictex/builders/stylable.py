@@ -83,17 +83,35 @@ class Stylable:
         return self
 
     def line_height(self, multiplier: float) -> Self:
-        """Sets the line height as a multiplier of the font size.
+        """Sets the line height as a unitless multiplier of the font size.
 
-        For example, a value of 1.5 corresponds to 150% line spacing.
+        Controls the vertical space each line of text occupies.  The
+        multiplier is applied to the current ``font_size``, so a value of
+        ``1.5`` on a 20 px font yields 30 px per line.
+
+        When **not** called, the default behaviour is ``"auto"``: each line
+        height is derived from the font's own metrics
+        (``ascent + descent + leading``), which is similar to CSS
+        ``line-height: normal``.
 
         Args:
-            multiplier: The line height multiplier.
+            multiplier: Unitless multiplier applied to the current
+                ``font_size``.  Common values:
+
+                - ``1.0``: single spacing (lines packed to exactly
+                  ``font_size`` pixels, may feel tight).
+                - ``1.2``: compact, often used for headings.
+                - ``1.4`` - ``1.6``: comfortable reading spacing.
 
         Returns:
-            The `Self` instance for chaining.
+            The ``Self`` instance for chaining.
+
+        Example::
+
+            Text("Hello").font_size(20).line_height(1.5)
+            # Each line takes 30 px of vertical space.
         """
-        self._style.line_height.set(multiplier)
+        self._style.line_height.set(LineHeight.from_multiplier(multiplier))
         return self
 
     def color(self, color: Union[str, PaintSource]) -> Self:

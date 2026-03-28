@@ -83,10 +83,8 @@ class TextNode(Node):
         if not self._font_manager:
             raise RuntimeError("FontManager not initialized")
 
-        line_gap = self.computed_styles.line_height.get() * self.computed_styles.font_size.get()
         content_bounds = skia.Rect.MakeEmpty()
-        first_line_ascent = self.shaped_lines[0].metrics.ascent if self.shaped_lines else 0
-        current_y = self.relative_text_bounds.top() + first_line_ascent
+        current_y = self.relative_text_bounds.top()
 
         for line in self.shaped_lines:
             # This is not correct actually... the X position should be also calculated, doing something similar that the DecorationPainter
@@ -96,15 +94,15 @@ class TextNode(Node):
                 content_bounds, 
                 self.computed_styles.underline.get(), 
                 line_bounds, 
-                current_y + line.metrics.underline_position
+                current_y + line.metrics.underline
             )
             self._add_decoration_bounds(
                 content_bounds, 
                 self.computed_styles.strikethrough.get(), 
                 line_bounds, 
-                current_y + line.metrics.strikeout_position
+                current_y + line.metrics.strikeout
             )
-            current_y += line_gap
+            current_y += line.metrics.height
 
         content_bounds.join(self.relative_text_bounds)
 
@@ -164,14 +162,13 @@ class TextNode(Node):
 
     def _compute_relative_text_bounds(self) -> skia.Rect:
         """Compute bounds of all text lines, relative to (0,0)."""
-        line_gap = self.computed_styles.line_height.get() * self.computed_styles.font_size.get()
         current_y = 0
         text_bounds = skia.Rect.MakeEmpty()
 
         for line in self.shaped_lines:
             line_bounds = line.bounds.makeOffset(0, current_y)
             text_bounds.join(line_bounds)
-            current_y += line_gap
+            current_y += line.metrics.height
 
         return text_bounds
 
