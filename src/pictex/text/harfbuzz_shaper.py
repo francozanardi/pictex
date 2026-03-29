@@ -1,20 +1,8 @@
 import skia
 import uharfbuzz as hb
 from typing import NamedTuple, Optional
-from dataclasses import dataclass
 from .skia_table_loader import SkiaTableLoader
-from ..models import TextDirection, TextRun
-
-
-@dataclass
-class ShapedGlyph:
-    """A single shaped glyph with positioning information in points."""
-    glyph_id: int
-    cluster: int
-    x_advance: float
-    y_advance: float
-    x_offset: float
-    y_offset: float
+from ..models import TextDirection, TextRun, ShapedGlyph
 
 
 class ShapedText(NamedTuple):

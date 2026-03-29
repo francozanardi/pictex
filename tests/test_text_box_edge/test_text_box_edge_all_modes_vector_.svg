@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="232" height="487">
+	<rect fill-opacity="0" width="232" height="487" />
+	<rect fill="#FFC0CB" width="232" height="487" />
+	<rect fill="aqua" width="232" height="93" />
+	<rect fill="none" stroke="red" stroke-width="10" stroke-miterlimit="4" x="5" y="5" width="222" height="83" />
+	<text font-size="100" font-family="Arial" x="10, 65.615234, 121.23047, 143.44727, 165.66406, " y="82, ">
+			hello
+	</text>
+	<rect fill="aqua" y="103" width="232" height="115" />
+	<rect fill="none" stroke="red" stroke-width="10" stroke-miterlimit="4" x="5" y="108" width="222" height="105" />
+	<text font-size="100" font-family="Arial" x="10, 65.615234, 121.23047, 143.44727, 165.66406, " y="185, ">
+			hello
+	</text>
+	<rect fill="aqua" y="228" width="232" height="114" />
+	<rect fill="none" stroke="red" stroke-width="10" stroke-miterlimit="4" x="5" y="233" width="222" height="104" />
+	<text font-size="100" font-family="Arial" x="10, 65.615234, 121.23047, 143.44727, 165.66406, " y="330.16309, ">
+			hello
+	</text>
+	<rect fill="aqua" y="352" width="232" height="135" />
+	<rect fill="none" stroke="red" stroke-width="10" stroke-miterlimit="4" x="5" y="357" width="222" height="125" />
+	<text font-size="100" font-family="Arial" x="10, 65.615234, 121.23047, 143.44727, 165.66406, " y="454.16309, ">
+			hello
+	</text>
+</svg>

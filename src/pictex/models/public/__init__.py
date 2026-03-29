@@ -14,7 +14,7 @@ from .box import Box
 from .position import Position, PositionType, Inset
 from .transform import Transform
 from .size import SizeValue, SizeValueMode
-from .layout import Margin, Padding, JustifyContent, AlignItems, AlignSelf, FlexWrap
+from .layout import Margin, Padding, JustifyContent, AlignItems, AlignSelf, FlexWrap, TextBoxEdge, TextBoxEdgeValue
 from .background import BackgroundImage, BackgroundImageSizeMode
 from .border import Border, BorderStyle, BorderRadiusValue, BorderRadius
 from .render_node import RenderNode
@@ -38,7 +38,7 @@ __all__ = [
     "Position", "PositionType", "Inset",
     "Transform",
     "SizeValue", "SizeValueMode",
-    "Margin", "Padding", "JustifyContent", "AlignItems", "AlignSelf", "FlexWrap",
+    "Margin", "Padding", "JustifyContent", "AlignItems", "AlignSelf", "FlexWrap", "TextBoxEdge", "TextBoxEdgeValue",
     "BackgroundImage", "BackgroundImageSizeMode",
     "Border", "BorderStyle", "BorderRadiusValue", "BorderRadius",
     "RenderNode",

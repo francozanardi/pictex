@@ -24,7 +24,7 @@ class DecorationPainter(Painter):
 
             line_x_start = self._text_bounds.x() + get_line_x_position(line.width, block_width, self._style.text_align.get())
             self._draw_decoration(canvas, self._style.underline.get(), line_x_start, current_y + line.metrics.underline, line.width)
-            self._draw_decoration(canvas, self._style.strikethrough.get(), line_x_start, current_y + line.metrics.strikeout, line.width)
+            self._draw_decoration(canvas, self._style.strikethrough.get(), line_x_start, current_y + line.metrics.strikethrough, line.width)
 
             current_y += line.metrics.height
 

@@ -39,7 +39,7 @@ class FontManager:
             descent=font_metrics.fDescent,
             leading=font_metrics.fLeading,
             underline_position=font_metrics.fUnderlinePosition,
-            strikeout_position=font_metrics.fStrikeoutPosition
+            strikethrough_position=font_metrics.fStrikeoutPosition
         )
         # self._font_metrics[key] = metrics
         return metrics
