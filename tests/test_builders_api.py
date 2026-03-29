@@ -152,6 +152,40 @@ def test_padding():
     canvas.padding(1, 2, 3, 4)
     assert canvas._style.padding == Padding(1, 2, 3, 4)
 
+def test_padding_per_side():
+    canvas = Canvas()
+
+    # Each side method only changes that side
+    canvas.padding(1, 2, 3, 4)
+    canvas.padding_top(10)
+    assert canvas._style.padding == Padding(10, 2, 3, 4)
+
+    canvas.padding(1, 2, 3, 4)
+    canvas.padding_right(10)
+    assert canvas._style.padding == Padding(1, 10, 3, 4)
+
+    canvas.padding(1, 2, 3, 4)
+    canvas.padding_bottom(10)
+    assert canvas._style.padding == Padding(1, 2, 10, 4)
+
+    canvas.padding(1, 2, 3, 4)
+    canvas.padding_left(10)
+    assert canvas._style.padding == Padding(1, 2, 3, 10)
+
+    # Axis methods change two sides at once
+    canvas.padding(1, 2, 3, 4)
+    canvas.padding_horizontal(10)
+    assert canvas._style.padding == Padding(1, 10, 3, 10)
+
+    canvas.padding(1, 2, 3, 4)
+    canvas.padding_vertical(10)
+    assert canvas._style.padding == Padding(10, 2, 10, 4)
+
+    # Starting from default (all zeros) — others stay zero
+    canvas2 = Canvas()
+    canvas2.padding_top(5)
+    assert canvas2._style.padding == Padding(5, 0, 0, 0)
+
 def test_margin():
     text = Text("")
     text.margin(10)
@@ -160,6 +194,40 @@ def test_margin():
     assert text._style.margin == Margin(10, 20, 10, 20)
     text.margin(1, 2, 3, 4)
     assert text._style.margin == Margin(1, 2, 3, 4)
+
+def test_margin_per_side():
+    text = Text("")
+
+    # Each side method only changes that side
+    text.margin(1, 2, 3, 4)
+    text.margin_top(10)
+    assert text._style.margin == Margin(10, 2, 3, 4)
+
+    text.margin(1, 2, 3, 4)
+    text.margin_right(10)
+    assert text._style.margin == Margin(1, 10, 3, 4)
+
+    text.margin(1, 2, 3, 4)
+    text.margin_bottom(10)
+    assert text._style.margin == Margin(1, 2, 10, 4)
+
+    text.margin(1, 2, 3, 4)
+    text.margin_left(10)
+    assert text._style.margin == Margin(1, 2, 3, 10)
+
+    # Axis methods change two sides at once
+    text.margin(1, 2, 3, 4)
+    text.margin_horizontal(10)
+    assert text._style.margin == Margin(1, 10, 3, 10)
+
+    text.margin(1, 2, 3, 4)
+    text.margin_vertical(10)
+    assert text._style.margin == Margin(10, 2, 10, 4)
+
+    # Starting from default (all zeros) — others stay zero
+    text2 = Text("")
+    text2.margin_bottom(8)
+    assert text2._style.margin == Margin(0, 0, 8, 0)
 
 def test_border_radius():
     canvas = Canvas()

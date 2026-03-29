@@ -325,6 +325,78 @@ class Stylable:
 
         return self
 
+    def padding_top(self, value: Union[float, int]) -> Self:
+        """Sets the top padding, preserving the other three sides."""
+        p = self._style.padding.get()
+        self._style.padding.set(Padding(float(value), p.right, p.bottom, p.left))
+        return self
+
+    def padding_right(self, value: Union[float, int]) -> Self:
+        """Sets the right padding, preserving the other three sides."""
+        p = self._style.padding.get()
+        self._style.padding.set(Padding(p.top, float(value), p.bottom, p.left))
+        return self
+
+    def padding_bottom(self, value: Union[float, int]) -> Self:
+        """Sets the bottom padding, preserving the other three sides."""
+        p = self._style.padding.get()
+        self._style.padding.set(Padding(p.top, p.right, float(value), p.left))
+        return self
+
+    def padding_left(self, value: Union[float, int]) -> Self:
+        """Sets the left padding, preserving the other three sides."""
+        p = self._style.padding.get()
+        self._style.padding.set(Padding(p.top, p.right, p.bottom, float(value)))
+        return self
+
+    def padding_horizontal(self, value: Union[float, int]) -> Self:
+        """Sets left and right padding equally, preserving top and bottom."""
+        p = self._style.padding.get()
+        self._style.padding.set(Padding(p.top, float(value), p.bottom, float(value)))
+        return self
+
+    def padding_vertical(self, value: Union[float, int]) -> Self:
+        """Sets top and bottom padding equally, preserving left and right."""
+        p = self._style.padding.get()
+        self._style.padding.set(Padding(float(value), p.right, float(value), p.left))
+        return self
+
+    def margin_top(self, value: Union[float, int]) -> Self:
+        """Sets the top margin, preserving the other three sides."""
+        m = self._style.margin.get()
+        self._style.margin.set(Margin(float(value), m.right, m.bottom, m.left))
+        return self
+
+    def margin_right(self, value: Union[float, int]) -> Self:
+        """Sets the right margin, preserving the other three sides."""
+        m = self._style.margin.get()
+        self._style.margin.set(Margin(m.top, float(value), m.bottom, m.left))
+        return self
+
+    def margin_bottom(self, value: Union[float, int]) -> Self:
+        """Sets the bottom margin, preserving the other three sides."""
+        m = self._style.margin.get()
+        self._style.margin.set(Margin(m.top, m.right, float(value), m.left))
+        return self
+
+    def margin_left(self, value: Union[float, int]) -> Self:
+        """Sets the left margin, preserving the other three sides."""
+        m = self._style.margin.get()
+        self._style.margin.set(Margin(m.top, m.right, m.bottom, float(value)))
+        return self
+
+    def margin_horizontal(self, value: Union[float, int]) -> Self:
+        """Sets left and right margin equally, preserving top and bottom."""
+        m = self._style.margin.get()
+        self._style.margin.set(Margin(m.top, float(value), m.bottom, float(value)))
+        return self
+
+    def margin_vertical(self, value: Union[float, int]) -> Self:
+        """Sets top and bottom margin equally, preserving left and right."""
+        m = self._style.margin.get()
+        self._style.margin.set(Margin(float(value), m.right, float(value), m.left))
+        return self
+
     def background_color(self, color: Union[str, PaintSource]) -> Self:
         """Sets the background color or gradient.
 

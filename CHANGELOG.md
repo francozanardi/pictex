@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Letter Spacing** (`letter_spacing()`): Controls the extra space between characters, mirroring the CSS `letter-spacing` property.
-  - Accepts an absolute pixel offset (`letter_spacing(8)`) or a percentage of the font's space-character width (`letter_spacing("10%")`).
+  - Accepts an absolute pixel offset (`letter_spacing(8)`), a percentage of the font's space-character width (`letter_spacing("10%")`), or a `LetterSpacing` instance for type-safe usage.
   - Negative values tighten character spacing.
   - Pass `"normal"` to restore the font's default spacing.
   - Inherited, so it can be set once on a `Canvas` or container and applied to all `Text` nodes inside.
@@ -17,14 +17,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Text Box Edge** (`text_box_edge()`): Controls how the top and bottom edges of a text node's bounding box are calculated. Inspired by the CSS `text-box-trim` / `text-box-edge` properties.
   - `"font"` *(default)*: Box edges are derived from the font's ascent/descent metrics - stable and content-independent.
   - `"glyphs"`: Box edges are derived from the actual bounds of the rendered glyphs - tightly wraps visible characters, removing empty ascender/descender space.
-  - Supports a shorthand (`text_box_edge("glyphs")`) to set both edges at once, or keyword arguments (`text_box_edge(top="glyphs", bottom="font")`) to set each edge independently.
+  - Shorthand (`text_box_edge("glyphs")`) sets both edges at once. Keyword form (`text_box_edge(top="glyphs")`) sets each edge independently, omitted keywords default to `"font"`.
   - Inherited, so it can be set once on a `Canvas` or container and applied to all `Text` nodes inside.
+
+- **Per-side padding and margin**: Convenience methods to set a single side without touching the others.
+  - `padding_top()`, `padding_right()`, `padding_bottom()`, `padding_left()`
+  - `padding_horizontal()` (left + right), `padding_vertical()` (top + bottom)
+  - `margin_top()`, `margin_right()`, `margin_bottom()`, `margin_left()`
+  - `margin_horizontal()` (left + right), `margin_vertical()` (top + bottom)
+
+- **`background_image()`** now accepts a `Path` object in addition to a string, consistent with `font_family()` and `font_fallbacks()`.
+
+### Changed
+- **`line_height()`** now takes `"auto"` as default value, meaning each line's vertical space is derived from the font's own metrics (`ascent + descent + leading`). Previously, the default was `1.0 * font_size`, which ignored the font's built-in spacing and was inconsistent with standard typographic behavior.
+  > **Visual change**: all existing renders may look different, regardless of whether `.line_height()` was called explicitly. Previously, extra vertical space accumulated entirely below each line. Now it is split evenly: half above the glyphs, half below. This means the text baseline shifts downward by half the vertical space, and lines are vertically centered within their allocated height. **To preserve the previous line heights, call `.line_height(1.0)` explicitly, but be aware the baseline positioning has changed**.
 
 ### Fixed
 - **Line Height**: Corrected a fundamental mismatch between how line height was stored and how it was applied. Previously, `Line` stored a height derived from font metrics (`ascent + descent + leading`), but painters and layout nodes ignored it when advancing between lines - they independently recomputed `line_height_multiplier * font_size`. This meant the visual spacing and the bounding boxes were driven by two different values, which could cause clipping, misaligned decorations, and incorrect element sizing. `Line.metrics.height` is now the single source of truth for vertical advance, computed once in the shaper and used consistently everywhere.
-
-- **Line Height Default**: The default line height is now `"auto"`, meaning each line's vertical space is derived from the font's own metrics (`ascent + descent + leading`). Previously, the default was `1.0 * font_size`, which ignored the font's built-in spacing and was inconsistent with standard typographic behavior.
-  > **Visual change**: all existing renders may look different, regardless of whether `.line_height()` was called explicitly. Previously, extra vertical space accumulated entirely below each line. Now it is split evenly: half above the glyphs, half below. This means the text baseline shifts downward by half the vertical space, and lines are vertically centered within their allocated height. **To preserve the previous line heights, call `.line_height(1.0)` explicitly, but be aware the baseline positioning has changed**.
 
 ## [2.1.2] - 2026-03-23
 
