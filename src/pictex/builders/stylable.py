@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import Optional, Union, overload, Literal
 from pathlib import Path
 from ..models import *
+from .inline_styleable import InlineStyleable
 
 try:
     from typing import Self # type: ignore[attr-defined]
@@ -10,79 +11,7 @@ except ImportError:
 
 TextBoxEdgeInput = Union[TextBoxEdgeValue, Literal["font", "glyphs"]]
 
-class Stylable:
-
-    def __init__(self):
-        self._style = Style()
-
-    def font_family(self, family: Union[str, Path]) -> Self:
-        """Sets the font family or a path to a font file.
-
-        Args:
-            family: The name of the font family or a `Path` object to a font file.
-
-        Returns:
-            The `Self` instance for chaining.
-        """
-        self._style.font_family.set(str(family))
-        return self
-
-    def font_fallbacks(self, *fonts: Union[str, Path]) -> Self:
-        """Specifies a list of fallback fonts.
-
-        These fonts are used for characters not supported by the primary font.
-
-        Args:
-            *fonts: A sequence of font names or `Path` objects to font files.
-
-        Returns:
-            The `Self` instance for chaining.
-        """
-        self._style.font_fallbacks.set([str(font) for font in fonts])
-        return self
-
-    def font_size(self, size: float) -> Self:
-        """Sets the font size in points.
-
-        Args:
-            size: The new font size.
-
-        Returns:
-            The `Self` instance for chaining.
-        """
-        self._style.font_size.set(size)
-        return self
-
-    def font_weight(self, weight: Union[FontWeight, int, str]) -> Self:
-        """Sets the font weight.
-
-        Args:
-            weight: The font weight, e.g., `FontWeight.BOLD`, `700` or `"bold"`.
-
-        Returns:
-            The `Self` instance for chaining.
-        """
-        if isinstance(weight, str):
-            try:
-                name = weight.upper().replace("-", "_")
-                weight = FontWeight[name]
-            except KeyError:
-                raise ValueError(f"Invalid font weight: {weight}")
-
-        self._style.font_weight.set(weight if isinstance(weight, FontWeight) else FontWeight(weight))
-        return self
-
-    def font_style(self, style: Union[FontStyle, str]) -> Self:
-        """Sets the font builders.
-
-        Args:
-            style: The font builders, e.g., `FontStyle.ITALIC`.
-
-        Returns:
-            The `Self` instance for chaining.
-        """
-        self._style.font_style.set(style if isinstance(style, FontStyle) else FontStyle(style))
-        return self
+class Stylable(InlineStyleable):
 
     def line_height(self, value: Union[float, Literal["auto"], LineHeight]) -> Self:
         """Sets the line height.
@@ -122,32 +51,142 @@ class Stylable:
             self._style.line_height.set(LineHeight.multiplier(float(value)))
         return self
 
-    def color(self, color: Union[str, PaintSource]) -> Self:
-        """Sets the text color or gradient.
+    def text_align(self, alignment: Union[TextAlign, str]) -> Self:
+        """Sets the text alignment for multi-line text.
 
         Args:
-            color: A color string (e.g., "red", "#FF0000") or a `PaintSource` object.
+            alignment: The alignment, e.g., `Alignment.CENTER` or `"center"`.
 
         Returns:
             The `Self` instance for chaining.
         """
-        self._style.color.set(self._build_color(color))
+        self._style.text_align.set(alignment if isinstance(alignment, TextAlign) else TextAlign(alignment))
         return self
 
-    def text_shadows(self, *shadows: Shadow) -> Self:
-        """Sets the shadow effects for the text. This style is inherited.
-
-        This method applies one or more shadows to the text, replacing any
-        previously set text shadows.
+    def text_wrap(self, wrap: Union[TextWrap, str]) -> Self:
+        """Sets how text should wrap within its container.
 
         Args:
-            *shadows: A sequence of one or more `Shadow` objects to be
-                applied to the text.
+            wrap: The wrapping behavior, e.g., `TextWrap.NORMAL` or `"normal"` (allow wrapping),
+                  or `TextWrap.NOWRAP` or `"nowrap"` (prevent wrapping).
 
         Returns:
-            The `Self` instance for method chaining.
+            The `Self` instance for chaining.
         """
-        self._style.text_shadows.set(list(shadows))
+        self._style.text_wrap.set(wrap if isinstance(wrap, TextWrap) else TextWrap(wrap))
+        return self
+
+    def direction(self, value: Union[TextDirection, Literal["ltr", "rtl"]]) -> Self:
+        """Sets the text direction (horizontal flow).
+
+        BiDi algorithm runs automatically regardless of this setting.
+        This property is inherited by child elements.
+
+        Args:
+            value: The text direction, either "ltr" (left-to-right) or "rtl" (right-to-left).
+                   Can be a TextDirection enum or a string.
+
+        Returns:
+            The `Self` instance for chaining.
+
+        Example:
+            ```python
+            Text("مرحبا").direction("rtl")
+            Column(
+                Text("Text 1"),  # inherits RTL
+                Text("Text 2")   # inherits RTL
+            ).direction("rtl")
+            ```
+        """
+        self._style.direction.set(value if isinstance(value, TextDirection) else TextDirection(value))
+        return self
+
+    @overload
+    def text_box_edge(self, both: TextBoxEdgeInput) -> Self: ...
+
+    @overload
+    def text_box_edge(self, *, top: TextBoxEdgeInput = ..., bottom: TextBoxEdgeInput = ...) -> Self: ...
+
+    def text_box_edge(  # type: ignore[misc]
+        self,
+        both: Optional[TextBoxEdgeInput] = None,
+        *,
+        top: Optional[TextBoxEdgeInput] = None,
+        bottom: Optional[TextBoxEdgeInput] = None,
+    ) -> Self:
+        """Controls how the top and bottom edges of a text node's box are calculated.
+
+        By default, PicTex uses font metrics (ascent/descent) to size text boxes.
+        This produces stable, predictable layouts because the box size depends only
+        on the font, ignoring the specific characters in the string.
+
+        This method lets you override that behavior per-edge. It is **inherited**,
+        so setting it on a ``Canvas`` or layout container applies to all ``Text``
+        nodes inside.
+
+        **Note:**
+            This property is inspired by the CSS ``text-box-trim`` and
+            ``text-box-edge`` properties, but does not implement them exactly.
+
+        Edge values:
+
+        - ``"font"`` *(default)*: The edge is placed at the font's ascent (top)
+          or descent (bottom). The box always has the same height for a given font
+          and size, regardless of content. Safe for dynamic / user-supplied text.
+        - ``"glyphs"``: The edge is placed at the actual ink bounds of the rendered
+          glyphs. The box tightly wraps the visible characters, removing the empty
+          space reserved by the font for ascenders/descenders that are not present.
+          **Caution:** the box size becomes content-dependent, so different strings
+          produce different heights, which can shift your layout unexpectedly.
+
+        Args:
+            both: Applies the same edge mode to both top and bottom.
+            top: Edge mode for the top of the box (keyword-only).
+                Defaults to ``"font"`` when omitted.
+            bottom: Edge mode for the bottom of the box (keyword-only).
+                Defaults to ``"font"`` when omitted.
+
+        Returns:
+            The ``Self`` instance for chaining.
+
+        Raises:
+            TypeError: If neither ``both`` nor at least one of ``top``/``bottom``
+                are provided, or if ``both`` is mixed with ``top``/``bottom``.
+
+        Example:
+            Trim both edges to the glyph ink bounds:
+            ```python
+            Text("Hello").text_box_edge(TextBoxEdgeValue.GLYPHS)
+            Text("Hello").text_box_edge("glyphs")
+            ```
+
+            Trim only the top edge, keep font metrics at the bottom:
+            ```python
+            Text("Hello").text_box_edge(top="glyphs")
+            Text("Hello").text_box_edge(top="glyphs", bottom="font")  # equivalent
+            ```
+
+            Inherit the setting for all Text nodes in a canvas:
+            ```python
+            Canvas().text_box_edge("glyphs").render("Hello, World!")
+            ```
+        """
+        def _parse(value: Union[TextBoxEdgeValue, str]) -> TextBoxEdgeValue:
+            return value if isinstance(value, TextBoxEdgeValue) else TextBoxEdgeValue(value)
+
+        if both is not None and (top is not None or bottom is not None):
+            raise TypeError("text_box_edge() does not accept both positional and keyword arguments")
+
+        if both is not None:
+            val = _parse(both)
+            self._style.text_box_edge.set(TextBoxEdge(top=val, bottom=val))
+        elif top is not None or bottom is not None:
+            top_val = _parse(top) if top is not None else TextBoxEdgeValue.FONT
+            bottom_val = _parse(bottom) if bottom is not None else TextBoxEdgeValue.FONT
+            self._style.text_box_edge.set(TextBoxEdge(top=top_val, bottom=bottom_val))
+        else:
+            raise TypeError("text_box_edge() requires either 'both' or at least one of 'top'/'bottom'")
+
         return self
 
     def box_shadows(self, *shadows: Shadow) -> Self:
@@ -164,76 +203,6 @@ class Stylable:
             The `Self` instance for method chaining.
         """
         self._style.box_shadows.set(list(shadows))
-        return self
-
-    def text_stroke(
-        self, 
-        width: float, 
-        color: Union[str, PaintSource],
-        mode: Union[str, StrokeMode] = "center"
-    ) -> Self:
-        """Adds a stroke to the text.
-        
-        By default, follows CSS standards where the stroke is centered on the text path
-        (half inside, half outside). You can change this behavior with the mode parameter.
-        
-        Args:
-            width: The width of the stroke in pixels.
-            color: The color of the stroke.
-            mode: The stroke rendering mode:
-                - "center" (default): CSS-compliant centered stroke
-                - "outline": Pure outline (stroke only outside the text)
-                - "inline": Pure inline (stroke only inside the text)
-        
-        Returns:
-            The `Self` instance for chaining.
-        """
-        stroke_mode = StrokeMode(mode) if isinstance(mode, str) else mode
-        self._style.text_stroke.set(
-            OutlineStroke(width=width, color=self._build_color(color), mode=stroke_mode)
-        )
-        return self
-
-    def underline(
-        self,
-        thickness: float = 2.0,
-        color: Optional[Union[str, PaintSource]] = None
-    ) -> Self:
-        """Adds an underline text decoration.
-
-        Args:
-            thickness: The thickness of the underline.
-            color: The color of the underline. If `None`, the main text color is used.
-
-        Returns:
-            The `Self` instance for chaining.
-        """
-        decoration_color = self._build_color(color) if color else None
-        self._style.underline.set(TextDecoration(
-            color=decoration_color,
-            thickness=thickness
-        ))
-        return self
-
-    def strikethrough(
-        self,
-        thickness: float = 2.0,
-        color: Optional[Union[str, PaintSource]] = None
-    ) -> Self:
-        """Adds a strikethrough text decoration.
-
-        Args:
-            thickness: The thickness of the strikethrough line.
-            color: The color of the line. If `None`, the main text color is used.
-
-        Returns:
-            The `Self` instance for chaining.
-        """
-        decoration_color = self._build_color(color) if color else None
-        self._style.strikethrough.set(TextDecoration(
-            color=decoration_color,
-            thickness=thickness
-        ))
         return self
 
     @overload
@@ -500,217 +469,19 @@ class Stylable:
 
         return self
 
-    def text_align(self, alignment: Union[TextAlign, str]) -> Self:
-        """Sets the text alignment for multi-line text.
-
-        Args:
-            alignment: The alignment, e.g., `Alignment.CENTER` or `"center"`.
-
-        Returns:
-            The `Self` instance for chaining.
-        """
-        self._style.text_align.set(alignment if isinstance(alignment, TextAlign) else TextAlign(alignment))
-        return self
-
-    def text_wrap(self, wrap: Union[TextWrap, str]) -> Self:
-        """Sets how text should wrap within its container.
-
-        Args:
-            wrap: The wrapping behavior, e.g., `TextWrap.NORMAL` or `"normal"` (allow wrapping),
-                  or `TextWrap.NOWRAP` or `"nowrap"` (prevent wrapping).
-
-        Returns:
-            The `Self` instance for chaining.
-        """
-        self._style.text_wrap.set(wrap if isinstance(wrap, TextWrap) else TextWrap(wrap))
-        return self
-
-    def direction(self, value: Union[TextDirection, Literal["ltr", "rtl"]]) -> Self:
-        """Sets the text direction (horizontal flow).
-        
-        BiDi algorithm runs automatically regardless of this setting.
-        This property is inherited by child elements.
-
-        Args:
-            value: The text direction, either "ltr" (left-to-right) or "rtl" (right-to-left).
-                   Can be a TextDirection enum or a string.
-
-        Returns:
-            The `Self` instance for chaining.
-        
-        Example:
-            ```python
-            Text("مرحبا").direction("rtl")
-            Column(
-                Text("Text 1"),  # inherits RTL
-                Text("Text 2")   # inherits RTL
-            ).direction("rtl")
-            ```
-        """
-        self._style.direction.set(value if isinstance(value, TextDirection) else TextDirection(value))
-        return self
-
-    @overload
-    def text_box_edge(self, both: TextBoxEdgeInput) -> Self: ...
-
-    @overload
-    def text_box_edge(self, *, top: TextBoxEdgeInput = ..., bottom: TextBoxEdgeInput = ...) -> Self: ...
-
-    def text_box_edge(  # type: ignore[misc]
-        self,
-        both: Optional[TextBoxEdgeInput] = None,
-        *,
-        top: Optional[TextBoxEdgeInput] = None,
-        bottom: Optional[TextBoxEdgeInput] = None,
-    ) -> Self:
-        """Controls how the top and bottom edges of a text node's box are calculated.
-
-        By default, PicTex uses font metrics (ascent/descent) to size text boxes.
-        This produces stable, predictable layouts because the box size depends only
-        on the font, ignoring the specific characters in the string.
-
-        This method lets you override that behavior per-edge. It is **inherited**,
-        so setting it on a ``Canvas`` or layout container applies to all ``Text``
-        nodes inside.
-
-        **Note:**
-            This property is inspired by the CSS ``text-box-trim`` and
-            ``text-box-edge`` properties, but does not implement them exactly.
-
-        Edge values:
-
-        - ``"font"`` *(default)*: The edge is placed at the font's ascent (top)
-          or descent (bottom). The box always has the same height for a given font
-          and size, regardless of content. Safe for dynamic / user-supplied text.
-        - ``"glyphs"``: The edge is placed at the actual ink bounds of the rendered
-          glyphs. The box tightly wraps the visible characters, removing the empty
-          space reserved by the font for ascenders/descenders that are not present.
-          **Caution:** the box size becomes content-dependent, so different strings
-          produce different heights, which can shift your layout unexpectedly.
-
-        Args:
-            both: Applies the same edge mode to both top and bottom.
-            top: Edge mode for the top of the box (keyword-only).
-                Defaults to ``"font"`` when omitted.
-            bottom: Edge mode for the bottom of the box (keyword-only).
-                Defaults to ``"font"`` when omitted.
-
-        Returns:
-            The ``Self`` instance for chaining.
-
-        Raises:
-            TypeError: If neither ``both`` nor at least one of ``top``/``bottom``
-                are provided, or if ``both`` is mixed with ``top``/``bottom``.
-
-        Example:
-            Trim both edges to the glyph ink bounds:
-            ```python
-            Text("Hello").text_box_edge(TextBoxEdgeValue.GLYPHS)
-            Text("Hello").text_box_edge("glyphs")
-            ```
-            
-            Trim only the top edge, keep font metrics at the bottom:
-            ```python
-            Text("Hello").text_box_edge(top="glyphs")
-            Text("Hello").text_box_edge(top="glyphs", bottom="font")  # equivalent
-            ```
-
-            Inherit the setting for all Text nodes in a canvas:
-            ```python
-            Canvas().text_box_edge("glyphs").render("Hello, World!")
-            ```
-        """
-        def _parse(value: Union[TextBoxEdgeValue, str]) -> TextBoxEdgeValue:
-            return value if isinstance(value, TextBoxEdgeValue) else TextBoxEdgeValue(value)
-
-        if both is not None and (top is not None or bottom is not None):
-            raise TypeError("text_box_edge() does not accept both positional and keyword arguments")
-
-        if both is not None:
-            val = _parse(both)
-            self._style.text_box_edge.set(TextBoxEdge(top=val, bottom=val))
-        elif top is not None or bottom is not None:
-            top_val = _parse(top) if top is not None else TextBoxEdgeValue.FONT
-            bottom_val = _parse(bottom) if bottom is not None else TextBoxEdgeValue.FONT
-            self._style.text_box_edge.set(TextBoxEdge(top=top_val, bottom=bottom_val))
-        else:
-            raise TypeError("text_box_edge() requires either 'both' or at least one of 'top'/'bottom'")
-
-        return self
-
-    def letter_spacing(self, value: Union[float, int, str, Literal["normal"], LetterSpacing]) -> Self:
-        """Sets the extra space between characters (CSS ``letter-spacing``).
-
-        Controls the inter-character spacing added on top of the font's
-        default spacing. The BiDi and shaping pipeline honours this value
-        for all scripts.
-
-        Args:
-            value: The letter-spacing amount. Accepts:
-
-                - **float / int**: absolute pixel offset added between each
-                  pair of characters. Positive values spread characters apart;
-                  negative values bring them closer together.
-
-                - **str ending in "%"**: a percentage of the width of the
-                  space character in the current font. Mirrors the CSS
-                  ``<percentage>`` form.
-
-                - ``"normal"``: restores the font's default spacing.
-
-                - ``LetterSpacing``: a pre-built instance
-                  (``LetterSpacing.pixels(...)``, ``LetterSpacing.percent(...)``).
-
-        Returns:
-            The ``Self`` instance for chaining.
-
-        Raises:
-            ValueError: If a string value is not a valid percentage (e.g.
-                ``"10%"``) or the literal ``"normal"``.
-
-        Example:
-            ```python
-            # Absolute pixel spacing
-            Text("Hello").letter_spacing(4)
-
-            # Percentage of the space-character width
-            Text("Hello").letter_spacing("10%")
-
-            # Reset to font default
-            Text("Hello").letter_spacing("normal")
-            ```
-        """
-        if isinstance(value, LetterSpacing):
-            self._style.letter_spacing.set(value)
-        elif isinstance(value, str):
-            if value.strip().lower() == "normal":
-                self._style.letter_spacing.set(LetterSpacing.normal())
-            elif value.endswith("%"):
-                self._style.letter_spacing.set(
-                    LetterSpacing.percent(float(value.rstrip("%")))
-                )
-            else:
-                raise ValueError(
-                    f"Invalid letter_spacing string: {value!r}. "
-                    "Expected a percentage (e.g. '10%') or 'normal'."
-                )
-        else:
-            self._style.letter_spacing.set(LetterSpacing.pixels(float(value)))
-        return self
-
     def flex_grow(self, value: float) -> Self:
         """Sets the flex grow factor for this element (CSS flex-grow).
-        
+
         Controls how much this element should grow relative to siblings when
         there's extra space in the flex container.
-        
+
         Args:
             value: The grow factor. 0 means no growth (default), 1+ means grow.
                    Higher values grow proportionally more.
-        
+
         Returns:
             The `Self` instance for chaining.
-        
+
         Example:
             ```python
             Row(
@@ -725,17 +496,17 @@ class Stylable:
 
     def flex_shrink(self, value: float) -> Self:
         """Sets the flex shrink factor for this element (CSS flex-shrink).
-        
+
         Controls how much this element should shrink relative to siblings when
         the container is too small.
-        
+
         Args:
             value: The shrink factor. 0 means no shrinking, 1 means shrink
                    proportionally (default). Higher values shrink more.
-        
+
         Returns:
             The `Self` instance for chaining.
-        
+
         Example:
             ```python
             Row(
@@ -749,16 +520,16 @@ class Stylable:
 
     def align_self(self, alignment: Union[AlignSelf, str]) -> Self:
         """Override the container's align-items for this specific element (CSS align-self).
-        
+
         Allows an individual flex item to override the alignment set by its container.
-        
+
         Args:
             alignment: Alignment mode. Can be 'auto', 'start', 'center', 'end', or 'stretch'.
                       'auto' uses the container's align-items value (default).
-        
+
         Returns:
             The `Self` instance for chaining.
-        
+
         Example:
             ```python
             Row(
@@ -770,17 +541,6 @@ class Stylable:
         """
         self._style.align_self.set(alignment if isinstance(alignment, AlignSelf) else AlignSelf(alignment))
         return self
-
-    def _build_color(self, color: Union[str, PaintSource]) -> PaintSource:
-        """Internal helper to create a SolidColor from a string.
-
-        Args:
-            color: The color string or `PaintSource` object.
-
-        Returns:
-            A `PaintSource` object.
-        """
-        return SolidColor.from_str(color) if isinstance(color, str) else color
 
     def _parse_radius_value(self, value: Union[float, int, str]) -> BorderRadiusValue:
         if isinstance(value, str) and value.endswith('%'):

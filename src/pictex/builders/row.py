@@ -1,11 +1,6 @@
 from .container import Container
 from ..nodes import Node, RowNode
 
-try:
-    from typing import Self # type: ignore[attr-defined]
-except ImportError:
-    from typing_extensions import Self
-
 class Row(Container):
     """A layout builder that arranges its children horizontally.
 
