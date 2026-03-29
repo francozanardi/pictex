@@ -152,7 +152,7 @@ from pictex import Canvas
 )
 ```
 
-![Emoji sequences result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1759127041/docs-emoji_ekahio.png)
+![Emoji sequences result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1774751651/tweet_vwhhev.png)
 
 ## Multi-line Text and Alignment
 
@@ -181,7 +181,7 @@ text = "This is an example of centered,\nmulti-line text\nwith custom line spaci
 canvas.render(text).save("alignment_example.png")
 ```
 
-![Multiline result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754102754/alignment_example_dnk5t4.png)
+![Multiline result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1774751785/alignment_example_hur7ix.png)
 
 ### Text Box Edge
 
@@ -192,24 +192,22 @@ Use `.text_box_edge()` when you need the box to tightly wrap the actual visible 
 ```python
 from pictex import Canvas, Column, Text
 
+def example_text():
+    return Text("Hello").background_color("lightgray").border(10, "red")
+
 canvas = Canvas().font_family("Arial").font_size(80).background_color("pink")
 
-# "glyphs": box tightly wraps the visible ink - no extra space above/below
-# "font" (default): box uses font ascent/descent - stable for dynamic text
 layout = Column(
-    Text("Hello").text_box_edge("glyphs").background_color("cyan"),
-    Text("Hello").text_box_edge("font").background_color("cyan"),
+    example_text().text_box_edge("glyphs"),
+    example_text().text_box_edge(bottom="glyphs", top="font"),
+    example_text().text_box_edge(bottom="font", top="glyphs"),
+    example_text().text_box_edge("font"),
 ).gap(10)
 
 canvas.render(layout).save("text_box_edge.png")
 ```
 
-You can also control each edge independently:
-
-```python
-# Trim only the top edge - removes ascender space above capital letters
-Text("Hello").text_box_edge(top="glyphs", bottom="font")
-```
+![Text box edge result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1774751785/text_box_edge_ejb1s4.png)
 
 > **Caution:** `"glyphs"` makes the box size content-dependent. Different strings will produce different heights, which can cause your layout to shift unexpectedly. Use `"font"` (the default) for dynamic or user-supplied text.
 
@@ -228,7 +226,7 @@ from pictex import Canvas, Row, Column, Text
 
 # Automatic BiDi - no direction needed
 # Arabic text is automatically reversed
-Canvas().render("Hello مرحبا World").save("auto_bidi.png")
+Canvas().background_color("lightgray").padding(20).render("Hello مرحبا World").save("auto_bidi.png")
 
 # RTL base direction - affects alignment and layout
 container = (
@@ -236,7 +234,7 @@ container = (
         # This Row will be mirrored: [B] [A]
         Row(
             Text("A").background_color("red").padding(5),
-            Text("B").background_color("blue").padding(5),
+            Text("B").background_color("orange").padding(5),
         ).gap(10),
 
         # This text will be right-aligned automatically
@@ -248,35 +246,44 @@ container = (
     .direction("rtl")
     .padding(20)
     .gap(20)
+    .background_color("lightgray")
 )
 
 Canvas().render(container).save("direction_example.png")
 ```
+
+**Automatic BiDi result:**
+
+![Automatic BiDi result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1774751788/auto_bidi_rwbcpb.png)
+
+**RTL direction result:**
+
+![RTL direction result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1774751788/direction_example_l7okhb.png)
 
 ### Text Wrapping
 
 When text is placed inside containers with fixed widths, it can automatically wrap to multiple lines:
 
 ```python
-from pictex import Canvas, Text, Column
+from pictex import Canvas, Column
 
-canvas = Canvas().font_family("Arial").font_size(16)
+canvas = Canvas().font_family("Arial").font_size(90)
 
-# Text will automatically wrap to fit the 200px width
+# Text will automatically wrap to fit the 800px width
 long_text = "This is a very long sentence that will automatically wrap to multiple lines when placed inside a container with a fixed width."
-
-wrapped_text = Text(long_text)
-container = Column(wrapped_text).size(width=200).padding(10)
+container = Column(long_text).size(width=800).padding(10).background_color("lightblue")
 
 canvas.render(container).save("text_wrapping_example.png")
 ```
+
+![Text wrapping result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1774751786/text_wrapping_example_wrvwxz.png)
 
 You can also disable text wrapping:
 
 ```python
 # This text will not wrap and may overflow the container
 no_wrap_text = Text(long_text).text_wrap("nowrap")
-container = Column(no_wrap_text).size(width=200).padding(10)
+container = Column(no_wrap_text).size(width=800).padding(10).background_color("lightblue")
 ```
 
 ## Text Decorations

@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Line Height Default**: The default line height is now `"auto"`, meaning each line's vertical space is derived from the font's own metrics (`ascent + descent + leading`). Previously, the default was `1.0 * font_size`, which ignored the font's built-in spacing and was inconsistent with standard typographic behavior.
 
-  > **Visual change**: all existing renders may look different, regardless of whether `.line_height()` was called explicitly. Previously, extra vertical space accumulated entirely below each line. Now it is split evenly: half above the glyphs, half below. This means the text baseline shifts downward by half the vertical space, and lines are vertically centered within their allocated height. To preserve the previous line heights, call `.line_height(1.0)` explicitly, but be aware the baseline positioning has changed.
+  > **Visual change**: all existing renders may look different, regardless of whether `.line_height()` was called explicitly. Previously, extra vertical space accumulated entirely below each line. Now it is split evenly: half above the glyphs, half below. This means the text baseline shifts downward by half the vertical space, and lines are vertically centered within their allocated height. **To preserve the previous line heights, call `.line_height(1.0)` explicitly, but be aware the baseline positioning has changed**.
 
 ## [2.1.2] - 2026-03-23
 
