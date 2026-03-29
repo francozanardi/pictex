@@ -31,14 +31,14 @@ class LinearGradient(PaintSource):
             line connecting `start_point` to `end_point`.
 
     Example:
-        # A simple horizontal gradient from red to blue
+        A simple horizontal gradient from red to blue
         ```python
         horizontal_gradient = LinearGradient(
             colors=['#FF0000', 'blue']
         )
         ```
 
-        # A vertical gradient from top (yellow) to bottom (orange)
+        A vertical gradient from top (yellow) to bottom (orange)
         ```python
         vertical_gradient = LinearGradient(
             colors=['yellow', 'orange'],
@@ -47,7 +47,7 @@ class LinearGradient(PaintSource):
         )
         ```
 
-        # A diagonal gradient with a custom color stop
+        A diagonal gradient with a custom color stop
         ```python
         diagonal_gradient = LinearGradient(
             colors=[
