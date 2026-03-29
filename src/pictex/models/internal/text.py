@@ -1,7 +1,18 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 import skia
 from ..public.text_direction import TextDirection
+
+
+@dataclass
+class ShapedGlyph:
+    """A single shaped glyph with positioning information in points."""
+    glyph_id: int
+    cluster: int
+    x_advance: float
+    y_advance: float
+    x_offset: float
+    y_offset: float
 
 @dataclass
 class BiDiFragment:
@@ -20,14 +31,14 @@ class FontMetrics:
     descent: float
     leading: float
     underline_position: float
-    strikeout_position: float
+    strikethrough_position: float
 
 @dataclass(frozen=True)
 class LineMetrics:
     height: float
     baseline: float # distance from top of line to baseline
     underline: float # distance from top of line to underline position
-    strikeout: float # distance from top of line to strikeout position
+    strikethrough: float # distance from top of line to strikethrough position
 
 @dataclass
 class TextRun:
@@ -36,6 +47,7 @@ class TextRun:
     font: skia.Font
     bidi_fragment: BiDiFragment
     fragment_offset: int = 0  # char offset within bidi_fragment.text where this run starts
+    shaped_glyphs: list[ShapedGlyph] = field(default_factory=list)
     blob: Optional[skia.TextBlob] = None
     width: float = 0.0
 

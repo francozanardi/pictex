@@ -100,7 +100,7 @@ class TextNode(Node):
                 content_bounds, 
                 self.computed_styles.strikethrough.get(), 
                 line_bounds, 
-                current_y + line.metrics.strikeout
+                current_y + line.metrics.strikethrough
             )
             current_y += line.metrics.height
 

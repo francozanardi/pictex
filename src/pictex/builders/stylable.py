@@ -8,6 +8,8 @@ try:
 except ImportError:
     from typing_extensions import Self
 
+TextBoxEdgeArg = Union[TextBoxEdgeValue, Literal["font", "glyphs"]]
+
 class Stylable:
 
     def __init__(self):
@@ -468,6 +470,85 @@ class Stylable:
         self._style.direction.set(value if isinstance(value, TextDirection) else TextDirection(value))
         return self
 
+    @overload
+    def text_box_edge(self, both: TextBoxEdgeArg) -> Self: ...
+
+    @overload
+    def text_box_edge(self, *, top: TextBoxEdgeArg, bottom: TextBoxEdgeArg) -> Self: ...
+
+    def text_box_edge(  # type: ignore[misc]
+        self,
+        both: Optional[Union[TextBoxEdgeValue, str]] = None,
+        *,
+        top: Optional[Union[TextBoxEdgeValue, str]] = None,
+        bottom: Optional[Union[TextBoxEdgeValue, str]] = None,
+    ) -> Self:
+        """Controls how the top and bottom edges of a text node's box are calculated.
+
+        By default, PicTex uses font metrics (ascent/descent) to size text boxes.
+        This produces stable, predictable layouts because the box size depends only
+        on the font, ignoring the specific characters in the string.
+
+        This method lets you override that behavior per-edge. It is **inherited**,
+        so setting it on a ``Canvas`` or layout container applies to all ``Text``
+        nodes inside.
+
+        .. note::
+            This property is inspired by the CSS ``text-box-trim`` and
+            ``text-box-edge`` properties, but does not implement them exactly.
+
+        Edge values:
+
+        - ``"font"`` *(default)*: The edge is placed at the font's ascent (top)
+          or descent (bottom). The box always has the same height for a given font
+          and size, regardless of content. Safe for dynamic / user-supplied text.
+        - ``"glyphs"``: The edge is placed at the actual ink bounds of the rendered
+          glyphs. The box tightly wraps the visible characters, removing the empty
+          space reserved by the font for ascenders/descenders that are not present.
+          **Caution:** the box size becomes content-dependent, so different strings
+          produce different heights, which can shift your layout unexpectedly.
+
+        Args:
+            both: Applies the same edge mode to both top and bottom.
+            top: Edge mode for the top of the box (keyword-only).
+            bottom: Edge mode for the bottom of the box (keyword-only).
+
+        Returns:
+            The ``Self`` instance for chaining.
+
+        Raises:
+            TypeError: If neither ``both`` nor ``top``/``bottom`` are provided,
+                or if ``both`` is mixed with ``top``/``bottom``.
+
+        Examples:
+            Trim both edges to the glyph ink bounds::
+
+                Text("Hello").text_box_edge(TextBoxEdgeValue.GLYPHS)
+                Text("Hello").text_box_edge("glyphs")
+
+            Trim only the top edge, keep font metrics at the bottom::
+
+                Text("Hello").text_box_edge(top="glyphs", bottom="font")
+
+            Inherit the setting for all Text nodes in a canvas::
+
+                Canvas().text_box_edge("glyphs").render("Hello, World!")
+        """
+        def _parse(value: Union[TextBoxEdgeValue, str]) -> TextBoxEdgeValue:
+            return value if isinstance(value, TextBoxEdgeValue) else TextBoxEdgeValue(value)
+
+        if both is not None and (top is not None or bottom is not None):
+            raise TypeError("text_box_edge() does not accept both positional and keyword arguments")
+
+        if both is not None:
+            val = _parse(both)
+            self._style.text_box_edge.set(TextBoxEdge(top=val, bottom=val))
+        elif top is not None and bottom is not None:
+            self._style.text_box_edge.set(TextBoxEdge(top=_parse(top), bottom=_parse(bottom)))
+        else:
+            raise TypeError("text_box_edge() requires either 'both' or both 'top' and 'bottom'")
+
+        return self
 
     def flex_grow(self, value: float) -> Self:
         """Sets the flex grow factor for this element (CSS flex-grow).

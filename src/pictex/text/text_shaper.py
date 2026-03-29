@@ -2,15 +2,15 @@ import skia
 from typing import List, Optional
 from .typeface_loader import TypefaceLoader
 from .font_manager import FontManager
-from .harfbuzz_shaper import HarfBuzzShaper, ShapedGlyph
+from .harfbuzz_shaper import HarfBuzzShaper
+from .line_metrics import LineMetricsCalculator
 from ..models import (
     Style,
     Line,
     TextRun,
-    LineMetrics,
     TextDirection,
     BiDiFragment,
-    LineHeightMode
+    ShapedGlyph,
 )
 from .bidi_processor import BiDiProcessor
 from .. import utils
@@ -37,6 +37,7 @@ class TextShaper:
         self._font_manager = font_manager
         self._hb_shaper = HarfBuzzShaper()
         self._bidi_processor = BiDiProcessor()
+        self._line_metrics_calculator = LineMetricsCalculator(style, font_manager)
 
     def shape(self, text: str, max_width: Optional[float] = None) -> List[Line]:
         """
@@ -83,34 +84,28 @@ class TextShaper:
         return shaped_lines
 
     def _create_empty_line(self) -> Line:
-        """Handle empty lines by creating a placeholder with correct height"""
-
+        """Handle empty lines by creating a placeholder with correct height."""
         primary_font = self._font_manager.get_primary_font()
-        line_metrics = self._calculate_line_metrics([primary_font])
-        
+        primary_metrics = self._font_manager.get_font_metrics(primary_font)
+        line_metrics = self._line_metrics_calculator.calculate(runs=[], font_metrics=[primary_metrics])
+
         # We must give some width to the empty line, otherwise the rect bounds will be empty,
         # and it will cause issues when we will try to join the bounds of this line with the bounds of other lines (the result will ignore the empty line).
         # The width doesn't matter, it won't be rendered, but it must be greater than 0 to avoid empty bounds.
-        empty_line_rect = skia.Rect.MakeWH(1, line_metrics.height)
         return Line(
             runs=[],
-            height=empty_line_rect.height(),
-            width=empty_line_rect.width(),
-            bounds=empty_line_rect,
-            metrics=line_metrics
+            height=line_metrics.height,
+            width=1,
+            bounds=skia.Rect.MakeWH(1, line_metrics.height),
+            metrics=line_metrics,
         )
-    
-    def _create_line(self, runs: list[TextRun]) -> Line:
-        line_width = 0.0
-        last_visual_width = 0.0
-        line_fonts = [run.font for run in runs]
-        line_metrics = self._calculate_line_metrics(line_fonts)
-        
-        for run in runs:
-            last_visual_width = self._shape_and_create_blob(run, line_metrics.baseline)
-            line_width += run.width
 
-        # Use visual_width for the last run to capture italic overhang
+    def _create_line(self, runs: list[TextRun]) -> Line:
+        font_metrics = [self._font_manager.get_font_metrics(run.font) for run in runs]
+        last_visual_width = self._shape_runs(runs)
+        line_metrics = self._line_metrics_calculator.calculate(runs, font_metrics)
+        self._create_blobs(runs, line_metrics.baseline)
+        line_width = sum(run.width for run in runs)
         bounds_width = line_width - runs[-1].width + last_visual_width if runs else line_width
 
         return Line(
@@ -118,57 +113,31 @@ class TextShaper:
             width=line_width,
             height=line_metrics.height,
             bounds=skia.Rect.MakeWH(bounds_width, line_metrics.height),
-            metrics=line_metrics
+            metrics=line_metrics,
         )
 
-    def _calculate_line_metrics(self, line_fonts: list[skia.Font]) -> LineMetrics:
-        """Calculate line metrics using the fonts."""
-        max_ascent = 0.0
-        max_descent = 0.0
-        max_leading = 0.0
-        underline_position = 0.0
-        strikeout_position = self._font_manager.get_font_metrics(self._font_manager.get_primary_font()).strikeout_position
+    def _shape_runs(self, runs: list[TextRun]) -> float:
+        """Shape each run with HarfBuzz. Populates run.shaped_glyphs and run.width.
 
-        for font in line_fonts:
-            font_metrics = self._font_manager.get_font_metrics(font)
-            max_ascent = max(max_ascent, font_metrics.ascent)
-            max_descent = max(max_descent, font_metrics.descent)
-            max_leading = max(max_leading, font_metrics.leading)
-            underline_position = max(underline_position, font_metrics.underline_position)
+        Returns the visual width of the last run (used for italic overhang).
+        """
+        last_visual_width = 0.0
+        for run in runs:
+            last_visual_width = self._shape_run(run)
+        return last_visual_width
 
-        vertical_space = self._calculate_line_vertical_space(max_ascent, max_descent, max_leading)
-        baseline = max_ascent + vertical_space
-        return LineMetrics(
-            height = max_ascent + max_descent + vertical_space * 2,
-            baseline = baseline,
-            underline = baseline + underline_position,
-            strikeout = baseline + strikeout_position
-        )
-    
-    def _calculate_line_vertical_space(self, ascent: float, descent: float, leading: float) -> float:
-        line_height_style = self._style.line_height.get()
-        if line_height_style.mode == LineHeightMode.AUTO:
-            return leading / 2
-        
-        if line_height_style.mode == LineHeightMode.MULTIPLIER:
-            physical_line_height = ascent + descent
-            user_defined_line_height = line_height_style.value * self._style.font_size.get()
-            return (user_defined_line_height - physical_line_height) / 2
-
-        raise ValueError(f"Unsupported line height mode: {line_height_style.mode}")
-    
-    def _shape_and_create_blob(self, run: TextRun, baseline: float) -> float:
-        """Shape a text run and create its blob. Returns the visual width."""
+    def _shape_run(self, run: TextRun) -> float:
+        """Shape a single run. Returns its visual width."""
         shaped = self._hb_shaper.shape_text_run(run)
+        run.shaped_glyphs = shaped.glyphs
         run.width = shaped.width
-        
-        if shaped.glyphs:
-            run.blob = self._create_text_blob(shaped.glyphs, run.font, baseline)
-        else:
-            run.blob = None
-        
         return shaped.visual_width
-    
+
+    def _create_blobs(self, runs: list[TextRun], baseline: float) -> None:
+        """Create TextBlobs for all runs using the final baseline."""
+        for run in runs:
+            run.blob = self._create_text_blob(run.shaped_glyphs, run.font, baseline) if run.shaped_glyphs else None
+
     def _create_text_blob(self, glyphs: list, font: skia.Font, baseline: float) -> skia.TextBlob:
         import struct
         

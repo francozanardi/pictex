@@ -3,7 +3,7 @@ from typing import Optional
 from .border import Border, BorderRadius
 from .background import BackgroundImage
 from .effects import Shadow, OutlineStroke
-from .layout import Margin, Padding, JustifyContent, AlignItems, AlignSelf, FlexWrap
+from .layout import Margin, Padding, JustifyContent, AlignItems, AlignSelf, FlexWrap, TextBoxEdge
 from .position import Position
 from .transform import Transform
 from .style_property import StyleProperty
@@ -37,6 +37,7 @@ class Style:
     strikethrough: StyleProperty[Optional[TextDecoration]] = field(default_factory=lambda: StyleProperty(None))
     text_wrap: StyleProperty[TextWrap] = field(default_factory=lambda: StyleProperty(TextWrap.NORMAL))
     direction: StyleProperty[Optional[TextDirection]] = field(default_factory=lambda: StyleProperty(None))
+    text_box_edge: StyleProperty[TextBoxEdge] = field(default_factory=lambda: StyleProperty(TextBoxEdge()))
 
     # Properties that cannot be inherited.
     box_shadows: StyleProperty[list[Shadow]] = field(default_factory=lambda: StyleProperty([], inheritable=False))
