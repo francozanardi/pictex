@@ -14,6 +14,7 @@ from .decoration import TextDecoration
 from .color import SolidColor
 from .size import SizeValue
 from .line_height import LineHeight
+from .letter_spacing import LetterSpacing
 
 
 @dataclass
@@ -38,6 +39,7 @@ class Style:
     text_wrap: StyleProperty[TextWrap] = field(default_factory=lambda: StyleProperty(TextWrap.NORMAL))
     direction: StyleProperty[Optional[TextDirection]] = field(default_factory=lambda: StyleProperty(None))
     text_box_edge: StyleProperty[TextBoxEdge] = field(default_factory=lambda: StyleProperty(TextBoxEdge()))
+    letter_spacing: StyleProperty[LetterSpacing] = field(default_factory=lambda: StyleProperty(LetterSpacing.normal()))
 
     # Properties that cannot be inherited.
     box_shadows: StyleProperty[list[Shadow]] = field(default_factory=lambda: StyleProperty([], inheritable=False))

@@ -39,7 +39,7 @@ class LineHeight(NamedTuple):
         return LineHeight(mode=LineHeightMode.AUTO)
 
     @staticmethod
-    def from_multiplier(multiplier: float) -> "LineHeight":
+    def multiplier(multiplier: float) -> "LineHeight":
         """Return a MULTIPLIER line-height instance.
 
         Args:

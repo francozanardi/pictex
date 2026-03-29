@@ -11,6 +11,8 @@ from ..models import (
     TextDirection,
     BiDiFragment,
     ShapedGlyph,
+    LetterSpacing,
+    LetterSpacingMode,
 )
 from .bidi_processor import BiDiProcessor
 from .. import utils
@@ -131,7 +133,44 @@ class TextShaper:
         shaped = self._hb_shaper.shape_text_run(run)
         run.shaped_glyphs = shaped.glyphs
         run.width = shaped.width
+
+        letter_spacing = self._style.letter_spacing.get()
+        if letter_spacing.is_normal or not run.shaped_glyphs:
+            return shaped.visual_width
+        
+        spacing_px = self._resolve_letter_spacing_px(letter_spacing, run)
+        if spacing_px is not None:
+            self._apply_letter_spacing(run.shaped_glyphs, spacing_px)
+            run.width += spacing_px * (len(run.shaped_glyphs) - 1)
+
         return shaped.visual_width
+
+    def _resolve_letter_spacing_px(self, letter_spacing: LetterSpacing, run: TextRun) -> Optional[float]:
+        """Convert a LetterSpacing value to pixels for the given run's font."""
+        if letter_spacing.mode == LetterSpacingMode.ABSOLUTE:
+            return letter_spacing.value
+        
+        if letter_spacing.mode == LetterSpacingMode.PERCENT:
+            # percentage of the space-character width for this font (same behavior that CSS uses)
+            space_width = self._get_space_char_width(run.font)
+            if space_width is None:
+                return None
+            return (letter_spacing.value / 100.0) * space_width
+        
+        raise ValueError(f"Unsupported LetterSpacingMode: {letter_spacing.mode}")
+
+    def _get_space_char_width(self, font) -> Optional[float]:
+        """Return the advance width of the space character for the given font."""
+        glyph_ids = font.textToGlyphs(" ")
+        if not glyph_ids:
+            return None
+        widths = font.getWidths(glyph_ids)
+        return widths[0] if widths else None
+
+    def _apply_letter_spacing(self, glyphs: list[ShapedGlyph], spacing_px: float) -> None:
+        """Add spacing_px to the x_advance of every glyph except the last."""
+        for glyph in glyphs[:-1]:
+            glyph.x_advance += spacing_px
 
     def _create_blobs(self, runs: list[TextRun], baseline: float) -> None:
         """Create TextBlobs for all runs using the final baseline."""
