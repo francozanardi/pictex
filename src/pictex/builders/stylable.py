@@ -573,7 +573,7 @@ class Stylable:
         so setting it on a ``Canvas`` or layout container applies to all ``Text``
         nodes inside.
 
-        Note::
+        **Note:**
             This property is inspired by the CSS ``text-box-trim`` and
             ``text-box-edge`` properties, but does not implement them exactly.
 
@@ -652,14 +652,9 @@ class Stylable:
                   pair of characters. Positive values spread characters apart;
                   negative values bring them closer together.
 
-                   Example: ``letter_spacing(4)`` adds 4 px between letters.
-
                 - **str ending in "%"**: a percentage of the width of the
                   space character in the current font. Mirrors the CSS
                   ``<percentage>`` form.
-
-                   Example: ``letter_spacing("10%")`` adds spacing equal to
-                  10 % of the font's space-character width.
 
                 - ``"normal"``: restores the font's default spacing.
 
