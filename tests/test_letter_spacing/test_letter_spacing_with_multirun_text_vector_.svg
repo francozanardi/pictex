@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="351" height="113"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-Lato';
+    src: url('Lato-BoldItalic.ttf');
+}@font-face {
+    font-family: 'pictex-NotoSansJP';
+    src: url('NotoSansJP-Regular.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="351" height="113" />
+	<rect fill="white" width="351" height="113" />
+	<text font-size="50" font-style="italic" font-family="pictex-Lato" x="20, 60.799999, 90.449997, 108.925, 127.4, 158.89999, " y="78, ">
+			Hello 
+	</text>
+	<text font-size="50" font-family="pictex-NotoSansJP" x="168.55, 224.55, 280.54999, " y="78, ">
+			⽇本語
+	</text>
+</svg>

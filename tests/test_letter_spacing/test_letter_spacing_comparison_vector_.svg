@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="508" height="302">
+	<rect fill-opacity="0" width="508" height="302" />
+	<rect fill="white" width="508" height="302" />
+	<rect fill="#F0F0F0" x="20" y="20" width="340" height="58" />
+	<text font-size="50" font-family="Arial" x="20, 47.807617, 75.615234, 92.265625, 133.91602, 161.72363, 172.83203, 186.72363, 211.72363, 239.53125, 267.33887, 292.33887, 303.44727, 331.25488, " y="66.081543, ">
+			normal spacing
+	</text>
+	<rect fill="#F0F0F0" x="20" y="88" width="341" height="58" />
+	<text font-size="50" font-family="Arial" x="20, 49, 80.807617, 112.61523, 141.61523, 156.72363, 188.53125, 220.33887, 238.23047, 271.42969, 303.2373, 335.04492, " y="134.08154, ">
+			spacing +4px
+	</text>
+	<rect fill="#F0F0F0" x="20" y="156" width="468" height="58" />
+	<text font-size="50" font-family="Arial" x="20, 57, 96.807617, 136.61523, 173.61523, 196.72363, 236.53125, 276.33887, 302.23047, 343.42969, 383.2373, 423.04492, 462.85254, " y="202.08154, ">
+			spacing +12px
+	</text>
+	<rect fill="#F0F0F0" x="20" y="224" width="284" height="58" />
+	<text font-size="50" font-family="Arial" x="20, 42, 66.807617, 91.615234, 113.61523, 121.72363, 146.53125, 171.33887, 182.23047, 195.88086, 220.68848, 245.49609, " y="270.08154, ">
+			spacing -3px
+	</text>
+</svg>
