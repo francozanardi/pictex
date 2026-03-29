@@ -20,6 +20,7 @@ from .border import Border, BorderStyle, BorderRadiusValue, BorderRadius
 from .render_node import RenderNode
 from .node_type import NodeType
 from .line_height import LineHeight, LineHeightMode
+from .letter_spacing import LetterSpacing, LetterSpacingMode
 
 __all__ = [
     "Shadow", "OutlineStroke", "StrokeMode",
@@ -44,4 +45,5 @@ __all__ = [
     "RenderNode",
     "NodeType",
     "LineHeight", "LineHeightMode",
+    "LetterSpacing", "LetterSpacingMode",
 ]

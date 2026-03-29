@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="308" height="213">
+	<rect fill-opacity="0" width="308" height="213" />
+	<rect fill="white" width="308" height="213" />
+	<text font-size="50" font-family="Arial" x="20, 52.807617, 68.916016, 101.72363, 134.53125, 153.42285, 186.23047, 219.03809, " y="66.081543, ">
+			Line one
+	</text>
+	<text font-size="50" font-family="Arial" x="20, 52.807617, 68.916016, 101.72363, 134.53125, 153.42285, 172.31445, 213.42285, " y="123.57666, ">
+			Line two
+	</text>
+	<text font-size="50" font-family="Arial" x="20, 52.807617, 68.916016, 101.72363, 134.53125, 153.42285, 172.31445, 205.12207, 226.77246, 259.58008, " y="181.07178, ">
+			Line three
+	</text>
+</svg>

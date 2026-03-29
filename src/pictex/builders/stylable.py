@@ -113,7 +113,7 @@ class Stylable:
             Text("Hello").font_size(20).line_height(1.5)
             # Each line takes 30 px of vertical space.
         """
-        self._style.line_height.set(LineHeight.from_multiplier(multiplier))
+        self._style.line_height.set(LineHeight.multiplier(multiplier))
         return self
 
     def color(self, color: Union[str, PaintSource]) -> Self:
@@ -548,6 +548,65 @@ class Stylable:
         else:
             raise TypeError("text_box_edge() requires either 'both' or both 'top' and 'bottom'")
 
+        return self
+
+    def letter_spacing(self, value: Union[float, int, str, Literal["normal"]]) -> Self:
+        """Sets the extra space between characters (CSS ``letter-spacing``).
+
+        Controls the inter-character spacing added on top of the font's
+        default spacing. The BiDi and shaping pipeline honours this value
+        for all scripts.
+
+        Args:
+            value: The letter-spacing amount. Accepts two forms:
+
+                - **float / int** - an absolute pixel offset added between
+                  each pair of characters.  Positive values spread characters
+                  apart; negative values bring them closer together.
+
+                  Example: ``letter_spacing(4)`` adds 4 px between letters.
+
+                - **str ending in "%"** - a percentage of the width of the
+                  space character in the current font.  Mirrors the CSS
+                  ``<percentage>`` form.
+
+                  Example: ``letter_spacing("10%")`` adds spacing equal to
+                  10 % of the font's space-character width.
+
+                Pass ``"normal"`` to restore the font's default spacing.
+
+        Returns:
+            The ``Self`` instance for chaining.
+
+        Raises:
+            ValueError: If a string value is not a valid percentage (e.g.
+                ``"10%"``) or the literal ``"normal"``.
+
+        Examples::
+
+            # Absolute pixel spacing
+            Text("Hello").letter_spacing(4)
+
+            # Percentage of the space-character width
+            Text("Hello").letter_spacing("10%")
+
+            # Reset to font default
+            Text("Hello").letter_spacing("normal")
+        """
+        if isinstance(value, str):
+            if value.strip().lower() == "normal":
+                self._style.letter_spacing.set(LetterSpacing.normal())
+            elif value.endswith("%"):
+                self._style.letter_spacing.set(
+                    LetterSpacing.percent(float(value.rstrip("%")))
+                )
+            else:
+                raise ValueError(
+                    f"Invalid letter_spacing string: {value!r}. "
+                    "Expected a percentage (e.g. '10%') or 'normal'."
+                )
+        else:
+            self._style.letter_spacing.set(LetterSpacing.pixels(float(value)))
         return self
 
     def flex_grow(self, value: float) -> Self:
