@@ -1,3 +1,4 @@
+from typing import Union
 import skia
 from ...models import LineMetrics, TextRun, ShapedGlyph
 from .metrics_strategy import AggregatedLineFontsMetrics, LineMetricsStrategy
@@ -41,7 +42,7 @@ class GlyphsMetricsStrategy(LineMetricsStrategy):
 
     def _measure_ink_bounds(
         self, runs: list[TextRun]
-    ) -> tuple[float | None, float | None]:
+    ) -> tuple[Union[float, None], Union[float, None]]:
         """Return the maximum (ink_ascent, ink_descent) across all glyphs in all runs.
 
         Ink bounds are measured directly from the font via ``skia.Font.getBounds()``,
