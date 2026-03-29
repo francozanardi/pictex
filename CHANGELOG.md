@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Letter Spacing** (`letter_spacing()`): Controls the extra space between characters, mirroring the CSS `letter-spacing` property.
+  - Accepts an absolute pixel offset (`letter_spacing(8)`) or a percentage of the font's space-character width (`letter_spacing("10%")`).
+  - Negative values tighten character spacing.
+  - Pass `"normal"` to restore the font's default spacing.
+  - Inherited, so it can be set once on a `Canvas` or container and applied to all `Text` nodes inside.
 - **Text Box Edge** (`text_box_edge()`): Controls how the top and bottom edges of a text node's bounding box are calculated. Inspired by the CSS `text-box-trim` / `text-box-edge` properties.
   - `"font"` *(default)*: Box edges are derived from the font's ascent/descent metrics - stable and content-independent.
   - `"glyphs"`: Box edges are derived from the actual bounds of the rendered glyphs - tightly wraps visible characters, removing empty ascender/descender space.
