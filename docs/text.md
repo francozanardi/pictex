@@ -159,8 +159,9 @@ from pictex import Canvas
 `PicTex` fully supports multi-line text using newline characters (`\n`). Additionally, text can automatically wrap when placed in containers with fixed widths.
 
 -   `.text_align()`: Controls how text lines are aligned within the text block. Accepts `TextAlign.LEFT`, `TextAlign.CENTER`, or `TextAlign.RIGHT`. If not set, it defaults to `LEFT` in LTR contexts and `RIGHT` in RTL contexts.
--   `.line_height()`: Sets the spacing between lines as a multiplier of the font size. A value of `1.5` means 150% spacing.
+-   `.line_height()`: Sets the spacing between lines as a multiplier of the font size. A value of `1.5` means 150% spacing. When not set, the default is `"auto"`: each line's vertical space is derived from the font's own metrics (`ascent + descent + leading`), similar to CSS `line-height: normal`. To replicate the previous behavior of tightly packed lines, call `.line_height(1.0)` explicitly.
 -   `.text_wrap()`: Controls whether text automatically wraps to fit container width. Accepts `"normal"` (default, wrapping enabled) or `"nowrap"` (wrapping disabled).
+-   `.text_box_edge()`: Controls how the top and bottom edges of the text bounding box are calculated. Inspired by the CSS `text-box-trim` / `text-box-edge` properties. Accepts `"font"` (default - uses font ascent/descent metrics, stable regardless of content) or `"glyphs"` (uses the actual ink bounds of the rendered characters, tightly wrapping visible glyphs). This property is inherited.
 
 ```python
 from pictex import Canvas, TextAlign
@@ -181,6 +182,36 @@ canvas.render(text).save("alignment_example.png")
 ```
 
 ![Multiline result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754102754/alignment_example_dnk5t4.png)
+
+### Text Box Edge
+
+By default, PicTex sizes a text node's bounding box using the font's ascent and descent metrics. This is stable and predictable - the box height is always the same for a given font size, regardless of which characters are rendered.
+
+Use `.text_box_edge()` when you need the box to tightly wrap the actual visible ink, for example to remove the extra space above capital letters or below the baseline when no descenders are present.
+
+```python
+from pictex import Canvas, Column, Text
+
+canvas = Canvas().font_family("Arial").font_size(80).background_color("pink")
+
+# "glyphs": box tightly wraps the visible ink - no extra space above/below
+# "font" (default): box uses font ascent/descent - stable for dynamic text
+layout = Column(
+    Text("Hello").text_box_edge("glyphs").background_color("cyan"),
+    Text("Hello").text_box_edge("font").background_color("cyan"),
+).gap(10)
+
+canvas.render(layout).save("text_box_edge.png")
+```
+
+You can also control each edge independently:
+
+```python
+# Trim only the top edge - removes ascender space above capital letters
+Text("Hello").text_box_edge(top="glyphs", bottom="font")
+```
+
+> **Caution:** `"glyphs"` makes the box size content-dependent. Different strings will produce different heights, which can cause your layout to shift unexpectedly. Use `"font"` (the default) for dynamic or user-supplied text.
 
 ## Text Direction (LTR / RTL)
 

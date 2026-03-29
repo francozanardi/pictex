@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Text Box Edge** (`text_box_edge()`): Controls how the top and bottom edges of a text node's bounding box are calculated. Inspired by the CSS `text-box-trim` / `text-box-edge` properties.
+  - `"font"` *(default)*: Box edges are derived from the font's ascent/descent metrics - stable and content-independent.
+  - `"glyphs"`: Box edges are derived from the actual bounds of the rendered glyphs - tightly wraps visible characters, removing empty ascender/descender space.
+  - Supports a shorthand (`text_box_edge("glyphs")`) to set both edges at once, or keyword arguments (`text_box_edge(top="glyphs", bottom="font")`) to set each edge independently.
+  - Inherited, so it can be set once on a `Canvas` or container and applied to all `Text` nodes inside.
+
 ### Fixed
 - **Line Height**: Corrected a fundamental mismatch between how line height was stored and how it was applied. Previously, `Line` stored a height derived from font metrics (`ascent + descent + leading`), but painters and layout nodes ignored it when advancing between lines - they independently recomputed `line_height_multiplier * font_size`. This meant the visual spacing and the bounding boxes were driven by two different values, which could cause clipping, misaligned decorations, and incorrect element sizing. `Line.metrics.height` is now the single source of truth for vertical advance, computed once in the shaper and used consistently everywhere.
 
