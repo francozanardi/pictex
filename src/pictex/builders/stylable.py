@@ -105,13 +105,14 @@ class Stylable:
         Returns:
             The ``Self`` instance for chaining.
 
-        Example::
-
+        Example:
+            ```python
             Text("Hello").font_size(20).line_height(1.5)
             # Each line takes 30 px of vertical space.
 
             Text("Hello").line_height("auto")
             # Restores font-metrics-based line height.
+            ```
         """
         if isinstance(value, LineHeight):
             self._style.line_height.set(value)
@@ -538,11 +539,13 @@ class Stylable:
             The `Self` instance for chaining.
         
         Example:
-            >>> Text("مرحبا").direction("rtl")
-            >>> Column(
-            ...     Text("Text 1"),  # inherits RTL
-            ...     Text("Text 2")   # inherits RTL
-            ... ).direction("rtl")
+            ```python
+            Text("مرحبا").direction("rtl")
+            Column(
+                Text("Text 1"),  # inherits RTL
+                Text("Text 2")   # inherits RTL
+            ).direction("rtl")
+            ```
         """
         self._style.direction.set(value if isinstance(value, TextDirection) else TextDirection(value))
         return self
@@ -555,10 +558,10 @@ class Stylable:
 
     def text_box_edge(  # type: ignore[misc]
         self,
-        both: Optional[Union[TextBoxEdgeValue, str]] = None,
+        both: Optional[TextBoxEdgeInput] = None,
         *,
-        top: Optional[Union[TextBoxEdgeValue, str]] = None,
-        bottom: Optional[Union[TextBoxEdgeValue, str]] = None,
+        top: Optional[TextBoxEdgeInput] = None,
+        bottom: Optional[TextBoxEdgeInput] = None,
     ) -> Self:
         """Controls how the top and bottom edges of a text node's box are calculated.
 
@@ -570,7 +573,7 @@ class Stylable:
         so setting it on a ``Canvas`` or layout container applies to all ``Text``
         nodes inside.
 
-        .. note::
+        Note::
             This property is inspired by the CSS ``text-box-trim`` and
             ``text-box-edge`` properties, but does not implement them exactly.
 
@@ -599,20 +602,23 @@ class Stylable:
             TypeError: If neither ``both`` nor at least one of ``top``/``bottom``
                 are provided, or if ``both`` is mixed with ``top``/``bottom``.
 
-        Examples:
-            Trim both edges to the glyph ink bounds::
+        Example:
+            Trim both edges to the glyph ink bounds:
+            ```python
+            Text("Hello").text_box_edge(TextBoxEdgeValue.GLYPHS)
+            Text("Hello").text_box_edge("glyphs")
+            ```
+            
+            Trim only the top edge, keep font metrics at the bottom:
+            ```python
+            Text("Hello").text_box_edge(top="glyphs")
+            Text("Hello").text_box_edge(top="glyphs", bottom="font")  # equivalent
+            ```
 
-                Text("Hello").text_box_edge(TextBoxEdgeValue.GLYPHS)
-                Text("Hello").text_box_edge("glyphs")
-
-            Trim only the top edge, keep font metrics at the bottom::
-
-                Text("Hello").text_box_edge(top="glyphs")
-                Text("Hello").text_box_edge(top="glyphs", bottom="font")  # equivalent
-
-            Inherit the setting for all Text nodes in a canvas::
-
-                Canvas().text_box_edge("glyphs").render("Hello, World!")
+            Inherit the setting for all Text nodes in a canvas:
+            ```python
+            Canvas().text_box_edge("glyphs").render("Hello, World!")
+            ```
         """
         def _parse(value: Union[TextBoxEdgeValue, str]) -> TextBoxEdgeValue:
             return value if isinstance(value, TextBoxEdgeValue) else TextBoxEdgeValue(value)
@@ -646,13 +652,13 @@ class Stylable:
                   pair of characters. Positive values spread characters apart;
                   negative values bring them closer together.
 
-                  Example: ``letter_spacing(4)`` adds 4 px between letters.
+                   Example: ``letter_spacing(4)`` adds 4 px between letters.
 
                 - **str ending in "%"**: a percentage of the width of the
                   space character in the current font. Mirrors the CSS
                   ``<percentage>`` form.
 
-                  Example: ``letter_spacing("10%")`` adds spacing equal to
+                   Example: ``letter_spacing("10%")`` adds spacing equal to
                   10 % of the font's space-character width.
 
                 - ``"normal"``: restores the font's default spacing.
@@ -667,8 +673,8 @@ class Stylable:
             ValueError: If a string value is not a valid percentage (e.g.
                 ``"10%"``) or the literal ``"normal"``.
 
-        Examples::
-
+        Example:
+            ```python
             # Absolute pixel spacing
             Text("Hello").letter_spacing(4)
 
@@ -677,6 +683,7 @@ class Stylable:
 
             # Reset to font default
             Text("Hello").letter_spacing("normal")
+            ```
         """
         if isinstance(value, LetterSpacing):
             self._style.letter_spacing.set(value)
@@ -710,11 +717,13 @@ class Stylable:
             The `Self` instance for chaining.
         
         Example:
-            >>> Row(
-            ...     Text("Fixed").size(width=100),
-            ...     Text("Grows x1").flex_grow(1),
-            ...     Text("Grows x2").flex_grow(2)
-            ... )
+            ```python
+            Row(
+                Text("Fixed").size(width=100),
+                Text("Grows x1").flex_grow(1),
+                Text("Grows x2").flex_grow(2)
+            )
+            ```
         """
         self._style.flex_grow.set(float(value))
         return self
@@ -733,10 +742,12 @@ class Stylable:
             The `Self` instance for chaining.
         
         Example:
-            >>> Row(
-            ...     Text("Don't shrink").flex_shrink(0),
-            ...     Text("Can shrink").flex_shrink(1)
-            ... )
+            ```python
+            Row(
+                Text("Don't shrink").flex_shrink(0),
+                Text("Can shrink").flex_shrink(1)
+            )
+            ```
         """
         self._style.flex_shrink.set(float(value))
         return self
@@ -754,11 +765,13 @@ class Stylable:
             The `Self` instance for chaining.
         
         Example:
-            >>> Row(
-            ...     Text("A"),
-            ...     Text("B").align_self('end'),  # This one aligns differently
-            ...     Text("C")
-            ... ).align_items('start')
+            ```python
+            Row(
+                Text("A"),
+                Text("B").align_self('end'),  # This one aligns differently
+                Text("C")
+            ).align_items('start')
+            ```
         """
         self._style.align_self.set(alignment if isinstance(alignment, AlignSelf) else AlignSelf(alignment))
         return self

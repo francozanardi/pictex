@@ -38,8 +38,10 @@ class WithPositionMixin:
             Self: The instance for method chaining.
 
         Example:
-            >>> Text("Badge").absolute_position(top=10, right=10)
-            >>> Text("Footer").absolute_position(bottom=0, left=0, right=0)
+            ```python
+            Text("Badge").absolute_position(top=10, right=10)
+            Text("Footer").absolute_position(bottom=0, left=0, right=0)
+            ```
         """
         return self._set_position(PositionType.ABSOLUTE, top, right, bottom, left)
 
@@ -66,8 +68,10 @@ class WithPositionMixin:
             Self: The instance for method chaining.
 
         Example:
-            >>> Text("Watermark").fixed_position(bottom=10, right=10)
-            >>> Text("Header").fixed_position(top=0, left=0, right=0)
+            ```python
+            Text("Watermark").fixed_position(bottom=10, right=10)
+            Text("Header").fixed_position(top=0, left=0, right=0)
+            ```
         """
         return self._set_position(PositionType.FIXED, top, right, bottom, left)
 
@@ -94,7 +98,9 @@ class WithPositionMixin:
             Self: The instance for method chaining.
 
         Example:
-            >>> Text("Nudged").relative_position(top=5, left=5)
+            ```python
+            Text("Nudged").relative_position(top=5, left=5)
+            ```
         """
         return self._set_position(PositionType.RELATIVE, top, right, bottom, left)
 
@@ -120,8 +126,10 @@ class WithPositionMixin:
             Self: The instance for method chaining.
 
         Example:
-            >>> # True centering
-            >>> Text("Centered").absolute_position(top="50%", left="50%").translate(x="-50%", y="-50%")
+            ```python
+            # True centering
+            Text("Centered").absolute_position(top="50%", left="50%").translate(x="-50%", y="-50%")
+            ```
         """
         self._style.transform.set(Transform(translate_x=x, translate_y=y))
         return self
@@ -149,8 +157,10 @@ class WithPositionMixin:
             Self: The instance for method chaining.
 
         Example:
-            >>> Text("Overlay").place("center", "center")
-            >>> Text("Badge").place("right", "top", x_offset=-10, y_offset=10)
+            ```python
+            Text("Overlay").place("center", "center")
+            Text("Badge").place("right", "top", x_offset=-10, y_offset=10)
+            ```
         """
         left, right, translate_x = self._parse_horizontal_anchor(horizontal)
         top, bottom, translate_y = self._parse_vertical_anchor(vertical)
