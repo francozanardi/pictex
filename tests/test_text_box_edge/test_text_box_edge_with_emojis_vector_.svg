@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="525" height="491">
+	<rect fill-opacity="0" width="525" height="491" />
+	<rect fill="#FFC0CB" width="525" height="491" />
+	<rect fill="aqua" width="525" height="115" />
+	<rect fill="none" stroke="red" stroke-width="10" stroke-miterlimit="4" x="5" y="5" width="515" height="105" />
+	<text font-size="80" font-family="Arial" x="10, 54.492188, 98.984375, 116.75781, 134.53125, 179.02344, " y="85, ">
+			hello 
+	</text>
+	<text font-size="80" font-family="Noto Color Emoji" x="201.25, " y="85, ">
+			🎉
+	</text>
+	<text font-size="80" font-family="Arial" x="323.08594, 380.85938, 425.35156, 451.99219, 469.76562, " y="85, ">
+			world
+	</text>
+	<rect fill="aqua" y="125" width="525" height="117" />
+	<rect fill="none" stroke="red" stroke-width="10" stroke-miterlimit="4" x="5" y="130" width="515" height="107" />
+	<text font-size="80" font-family="Arial" x="10, 54.492188, 98.984375, 116.75781, 134.53125, 179.02344, " y="210.43704, ">
+			hello 
+	</text>
+	<text font-size="80" font-family="Noto Color Emoji" x="201.25, " y="210.43704, ">
+			🎉
+	</text>
+	<text font-size="80" font-family="Arial" x="323.08594, 380.85938, 425.35156, 451.99219, 469.76562, " y="210.43704, ">
+			world
+	</text>
+	<rect fill="aqua" y="252" width="320" height="115" />
+	<rect fill="none" stroke="red" stroke-width="10" stroke-miterlimit="4" x="5" y="257" width="310" height="105" />
+	<text font-size="80" font-family="Noto Color Emoji" x="10, 109.60938, 209.21875, " y="337, ">
+			🔥🎨✨
+	</text>
+	<rect fill="aqua" y="377" width="320" height="114" />
+	<rect fill="none" stroke="red" stroke-width="10" stroke-miterlimit="4" x="5" y="382" width="310" height="104" />
+	<text font-size="80" font-family="Noto Color Emoji" x="10, 109.60938, 209.21875, " y="461.12845, ">
+			🔥🎨✨
+	</text>
+</svg>

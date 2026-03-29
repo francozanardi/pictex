@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="216" height="261">
+	<rect fill-opacity="0" width="216" height="261" />
+	<rect fill="#FFC0CB" width="216" height="261" />
+	<rect fill="aqua" width="216" height="111" />
+	<rect fill="none" stroke="red" stroke-width="10" stroke-miterlimit="4" x="5" y="5" width="206" height="101" />
+	<text font-size="80" font-family="Arial" x="10, 54.492188, 98.984375, 152.34375, " y="84, ">
+			pgÝÁ
+	</text>
+	<rect fill="aqua" y="121" width="216" height="140" />
+	<rect fill="none" stroke="red" stroke-width="10" stroke-miterlimit="4" x="5" y="126" width="206" height="130" />
+	<text font-size="80" font-family="Arial" x="10, 54.492188, 98.984375, 152.34375, " y="218.73438, ">
+			pgÝÁ
+	</text>
+</svg>
