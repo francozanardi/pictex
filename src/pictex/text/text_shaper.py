@@ -167,6 +167,9 @@ class TextShaper:
         widths = font.getWidths(glyph_ids)
         return widths[0] if widths else None
 
+    # TODO: we're applying spacing by glyphs instead of by graphemes,
+    # it will cause issues with complex emojis like family 👨‍👩‍👧‍👦
+    # we should also take a look at scripting systems like Arabic
     def _apply_letter_spacing(self, glyphs: list[ShapedGlyph], spacing_px: float) -> None:
         """Add spacing_px to the x_advance of every glyph except the last."""
         for glyph in glyphs[:-1]:
