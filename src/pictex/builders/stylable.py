@@ -8,7 +8,7 @@ try:
 except ImportError:
     from typing_extensions import Self
 
-TextBoxEdgeArg = Union[TextBoxEdgeValue, Literal["font", "glyphs"]]
+TextBoxEdgeInput = Union[TextBoxEdgeValue, Literal["font", "glyphs"]]
 
 class Stylable:
 
@@ -84,26 +84,23 @@ class Stylable:
         self._style.font_style.set(style if isinstance(style, FontStyle) else FontStyle(style))
         return self
 
-    def line_height(self, multiplier: float) -> Self:
-        """Sets the line height as a unitless multiplier of the font size.
+    def line_height(self, value: Union[float, Literal["auto"], LineHeight]) -> Self:
+        """Sets the line height.
 
-        Controls the vertical space each line of text occupies.  The
-        multiplier is applied to the current ``font_size``, so a value of
-        ``1.5`` on a 20 px font yields 30 px per line.
-
-        When **not** called, the default behaviour is ``"auto"``: each line
-        height is derived from the font's own metrics
-        (``ascent + descent + leading``), which is similar to CSS
-        ``line-height: normal``.
+        Controls the vertical space each line of text occupies.
 
         Args:
-            multiplier: Unitless multiplier applied to the current
-                ``font_size``.  Common values:
+            value: Accepts three forms:
 
-                - ``1.0``: single spacing (lines packed to exactly
-                  ``font_size`` pixels, may feel tight).
-                - ``1.2``: compact, often used for headings.
-                - ``1.4`` - ``1.6``: comfortable reading spacing.
+                - **float**: unitless multiplier applied to the current
+                  ``font_size``. A value of ``1.5`` on a 20 px font yields
+                  30 px per line. Common values: ``1.0`` (tight), ``1.2``
+                  (headings), ``1.4``-``1.6`` (comfortable reading).
+                - ``"auto"``: restores the default behaviour: each line
+                  height is derived from the font's own metrics
+                  (``ascent + descent + leading``), similar to CSS
+                  ``line-height: normal``.
+                - ``LineHeight``: a pre-built instance.
 
         Returns:
             The ``Self`` instance for chaining.
@@ -112,8 +109,16 @@ class Stylable:
 
             Text("Hello").font_size(20).line_height(1.5)
             # Each line takes 30 px of vertical space.
+
+            Text("Hello").line_height("auto")
+            # Restores font-metrics-based line height.
         """
-        self._style.line_height.set(LineHeight.multiplier(multiplier))
+        if isinstance(value, LineHeight):
+            self._style.line_height.set(value)
+        elif value == "auto":
+            self._style.line_height.set(LineHeight.auto())
+        else:
+            self._style.line_height.set(LineHeight.multiplier(float(value)))
         return self
 
     def color(self, color: Union[str, PaintSource]) -> Self:
@@ -334,7 +339,7 @@ class Stylable:
 
     def background_image(
         self,
-        path: str,
+        path: Union[str, Path],
         size_mode: Union[BackgroundImageSizeMode, Literal["cover", "contain", "tile"]] = BackgroundImageSizeMode.COVER
     ) -> Self:
         """Sets a background image for the element.
@@ -356,7 +361,7 @@ class Stylable:
             size_mode = BackgroundImageSizeMode(size_mode.lower())
 
         self._style.background_image.set(
-            BackgroundImage(path=path, size_mode=size_mode)
+            BackgroundImage(path=str(path), size_mode=size_mode)
         )
         return self
 
@@ -471,10 +476,10 @@ class Stylable:
         return self
 
     @overload
-    def text_box_edge(self, both: TextBoxEdgeArg) -> Self: ...
+    def text_box_edge(self, both: TextBoxEdgeInput) -> Self: ...
 
     @overload
-    def text_box_edge(self, *, top: TextBoxEdgeArg, bottom: TextBoxEdgeArg) -> Self: ...
+    def text_box_edge(self, *, top: TextBoxEdgeInput = ..., bottom: TextBoxEdgeInput = ...) -> Self: ...
 
     def text_box_edge(  # type: ignore[misc]
         self,
@@ -511,14 +516,16 @@ class Stylable:
         Args:
             both: Applies the same edge mode to both top and bottom.
             top: Edge mode for the top of the box (keyword-only).
+                Defaults to ``"font"`` when omitted.
             bottom: Edge mode for the bottom of the box (keyword-only).
+                Defaults to ``"font"`` when omitted.
 
         Returns:
             The ``Self`` instance for chaining.
 
         Raises:
-            TypeError: If neither ``both`` nor ``top``/``bottom`` are provided,
-                or if ``both`` is mixed with ``top``/``bottom``.
+            TypeError: If neither ``both`` nor at least one of ``top``/``bottom``
+                are provided, or if ``both`` is mixed with ``top``/``bottom``.
 
         Examples:
             Trim both edges to the glyph ink bounds::
@@ -528,7 +535,8 @@ class Stylable:
 
             Trim only the top edge, keep font metrics at the bottom::
 
-                Text("Hello").text_box_edge(top="glyphs", bottom="font")
+                Text("Hello").text_box_edge(top="glyphs")
+                Text("Hello").text_box_edge(top="glyphs", bottom="font")  # equivalent
 
             Inherit the setting for all Text nodes in a canvas::
 
@@ -543,14 +551,16 @@ class Stylable:
         if both is not None:
             val = _parse(both)
             self._style.text_box_edge.set(TextBoxEdge(top=val, bottom=val))
-        elif top is not None and bottom is not None:
-            self._style.text_box_edge.set(TextBoxEdge(top=_parse(top), bottom=_parse(bottom)))
+        elif top is not None or bottom is not None:
+            top_val = _parse(top) if top is not None else TextBoxEdgeValue.FONT
+            bottom_val = _parse(bottom) if bottom is not None else TextBoxEdgeValue.FONT
+            self._style.text_box_edge.set(TextBoxEdge(top=top_val, bottom=bottom_val))
         else:
-            raise TypeError("text_box_edge() requires either 'both' or both 'top' and 'bottom'")
+            raise TypeError("text_box_edge() requires either 'both' or at least one of 'top'/'bottom'")
 
         return self
 
-    def letter_spacing(self, value: Union[float, int, str, Literal["normal"]]) -> Self:
+    def letter_spacing(self, value: Union[float, int, str, Literal["normal"], LetterSpacing]) -> Self:
         """Sets the extra space between characters (CSS ``letter-spacing``).
 
         Controls the inter-character spacing added on top of the font's
@@ -558,22 +568,25 @@ class Stylable:
         for all scripts.
 
         Args:
-            value: The letter-spacing amount. Accepts two forms:
+            value: The letter-spacing amount. Accepts:
 
-                - **float / int** - an absolute pixel offset added between
-                  each pair of characters.  Positive values spread characters
-                  apart; negative values bring them closer together.
+                - **float / int**: absolute pixel offset added between each
+                  pair of characters. Positive values spread characters apart;
+                  negative values bring them closer together.
 
                   Example: ``letter_spacing(4)`` adds 4 px between letters.
 
-                - **str ending in "%"** - a percentage of the width of the
-                  space character in the current font.  Mirrors the CSS
+                - **str ending in "%"**: a percentage of the width of the
+                  space character in the current font. Mirrors the CSS
                   ``<percentage>`` form.
 
                   Example: ``letter_spacing("10%")`` adds spacing equal to
                   10 % of the font's space-character width.
 
-                Pass ``"normal"`` to restore the font's default spacing.
+                - ``"normal"``: restores the font's default spacing.
+
+                - ``LetterSpacing``: a pre-built instance
+                  (``LetterSpacing.pixels(...)``, ``LetterSpacing.percent(...)``).
 
         Returns:
             The ``Self`` instance for chaining.
@@ -593,7 +606,9 @@ class Stylable:
             # Reset to font default
             Text("Hello").letter_spacing("normal")
         """
-        if isinstance(value, str):
+        if isinstance(value, LetterSpacing):
+            self._style.letter_spacing.set(value)
+        elif isinstance(value, str):
             if value.strip().lower() == "normal":
                 self._style.letter_spacing.set(LetterSpacing.normal())
             elif value.endswith("%"):
