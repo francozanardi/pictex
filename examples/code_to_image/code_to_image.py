@@ -49,6 +49,8 @@ def parse_python_line(line: str) -> Row:
     ]
     line_children = []
     for token_type, token_text in grouped_tokens:
+        if (token_text == '\n'):
+            continue
         color = get_token_color(token_type)
         line_children.append(Text(token_text).color(color))
 
