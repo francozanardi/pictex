@@ -152,7 +152,7 @@ from pictex import Canvas
 )
 ```
 
-![Emoji sequences result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1774751651/tweet_vwhhev.png)
+![Emoji sequences result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1774751790/docs-emoji_s7gqfi.png)
 
 ## Multi-line Text and Alignment
 
