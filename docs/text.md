@@ -286,6 +286,37 @@ no_wrap_text = Text(long_text).text_wrap("nowrap")
 container = Column(no_wrap_text).size(width=800).padding(10).background_color("lightblue")
 ```
 
+## Inline Spans (Rich Text)
+
+You can use the `Span` builder inside a `Text` element to apply granular styling to specific portions of your text. 
+
+A `Span` exposes all the typographical properties (like `.color()`, `.font_size()`, `.font_weight()`, `.underline()`, `.text_stroke()`, etc.) and seamlessly integrates with the surrounding text flow, honoring multi-line wrapping and bidirectional (RTL) algorithm.
+
+```python
+from pictex import Canvas, Text, Span, LinearGradient
+
+gradient = LinearGradient(colors=["purple", "orange"])
+
+canvas = Canvas().font_size(80)
+
+# Nested spans inherit properties from their parent spans naturally
+rich_text = Text(
+    "This is ",
+    Span(
+        "very ",
+        Span("rich").font_weight("bold").color(gradient),
+        " text!"
+    ).color("blue").underline(thickness=4)
+)
+
+canvas.render(rich_text).save("span_example.png")
+```
+
+Spans fully support:
+- **Nested Inheritance**: Deeply nested spans inherit their parent's properties (like `color` or `font_size`) unless explicitly overridden.
+- **Continuous Gradients & Decorations**: Gradients and underlines applied to a `Span` will smoothly cover the span's entire footprint, even if it wraps across multiple lines or breaks into multiple font fallbacks (like Emojis).
+- **Contextual Joining**: Complex scripts like Arabic maintain their perfect contextual shape across span color boundaries.
+
 ## Text Decorations
 
 You can add `underline` and `strikethrough` decorations. As shown in the Gradients guide, the `color` for a decoration can also be a `LinearGradient`.

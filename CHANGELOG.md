@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Inline Spans** (`Span`): Introduced a new `Span` builder for applying granular, rich formatting within a single text block.
+  - Apply varied styles (color, font size/weight/style, decorations, gradients, stroke, shadows) to specific subsets of text.
+  - Spans can be nested deeply; properties cascade down and inherit naturally unless explicitly overridden.
+  - Fully compatible with automatic font fallbacks, complex emoji sequences, bidirectional text, and contextual character joining.
+
 ## [2.2.0] - 2026-03-29
 
 ### Added
