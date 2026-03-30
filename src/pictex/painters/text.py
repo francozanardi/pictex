@@ -76,7 +76,7 @@ class TextPainter(Painter):
         the full span extent. Otherwise fall back to the full text block bounds,
         preserving the pre-feature behavior for block-level gradients.
         """
-        if run.span.style.is_explicit(prop):
+        if run.span.explicit_style and run.span.explicit_style.is_explicit(prop):
             return span_bounds[id(run.span)]
         return self._text_bounds
 

@@ -113,8 +113,8 @@ class DecorationPainter(Painter):
             )
             color.apply_to_paint(paint, bounds)
         else:
-            color = span_info.style.color.get()
-            if span_info.style.is_explicit('color'):
+            color = span_info.computed_style.color.get()
+            if span_info.explicit_style and span_info.explicit_style.is_explicit('color'):
                 bounds = span_bounds[id(span_info)]
             else:
                 bounds = self._text_bounds

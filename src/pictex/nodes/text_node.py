@@ -75,10 +75,12 @@ class TextNode(BaseTextNode):
             if isinstance(item, str):
                 span_style = self.computed_styles
                 text = item
+                explicit_style = None
             else:
                 span_style = self._compute_span_style(item.style)
                 text = item.text
-            resolved.append(ResolvedSpan(text=text, style=span_style, start=offset))
+                explicit_style = item.style
+            resolved.append(ResolvedSpan(text=text, computed_style=span_style, start=offset, explicit_style=explicit_style))
             offset += len(text)
         return resolved
 

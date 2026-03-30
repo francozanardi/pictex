@@ -49,7 +49,8 @@ class SpanInfo:
     identity (``is`` / ``id()``) is used to group co-span runs so that gradient
     bounds can be computed over the full span extent rather than per-run.
     """
-    style: Style
+    computed_style: Style  # The fully evaluated style, completely filled in with inherited properties.
+    explicit_style: Optional[Style] = None  # The style containing only properties explicitly set on the span itself.
 
 
 @dataclass
@@ -66,7 +67,7 @@ class TextRun:
 
     @property
     def style(self) -> Style:
-        return self.span.style
+        return self.span.computed_style
 
     @property
     def direction(self) -> TextDirection:

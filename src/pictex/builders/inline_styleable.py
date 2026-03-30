@@ -14,7 +14,7 @@ class InlineStyleable:
 
     Used by builders whose content is purely inline text (e.g. ``Span``).
     Layout properties (padding, margin, border, flex, etc.) are intentionally
-    absent — they have no meaning for inline fragments.
+    absent - they have no meaning for inline fragments.
     """
 
     def __init__(self):

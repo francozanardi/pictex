@@ -157,8 +157,8 @@ def test_contextual_joining_across_font_runs(file_regression, render_engine):
     """
     Scripts like Arabic form contextual joining shapes (initial, medial, final,
     isolated) based on neighboring characters. When a word is split across
-    multiple font runs — because one character isn't supported by the primary
-    font and falls back to another — each run must still be shaped with the
+    multiple font runs - because one character isn't supported by the primary
+    font and falls back to another - each run must still be shaped with the
     full word as context so characters at run boundaries take the correct
     joined form instead of rendering as isolated glyphs.
 

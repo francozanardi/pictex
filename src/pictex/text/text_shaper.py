@@ -40,8 +40,9 @@ _WRAP_TOKEN_PATTERN = regex.compile(
 class ResolvedSpan:
     """A span with its text and fully computed style, plus its position in full_text."""
     text: str
-    style: Style
+    computed_style: Style
     start: int  # absolute char offset in the concatenated full text
+    explicit_style: Optional[Style] = None
 
     @property
     def end(self) -> int:
@@ -59,13 +60,13 @@ class TextShaper:
         self._base_style = base_style
         self._font_smoothing = font_smoothing
         self._full_text = "".join(s.text for s in resolved_spans)
-        self._font_managers = [FontManager(s.style, font_smoothing) for s in resolved_spans]
+        self._font_managers = [FontManager(s.computed_style, font_smoothing) for s in resolved_spans]
         self._hb_shaper = HarfBuzzShaper()
         self._bidi_processor = BiDiProcessor()
 
         # One SpanInfo per resolved span - shared by all runs from that span so
         # painters can group co-span runs by object identity (id(run.span)).
-        self._span_infos = [SpanInfo(s.style) for s in resolved_spans]
+        self._span_infos = [SpanInfo(s.computed_style, s.explicit_style) for s in resolved_spans]
 
         # Fast lookup: id(SpanInfo) → FontManager
         self._span_to_fm = {
@@ -286,7 +287,7 @@ class TextShaper:
             if utils.is_grapheme_supported_for_typeface(grapheme, primary_font.getTypeface()):
                 glyph_font = primary_font
             else:
-                glyph_font = self._get_fallback_font_for_glyph(grapheme, primary_font, fm, span_info.style)
+                glyph_font = self._get_fallback_font_for_glyph(grapheme, primary_font, fm, span_info.computed_style)
 
             # Extend last run if same span AND same font typeface
             if (

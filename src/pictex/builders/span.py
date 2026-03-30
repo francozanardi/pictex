@@ -36,25 +36,23 @@ class Span(InlineStyleable):
     def text(self) -> str:
         return "".join(item if isinstance(item, str) else item.text for item in self._items)
 
-    def _to_span_nodes(self, parent_raw_style: Optional["Style"] = None) -> list:
-        """Recursively flatten this span into a list of SpanNode objects.
+    def _to_span_nodes(self) -> list:
+        """Flatten this span into a list of SpanNode objects."""
+        return self.__to_span_nodes_recursive(None)
 
-        Args:
-            parent_raw_style: The raw Style of the enclosing Span, if any.
-                              Used to compose inherited typography properties
-                              before the block-level cascade is applied.
-        """
+    def __to_span_nodes_recursive(self, parent_raw_style: Optional["Style"]) -> list:
+        """Internal recursive traversal for nested Span blocks."""
         from ..nodes.span_node import SpanNode
-        composed_style = self._compose_with_parent(parent_raw_style)
+        composed_style = self.__compose_with_parent(parent_raw_style)
         result = []
         for item in self._items:
             if isinstance(item, str):
                 result.append(SpanNode(text=item, style=composed_style))
             else:
-                result.extend(item._to_span_nodes(composed_style))
+                result.extend(item.__to_span_nodes_recursive(composed_style))
         return result
 
-    def _compose_with_parent(self, parent_raw_style: Optional["Style"]) -> "Style":
+    def __compose_with_parent(self, parent_raw_style: Optional["Style"]) -> "Style":
         """Return this span's raw style with explicit parent fields inherited in."""
         if parent_raw_style is None:
             return self._style
