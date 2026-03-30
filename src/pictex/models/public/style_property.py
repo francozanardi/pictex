@@ -8,10 +8,15 @@ class StyleProperty(Generic[T]):
         self._default = default
         self._inheritable = inheritable
         self._was_set = False
+        self._origin_id = id(self)
 
     @property
     def was_set(self):
         return self._was_set
+
+    @property
+    def origin_id(self):
+        return self._origin_id
 
     @property
     def is_inheritable(self) -> bool:
@@ -29,6 +34,7 @@ class StyleProperty(Generic[T]):
     def set(self, new_value: T):
         self._value = new_value
         self._was_set = True
+        self._origin_id = id(self)
 
     def reset(self):
         self._value = self._default

@@ -33,16 +33,20 @@ class DecorationPainter(Painter):
         span_bounds = {}
         x = line_x_start
         for run in line.runs:
-            sid = id(run.span)
             rb = skia.Rect.MakeXYWH(x, current_y, run.width, line.metrics.height)
-            if sid not in span_bounds:
-                span_bounds[sid] = rb
-            else:
-                e = span_bounds[sid]
-                span_bounds[sid] = skia.Rect.MakeLTRB(
-                    min(e.left(), rb.left()), min(e.top(), rb.top()),
-                    max(e.right(), rb.right()), max(e.bottom(), rb.bottom()),
-                )
+            if run.span.explicit_style:
+                for field_name in run.span.explicit_style.get_field_names():
+                    property_obj = getattr(run.span.explicit_style, field_name)
+                    if property_obj.was_set:
+                        pid = property_obj.origin_id
+                        if pid not in span_bounds:
+                            span_bounds[pid] = rb
+                        else:
+                            e = span_bounds[pid]
+                            span_bounds[pid] = skia.Rect.MakeLTRB(
+                                min(e.left(), rb.left()), min(e.top(), rb.top()),
+                                max(e.right(), rb.right()), max(e.bottom(), rb.bottom()),
+                            )
             x += run.width
         return span_bounds
 
@@ -63,11 +67,16 @@ class DecorationPainter(Painter):
         seg_decoration = None
         seg_span = None
 
+        def get_color_origin(span_info):
+            if span_info and span_info.explicit_style and span_info.explicit_style.is_explicit('color'):
+                return getattr(span_info.explicit_style, 'color').origin_id
+            return "block"
+
         for run in runs:
             decoration = getattr(run.style, attr).get()
             extends = (
                 decoration == seg_decoration and
-                (decoration is None or decoration.color is not None or run.span is seg_span)
+                (decoration is None or decoration.color is not None or get_color_origin(run.span) == get_color_origin(seg_span))
             )
 
             if not extends:
@@ -115,7 +124,8 @@ class DecorationPainter(Painter):
         else:
             color = span_info.computed_style.color.get()
             if span_info.explicit_style and span_info.explicit_style.is_explicit('color'):
-                bounds = span_bounds[id(span_info)]
+                property_obj = getattr(span_info.explicit_style, 'color')
+                bounds = span_bounds[property_obj.origin_id]
             else:
                 bounds = self._text_bounds
             color.apply_to_paint(paint, bounds)

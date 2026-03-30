@@ -51,20 +51,23 @@ class TextPainter(Painter):
             current_y += line.metrics.height
 
     def _compute_span_bounds(self, line: Line, draw_x_start: float, current_y: float) -> dict:
-        """Compute the union of run bounds per SpanInfo for gradient mapping."""
         span_bounds = {}
         x = draw_x_start
         for run in line.runs:
-            sid = id(run.span)
             rb = skia.Rect.MakeXYWH(x, current_y, run.width, line.metrics.height)
-            if sid not in span_bounds:
-                span_bounds[sid] = rb
-            else:
-                e = span_bounds[sid]
-                span_bounds[sid] = skia.Rect.MakeLTRB(
-                    min(e.left(), rb.left()), min(e.top(), rb.top()),
-                    max(e.right(), rb.right()), max(e.bottom(), rb.bottom()),
-                )
+            if run.span.explicit_style:
+                for field_name in run.span.explicit_style.get_field_names():
+                    property_obj = getattr(run.span.explicit_style, field_name)
+                    if property_obj.was_set:
+                        pid = property_obj.origin_id
+                        if pid not in span_bounds:
+                            span_bounds[pid] = rb
+                        else:
+                            e = span_bounds[pid]
+                            span_bounds[pid] = skia.Rect.MakeLTRB(
+                                min(e.left(), rb.left()), min(e.top(), rb.top()),
+                                max(e.right(), rb.right()), max(e.bottom(), rb.bottom()),
+                            )
             x += run.width
         return span_bounds
 
@@ -77,7 +80,8 @@ class TextPainter(Painter):
         preserving the pre-feature behavior for block-level gradients.
         """
         if run.span.explicit_style and run.span.explicit_style.is_explicit(prop):
-            return span_bounds[id(run.span)]
+            property_obj = getattr(run.span.explicit_style, prop)
+            return span_bounds[property_obj.origin_id]
         return self._text_bounds
 
     def _add_shadows_to_paint(self, paint: skia.Paint, style: Style) -> None:
