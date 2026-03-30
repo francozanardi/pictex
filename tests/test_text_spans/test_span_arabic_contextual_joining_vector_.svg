@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="314" height="268"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-Vazirmatn';
+    src: url('Vazirmatn-Regular.ttf');
+}@font-face {
+    font-family: 'pictex-Vazirmatn';
+    src: url('Vazirmatn-Regular.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="314" height="268" />
+	<text fill="blue" font-size="120" font-family="pictex-Vazirmatn" x="40, 144.94141, " y="163.04688, ">
+			بﺎ
+	</text>
+	<text fill="red" font-size="120" font-family="pictex-Vazirmatn" x="176.34766, 219.35547, " y="163.04688, ">
+			ﺘﻛ
+	</text>
+</svg>

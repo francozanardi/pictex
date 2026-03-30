@@ -5,7 +5,7 @@ pictex: A Python library for creating complex visual compositions and beautifull
 from . import __skia_init
 __skia_init.prime_skia_icu_engine()
 
-from .builders import Canvas, Text, Row, Column, Image, Element
+from .builders import Canvas, Text, Row, Column, Image, Element, Span
 from .models.public import *
 from .bitmap_image import BitmapImage
 from .vector_image import VectorImage
@@ -13,7 +13,7 @@ from .vector_image import VectorImage
 __version__ = "2.2.0"
 
 __all__ = [
-    "Canvas", "Text", "Row", "Column", "Image", "Element",
+    "Canvas", "Text", "Row", "Column", "Image", "Element", "Span",
     
     "Shadow", "OutlineStroke", "StrokeMode",
     "Style",

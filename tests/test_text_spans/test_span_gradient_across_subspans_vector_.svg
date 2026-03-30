@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1583" height="172">
+	<rect fill-opacity="0" width="1583" height="172" />
+	<defs>
+		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="40" y1="85.996094" x2="1542.6953" y2="85.996094">
+			<stop offset="0" stop-color="red" />
+			<stop offset="1" stop-color="blue" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_0)" font-size="80" font-family="Arial" x="40, 102.22656, 128.86719, 173.35938, 217.85156, 235.625, 280.11719, 324.60938, 346.83594, 369.0625, 409.0625, 431.28906, 475.78125, 502.42188, 524.64844, 546.875, " y="113.73047, ">
+			Gradient start. 
+	</text>
+	<defs>
+		<linearGradient id="gradient_1" gradientUnits="userSpaceOnUse" x1="40" y1="85.996094" x2="1542.6953" y2="85.996094">
+			<stop offset="0" stop-color="red" />
+			<stop offset="1" stop-color="blue" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_1)" font-size="80" font-weight="600" font-family="Arial" x="569.10156, 635.74219, 657.96875, 706.83594, 755.70312, 777.92969, 822.42188, 844.64844, 893.51562, 942.38281, 964.60938, 1013.4766, 1035.7031, " y="113.73047, ">
+			Middle bold. 
+	</text>
+	<defs>
+		<linearGradient id="gradient_2" gradientUnits="userSpaceOnUse" x1="40" y1="85.996094" x2="1542.6953" y2="85.996094">
+			<stop offset="0" stop-color="red" />
+			<stop offset="1" stop-color="blue" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_2)" font-size="80" font-family="Arial" x="1057.9297, 1120.1562, 1146.7969, 1191.2891, 1235.7812, 1253.5547, 1298.0469, 1342.5391, 1364.7656, 1386.9922, 1431.4844, 1475.9766, 1520.4688, " y="113.73047, ">
+			Gradient end.
+	</text>
+</svg>

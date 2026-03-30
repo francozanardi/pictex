@@ -161,14 +161,7 @@ class Node(Cacheable):
         if not parent_computed_styles:
             return computed_styles
 
-        field_names = computed_styles.get_field_names()
-        for field_name in field_names:
-            if not computed_styles.is_inheritable(field_name):
-                continue
-            if computed_styles.is_explicit(field_name):
-                continue
-            parent_field_value = deepcopy(getattr(parent_computed_styles, field_name))
-            setattr(computed_styles, field_name, parent_field_value)
+        computed_styles.inherit_from(parent_computed_styles)
 
         # CSS compliance: resolve text_align based on direction if not set
         if computed_styles.text_align.get() is None:

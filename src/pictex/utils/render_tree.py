@@ -14,7 +14,7 @@ def create_render_tree(node: "Node") -> RenderNode:
         A RenderNode representing the node and its children.
     """
     from ..nodes import RowNode, ColumnNode, TextNode
-    
+
     # Determine node type
     if isinstance(node, TextNode):
         node_type = NodeType.TEXT

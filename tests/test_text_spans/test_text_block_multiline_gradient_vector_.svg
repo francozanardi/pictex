@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="935" height="298"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="935" height="298" />
+	<defs>
+		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="40" y1="40" x2="894.15039" y2="257.79297">
+			<stop offset="0" stop-color="purple" />
+			<stop offset="1" stop-color="#FFA500" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_0)" font-size="60" font-family="pictex-InterVariable" x="40, 73.925781, 88.457031, 123.90625, 158.88672, 175.76172, 200.16602, 217.04102, 266.14258, 280.67383, 300.30273, 335.78125, 352.65625, 371.69922, 405.33203, 439.25781, 458.88672, 475.76172, 512.5, 527.03125, 563.00781, 597.28516, 630.21484, 647.08984, 683.88672, 706.47461, 740.16602, 776.9043, 791.43555, 826.41602, 861.86523, " y="98.125, ">
+			Line 1 with text block gradient
+	</text>
+	<defs>
+		<linearGradient id="gradient_1" gradientUnits="userSpaceOnUse" x1="40" y1="40" x2="894.15039" y2="257.79297">
+			<stop offset="0" stop-color="purple" />
+			<stop offset="1" stop-color="#FFA500" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_1)" font-size="60" font-family="pictex-InterVariable" x="40, 73.925781, 88.457031, 123.90625, 158.88672, 175.76172, 212.35352, 229.22852, 278.33008, 292.86133, 312.49023, 347.96875, 364.84375, 383.88672, 417.51953, 451.44531, 471.07422, 487.94922, 524.6875, 539.21875, 575.19531, 609.47266, 642.40234, 659.27734, 696.07422, 718.66211, 752.35352, 789.0918, 803.62305, 838.60352, 874.05273, " y="170.72266, ">
+			Line 2 with text block gradient
+	</text>
+	<defs>
+		<linearGradient id="gradient_2" gradientUnits="userSpaceOnUse" x1="40" y1="40" x2="894.15039" y2="257.79297">
+			<stop offset="0" stop-color="purple" />
+			<stop offset="1" stop-color="#FFA500" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_2)" font-size="60" font-family="pictex-InterVariable" x="40, 73.925781, 88.457031, 123.90625, 158.88672, 175.76172, 212.82227, 229.69727, 278.79883, 293.33008, 312.95898, 348.4375, 365.3125, 384.35547, 417.98828, 451.91406, 471.54297, 488.41797, 525.15625, 539.6875, 575.66406, 609.94141, 642.87109, 659.74609, 696.54297, 719.13086, 752.82227, 789.56055, 804.0918, 839.07227, 874.52148, " y="243.32031, ">
+			Line 3 with text block gradient
+	</text>
+</svg>

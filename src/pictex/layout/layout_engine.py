@@ -74,13 +74,13 @@ class LayoutEngine:
     def _create_measure_function(self, node: 'Node') -> Optional[Callable]:
         """Create measure function for leaf nodes."""
         from ..nodes import TextNode
-        
+
         if node.children:
             return None
-        
+
         if isinstance(node, TextNode):
             return self._create_text_node_measure_function(node)
-        
+
         return self._create_non_text_node_measure_function(node)
 
     def _create_text_node_measure_function(self, text_node: 'TextNode') -> Callable:

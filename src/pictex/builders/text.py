@@ -1,28 +1,39 @@
+from typing import Union
 from .element import Element
+from .span import Span
 from ..nodes import Node, TextNode
 
 class Text(Element):
     """The fundamental builder for creating and styling text.
 
-    This is the primary content builder for displaying strings. A `Text` builder
-    can have its own unique styles that override any styles inherited from its
-    parent containers, allowing for fine-grained control over typography.
+    Accepts plain strings and inline ``Span`` fragments. When multiple items
+    are provided, each ``Span`` can carry its own typography overrides (color,
+    weight, etc.) on top of the block-level style.
 
     Example:
         ```python
-        from pictex import Row, Text
+        from pictex import Row, Text, Span
 
-        # Create a row where each Text element has its own style.
-        styled_text = Row(
-            Text("Hello, ").font_size(30),
-            Text("PicTex!").font_size(30).color("blue").font_weight("bold")
-        )
+        # Plain text
+        Text("Hello, PicTex!").font_size(30)
+
+        # Inline styled fragments
+        Text(
+            "Hello, ",
+            Span("PicTex!").color("blue").font_weight("bold"),
+        ).font_size(30)
         ```
     """
 
-    def __init__(self, text: str):
+    def __init__(self, *items: Union[str, Span]):
         super().__init__()
-        self._text = text
+        self._items = items
 
     def _to_node(self) -> Node:
-        return TextNode(self._style, self._text)
+        flat: list = []
+        for item in self._items:
+            if isinstance(item, str):
+                flat.append(item)
+            else:
+                flat.extend(item._to_span_nodes())
+        return TextNode(self._style, tuple(flat))

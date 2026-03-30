@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="848" height="282"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="848" height="282" />
+	<defs>
+		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="20" y1="20" x2="20" y2="116.79688">
+			<stop offset="0" stop-color="red" />
+			<stop offset="1" stop-color="blue" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_0)" font-size="80" font-family="pictex-InterVariable" x="20, 65.234375, 84.609375, 131.875, 178.51562, 201.01562, 233.55469, 256.05469, 304.02344, 333.63281, 356.13281, 382.30469, 429.60938, 476.25, 498.75, 547.8125, 577.92969, 622.85156, 671.83594, 691.21094, 737.85156, 785.11719, " y="97.5, ">
+			Line 1 of the gradient
+	</text>
+	<defs>
+		<linearGradient id="gradient_1" gradientUnits="userSpaceOnUse" x1="20" y1="116.79688" x2="20" y2="213.59375">
+			<stop offset="0" stop-color="red" />
+			<stop offset="1" stop-color="blue" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_1)" font-size="80" font-family="pictex-InterVariable" x="20, 65.234375, 84.609375, 131.875, 178.51562, 201.01562, 249.80469, 272.30469, 320.27344, 349.88281, 372.38281, 398.55469, 445.85938, 492.5, 515, 564.0625, 594.17969, 639.10156, 688.08594, 707.46094, 754.10156, 801.36719, " y="194.29688, ">
+			Line 2 of the gradient
+	</text>
+	<defs>
+		<linearGradient id="gradient_2" gradientUnits="userSpaceOnUse" x1="20" y1="213.59375" x2="20" y2="261.99219">
+			<stop offset="0" stop-color="red" />
+			<stop offset="1" stop-color="blue" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_2)" font-size="40" font-family="pictex-InterVariable" x="20, 42.617188, 52.304688, 75.9375, 99.257812, 110.50781, 135.21484, 146.46484, 179.19922, 188.88672, 201.97266, 225.625, 236.875, 259.72656, 283.37891, 304.49219, 317.1875, 341.17188, 376.21094, 387.46094, 401.09375, 425.07812, 448.71094, 461.79688, 473.04688, 494.16016, 503.84766, 525.35156, " y="252.34375, ">
+			Line 3 with custom font size
+	</text>
+</svg>

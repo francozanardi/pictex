@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="149">
+	<rect fill-opacity="0" width="2600" height="149" />
+	<text fill="red" font-size="60" font-family="Arial" x="40, 73.369141, 106.73828, 136.73828, 170.10742, 183.4375, 200.10742, 233.47656, 250.14648, 270.12695, 313.45703, 346.82617, 380.19531, 400.17578, 416.8457, " y="95.297852, ">
+			Level 1 (Red). 
+	</text>
+	<defs>
+		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="433.51562" y1="74.49707" x2="2132.5" y2="74.49707">
+			<stop offset="0" stop-color="green" />
+			<stop offset="1" stop-color="blue" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_0)" font-size="60" font-family="Arial" x="433.51562, 466.88477, 500.25391, 530.25391, 563.62305, 576.95312, 593.62305, 626.99219, 643.66211, 663.64258, 710.3125, 730.29297, 763.66211, 797.03125, 810.36133, 843.73047, 877.09961, 893.76953, 913.75, 930.41992, " y="95.297852, ">
+			Level 2 (Gradient). 
+	</text>
+	<defs>
+		<linearGradient id="gradient_1" gradientUnits="userSpaceOnUse" x1="433.51562" y1="74.49707" x2="2132.5" y2="74.49707">
+			<stop offset="0" stop-color="green" />
+			<stop offset="1" stop-color="blue" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_1)" font-size="60" font-weight="600" font-family="Arial" x="947.08984, 983.74023, 1017.1094, 1050.4785, 1083.8477, 1100.5176, 1117.1875, 1150.5566, 1167.2266, 1187.207, 1233.877, 1257.2266, 1290.5957, 1327.2461, 1343.916, 1377.2852, 1413.9355, 1433.916, 1450.5859, 1485.625, 1502.2949, 1545.625, 1582.2754, 1598.9453, 1635.5957, 1655.5762, 1672.2461, " y="95.297852, ">
+			Level 3 (Gradient + Bold). 
+	</text>
+	<defs>
+		<linearGradient id="gradient_2" gradientUnits="userSpaceOnUse" x1="433.51562" y1="74.49707" x2="2132.5" y2="74.49707">
+			<stop offset="0" stop-color="green" />
+			<stop offset="1" stop-color="blue" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_2)" font-size="60" font-family="Arial" x="1688.916, 1728.9355, 1762.3047, 1792.3047, 1822.3047, 1838.9746, 1855.6445, 1889.0137, 1905.6836, 1939.0527, 1972.4219, 2002.4219, 2035.791, 2049.1211, 2065.791, 2099.1602, 2115.8301, " y="95.297852, ">
+			Back to Level 2. 
+	</text>
+	<text fill="red" font-size="60" font-family="Arial" x="2132.5, 2172.5195, 2205.8887, 2235.8887, 2265.8887, 2282.5586, 2299.2285, 2332.5977, 2349.2676, 2382.6367, 2416.0059, 2446.0059, 2479.375, 2492.7051, 2509.375, 2542.7441, " y="95.297852, ">
+			Back to Level 1.
+	</text>
+</svg>

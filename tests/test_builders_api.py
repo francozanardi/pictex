@@ -181,7 +181,7 @@ def test_padding_per_side():
     canvas.padding_vertical(10)
     assert canvas._style.padding == Padding(10, 2, 10, 4)
 
-    # Starting from default (all zeros) — others stay zero
+    # Starting from default (all zeros) - others stay zero
     canvas2 = Canvas()
     canvas2.padding_top(5)
     assert canvas2._style.padding == Padding(5, 0, 0, 0)
@@ -224,7 +224,7 @@ def test_margin_per_side():
     text.margin_vertical(10)
     assert text._style.margin == Margin(10, 2, 10, 4)
 
-    # Starting from default (all zeros) — others stay zero
+    # Starting from default (all zeros) - others stay zero
     text2 = Text("")
     text2.margin_bottom(8)
     assert text2._style.margin == Margin(0, 0, 8, 0)

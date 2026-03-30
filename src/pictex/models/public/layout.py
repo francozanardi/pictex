@@ -10,7 +10,7 @@ class TextBoxEdgeValue(str, Enum):
       regardless of the text content.
     - ``GLYPHS``: Uses the actual ink bounds of the rendered glyphs. The box
       tightly wraps the visible characters, but the box size becomes
-      content-dependent — different strings will produce different sizes.
+      content-dependent - different strings will produce different sizes.
     """
     FONT = "font"
     GLYPHS = "glyphs"

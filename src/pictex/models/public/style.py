@@ -1,3 +1,4 @@
+from copy import deepcopy
 from dataclasses import dataclass, field, fields
 from typing import Optional
 from .border import Border, BorderRadius
@@ -92,3 +93,21 @@ class Style:
 
     def get_field_names(self) -> list[str]:
         return [f.name for f in fields(self)]
+
+    def inherit_from(self, parent: "Style", only_explicit: bool = False) -> None:
+        """Inherit inheritable non-explicit fields from parent in-place.
+
+        Args:
+            parent: The parent style to inherit from.
+            only_explicit: When True, only copy fields that were explicitly set
+                on the parent (used when parent is a raw/partial style rather
+                than a fully computed one).
+        """
+        for field_name in self.get_field_names():
+            if not self.is_inheritable(field_name):
+                continue
+            if self.is_explicit(field_name):
+                continue
+            if only_explicit and not parent.is_explicit(field_name):
+                continue
+            setattr(self, field_name, deepcopy(getattr(parent, field_name)))

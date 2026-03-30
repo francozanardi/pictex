@@ -84,9 +84,11 @@ class Container(Element):
             The `Self` instance for chaining.
         
         Example:
-            >>> Row(
-            ...     *[Text(f"Item {i}").size(width=100) for i in range(20)]
-            ... ).flex_wrap('wrap').size(width=500)  # Creates a grid
+            ```python
+            Row(
+                *[Text(f"Item {i}").size(width=100) for i in range(20)]
+            ).flex_wrap('wrap').size(width=500)  # Creates a grid
+            ```
         """
         if isinstance(mode, str):
             mode = FlexWrap(mode.lower())

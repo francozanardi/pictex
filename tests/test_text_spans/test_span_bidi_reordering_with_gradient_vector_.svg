@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="797" height="205"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-Vazirmatn';
+    src: url('Vazirmatn-Regular.ttf');
+}@font-face {
+    font-family: 'pictex-Vazirmatn';
+    src: url('Vazirmatn-Regular.ttf');
+}@font-face {
+    font-family: 'pictex-Vazirmatn';
+    src: url('Vazirmatn-Regular.ttf');
+}@font-face {
+    font-family: 'pictex-Vazirmatn';
+    src: url('Vazirmatn-Regular.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="797" height="205" />
+	<rect fill="#777" width="797" height="205" />
+	<text font-size="80" font-family="pictex-Vazirmatn" x="40, 87.5, 113.67188, 157.1875, 186.25, 212.42188, 234.14062, " y="122.03125, ">
+			Start: 
+	</text>
+	<text fill="#FFA500" font-size="80" font-family="pictex-Vazirmatn" x="255.625, 336.60156, 367.5, " y="122.03125, ">
+			ﻰﺮﻋ
+	</text>
+	<text fill="#FFA500" font-size="80" font-family="pictex-Vazirmatn" x="430.70312, " y="122.03125, ">
+			(
+	</text>
+	<defs>
+		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="458.04688" y1="40" x2="685.54688" y2="40">
+			<stop offset="0" stop-color="black" />
+			<stop offset="1" stop-color="white" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_0)" font-size="80" font-family="pictex-Vazirmatn" x="458.04688, 510.23438, 535.78125, 579.29688, 624.21875, 643.67188, " y="122.03125, ">
+			Arabic
+	</text>
+	<text fill="#FFA500" font-size="80" font-family="pictex-Vazirmatn" x="685.54688, 712.89062, 734.375, " y="122.03125, ">
+			) !
+	</text>
+</svg>
