@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="763" height="298"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="763" height="298" />
+	<defs>
+		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="40" y1="40" x2="40" y2="257.79297">
+			<stop offset="0" stop-color="blue" />
+			<stop offset="1" stop-color="green" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_0)" font-size="40" font-family="pictex-InterVariable" x="40, 65.820312, 75.507812, 98.554688, 121.03516, " y="214.375, ">
+			Tiny 
+	</text>
+	<defs>
+		<linearGradient id="gradient_1" gradientUnits="userSpaceOnUse" x1="40" y1="40" x2="40" y2="257.79297">
+			<stop offset="0" stop-color="blue" />
+			<stop offset="1" stop-color="green" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_1)" font-size="180" font-family="pictex-InterVariable" x="132.28516, 266.05469, 400, 534.29688, " y="214.375, ">
+			HUGE
+	</text>
+	<defs>
+		<linearGradient id="gradient_2" gradientUnits="userSpaceOnUse" x1="40" y1="40" x2="40" y2="257.79297">
+			<stop offset="0" stop-color="blue" />
+			<stop offset="1" stop-color="green" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_2)" font-size="40" font-family="pictex-InterVariable" x="653.74023, 666.82617, 676.51367, 699.56055, " y="214.375, ">
+			tiny
+	</text>
+</svg>

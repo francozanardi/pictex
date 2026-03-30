@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1056" height="113"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="1056" height="113" />
+	<text font-size="60" font-family="pictex-InterVariable" x="20, 63.828125, 99.804688, 135.25391, 154.88281, 169.41406, 204.86328, 240.3418, 276.31836, 311.79688, 343.4668, " y="78.125, ">
+			Continuous 
+	</text>
+	<text fill="blue" font-size="60" font-family="pictex-InterVariable" x="360.3418, 395.82031, 431.26953, 468.00781, 502.98828, 526.51367, 541.04492, 555.57617, 591.02539, 626.00586, " y="78.125, ">
+			underline 
+	</text>
+	<text font-size="60" font-family="pictex-InterVariable" x="642.88086, 676.57227, 710.84961, 732.44141, 768.41797, 800.08789, 831.75781, " y="78.125, ">
+			across 
+	</text>
+	<text font-size="60" font-family="pictex-InterVariable" x="848.63281, 880.30273, 917.62695, 951.31836, 986.76758, 1018.4375, " y="78.125, ">
+			spans.
+	</text>
+	<path fill="none" stroke="black" stroke-width="4" stroke-miterlimit="4" d="M20 88.320312L360 88.320312" />
+	<path fill="none" stroke="blue" stroke-width="4" stroke-miterlimit="4" d="M360 88.320312L643 88.320312" />
+	<path fill="none" stroke="black" stroke-width="4" stroke-miterlimit="4" d="M643 88.320312L1035.7227 88.320312" />
+</svg>

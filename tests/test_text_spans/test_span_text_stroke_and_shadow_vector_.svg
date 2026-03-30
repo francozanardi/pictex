@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1458" height="172">
+	<rect fill-opacity="0" width="1458" height="172" />
+	<rect fill="#EEE" width="1458" height="172" />
+	<text font-size="80" font-family="Arial" x="40, 97.773438, 142.26562, 168.90625, 235.54688, 280.03906, 297.8125, 320.03906, 342.26562, 386.75781, 426.75781, 448.98438, 471.21094, " y="113.73047, ">
+			Normal text. 
+	</text>
+	<defs>
+		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="493.4375" y1="85.996094" x2="1417.9297" y2="85.996094">
+			<stop offset="0" stop-color="#FFA500" />
+			<stop offset="1" stop-color="purple" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_0)" font-size="80" font-weight="600" font-family="Arial" x="493.4375, 555.66406, 604.53125, 631.17188, 653.39844, 675.625, 724.49219, 768.98438, 817.85156, 840.07812, 884.57031, 933.4375, 982.30469, 1004.5312, 1049.0234, 1097.8906, 1142.3828, 1191.25, 1240.1172, 1302.3438, 1346.8359, 1395.7031, " y="113.73047, ">
+			Outlined and shadowed.
+	</text>
+	<text fill="none" stroke="black" stroke-width="3" stroke-miterlimit="4" font-size="80" font-weight="600" font-family="Arial" x="493.4375, 555.66406, 604.53125, 631.17188, 653.39844, 675.625, 724.49219, 768.98438, 817.85156, 840.07812, 884.57031, 933.4375, 982.30469, 1004.5312, 1049.0234, 1097.8906, 1142.3828, 1191.25, 1240.1172, 1302.3438, 1346.8359, 1395.7031, " y="113.73047, ">
+			Outlined and shadowed.
+	</text>
+</svg>

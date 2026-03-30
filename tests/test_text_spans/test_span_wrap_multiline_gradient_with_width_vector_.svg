@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="952"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="800" height="952" />
+	<text font-size="60" font-family="pictex-InterVariable" x="40, 78.496094, 98.417969, 132.10938, 155.63477, 175.26367, 192.13867, 228.11523, 250.32227, 267.19727, 302.64648, 338.62305, 362.14844, 414.70703, 448.39844, 462.92969, 479.80469, 498.84766, 532.48047, 566.40625, 586.03516, 602.91016, 639.64844, 654.17969, 690.15625, 724.43359, " y="98.125, ">
+			Start of normal text block
+	</text>
+	<text font-size="60" font-family="pictex-InterVariable" x="40, 59.628906, 95.107422, 128.79883, 148.42773, 165.30273, 179.83398, 211.50391, 228.37891, 265.11719, 301.09375, 324.26758, 338.79883, 374.24805, 411.04492, 428.33008, " y="170.72266, ">
+			that is boring. 
+	</text>
+	<defs>
+		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="445.20508" y1="112.59766" x2="445.20508" y2="185.19531">
+			<stop offset="0" stop-color="purple" />
+			<stop offset="1" stop-color="#FFA500" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_0)" font-size="60" font-family="pictex-InterVariable" x="445.20508, 483.93555, 519.41406, 533.94531, 565.61523, 582.49023, 597.02148, 628.69141, 645.56641, " y="170.72266, ">
+			This is a
+	</text>
+	<defs>
+		<linearGradient id="gradient_1" gradientUnits="userSpaceOnUse" x1="40" y1="185.19531" x2="40" y2="257.79297">
+			<stop offset="0" stop-color="purple" />
+			<stop offset="1" stop-color="#FFA500" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_1)" font-size="60" font-family="pictex-InterVariable" x="40, 92.558594, 126.25, 157.91992, 189.58984, 204.12109, 236.66992, 271.65039, 288.52539, 325.26367, 339.79492, 375.77148, 410.04883, 442.97852, 459.85352, 495.83008, 518.03711, 534.91211, 566.58203, 603.90625, 637.59766, " y="243.32031, ">
+			massive block of span
+	</text>
+	<defs>
+		<linearGradient id="gradient_2" gradientUnits="userSpaceOnUse" x1="40" y1="257.79297" x2="40" y2="330.39062">
+			<stop offset="0" stop-color="purple" />
+			<stop offset="1" stop-color="#FFA500" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_2)" font-size="60" font-family="pictex-InterVariable" x="40, 59.042969, 92.675781, 126.60156, 146.23047, 163.10547, 182.73438, 218.21289, 251.9043, 271.5332, 288.4082, 337.50977, 352.04102, 366.57227, 381.10352, 397.97852, 412.50977, 447.95898, 481.76758, 515.48828, 530.01953, 549.94141, 583.63281, 620.37109, 635.19531, " y="315.91797, ">
+			text that will inevitably
+	</text>
+	<defs>
+		<linearGradient id="gradient_3" gradientUnits="userSpaceOnUse" x1="40" y1="330.39062" x2="40" y2="402.98828">
+			<stop offset="0" stop-color="purple" />
+			<stop offset="1" stop-color="#FFA500" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_3)" font-size="60" font-family="pictex-InterVariable" x="40, 89.101562, 111.68945, 145.38086, 182.11914, 198.99414, 232.68555, 254.27734, 290.25391, 325.73242, 361.18164, 397.91992, 414.79492, 434.42383, 469.90234, 504.88281, 521.75781, 556.73828, 593.47656, 630.27344, 665.25391, " y="388.51562, ">
+			wrap around the edges
+	</text>
+	<defs>
+		<linearGradient id="gradient_4" gradientUnits="userSpaceOnUse" x1="40" y1="402.98828" x2="40" y2="475.58594">
+			<stop offset="0" stop-color="purple" />
+			<stop offset="1" stop-color="#FFA500" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_4)" font-size="60" font-family="pictex-InterVariable" x="40, 92.558594, 128.03711, 143.44727, 163.07617, 177.60742, 214.3457, 228.87695, 263.85742, 280.73242, 300.36133, 314.89258, 367.45117, 402.43164, 434.10156, 450.97656, 486.45508, 521.9043, 541.5332, 556.06445, 570.5957, 587.4707, 602.00195, " y="461.11328, ">
+			multiple times until it
+	</text>
+	<defs>
+		<linearGradient id="gradient_5" gradientUnits="userSpaceOnUse" x1="40" y1="475.58594" x2="40" y2="548.18359">
+			<stop offset="0" stop-color="purple" />
+			<stop offset="1" stop-color="#FFA500" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_5)" font-size="60" font-family="pictex-InterVariable" x="40, 60.449219, 96.425781, 119.95117, 172.50977, 204.17969, 221.05469, 252.72461, 286.5332, 319.08203, 354.0625, 376.65039, 410.3418, 424.87305, 441.74805, 478.48633, 493.01758, 524.6875, 544.31641, 558.84766, 594.29688, 628.57422, " y="533.71094, ">
+			forms several distinct
+	</text>
+	<defs>
+		<linearGradient id="gradient_6" gradientUnits="userSpaceOnUse" x1="40" y1="548.18359" x2="40" y2="620.78125">
+			<stop offset="0" stop-color="purple" />
+			<stop offset="1" stop-color="#FFA500" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_6)" font-size="60" font-family="pictex-InterVariable" x="40, 54.53125, 87.34375, 119.89258, 155.86914, 191.34766, 210.97656, 227.85156, 242.38281, 256.91406, 292.36328, 327.34375, 359.01367, 376.29883, 393.17383, 427.45117, 463.42773, 515.98633, 552.72461, 588.20312, 607.83203, 622.36328, 657.8125, 694.60938, 711.48438, " y="606.30859, ">
+			layout lines, computing a
+	</text>
+	<defs>
+		<linearGradient id="gradient_7" gradientUnits="userSpaceOnUse" x1="40" y1="620.78125" x2="40" y2="693.37891">
+			<stop offset="0" stop-color="purple" />
+			<stop offset="1" stop-color="#FFA500" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_7)" font-size="60" font-family="pictex-InterVariable" x="40, 75.478516, 110.95703, 147.75391, 182.73438, 199.60938, 232.1582, 267.13867, 290.66406, 310.29297, 324.82422, 359.6875, 393.37891, 407.91016, 424.78516, 458.47656, 493.92578, " y="678.90625, ">
+			huge vertical and
+	</text>
+	<defs>
+		<linearGradient id="gradient_8" gradientUnits="userSpaceOnUse" x1="40" y1="693.37891" x2="40" y2="765.97656">
+			<stop offset="0" stop-color="purple" />
+			<stop offset="1" stop-color="#FFA500" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_8)" font-size="60" font-family="pictex-InterVariable" x="40, 75.478516, 111.45508, 134.62891, 149.16016, 181.41602, 217.39258, 252.8418, 272.76367, 306.45508, 320.98633, 337.86133, 374.59961, 410.57617, 446.05469, 481.50391, 518.24219, 532.77344, 568.22266, 605.01953, 621.89453, 658.63281, 693.26172, " y="751.50391, ">
+			horizontal bounding box
+	</text>
+	<defs>
+		<linearGradient id="gradient_9" gradientUnits="userSpaceOnUse" x1="40" y1="765.97656" x2="40" y2="838.57422">
+			<stop offset="0" stop-color="purple" />
+			<stop offset="1" stop-color="#FFA500" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_9)" font-size="60" font-family="pictex-InterVariable" x="40, 60.449219, 96.425781, 119.01367, 135.88867, 150.41992, 169.46289, 201.13281, 218.00781, 254.80469, 277.39258, 311.08398, 347.82227, 362.35352, 397.33398, 432.7832, 452.41211, 469.69727, " y="824.10156, ">
+			for its gradient. 
+	</text>
+	<text font-size="60" font-family="pictex-InterVariable" x="486.57227, 527.96875, 563.41797, 600.15625, 617.03125, 654.35547, 688.04688, 722.32422, " y="824.10156, ">
+			And back
+	</text>
+	<text font-size="60" font-family="pictex-InterVariable" x="40, 59.042969, 95.019531, 111.89453, 148.63281, 184.60938, 207.7832, 222.31445, 257.76367, 294.56055, 311.43555, 348.75977, 382.45117, 414.12109, 449.10156, 463.63281, 478.16406, 513.61328, 548.59375, 565.46875, 584.51172, 618.14453, 652.07031, 671.69922, " y="896.69922, ">
+			to boring baseline text.
+	</text>
+</svg>

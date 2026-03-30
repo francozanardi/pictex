@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1397" height="178"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="1397" height="178" />
+	<text font-size="60" font-family="pictex-InterVariable" x="40, 85.205078, 121.18164, 144.70703, 197.26562, 230.95703, 245.48828, 262.77344, " y="117.5, ">
+			Normal: 
+	</text>
+	<defs />
+	<text font-size="80" font-family="pictex-InterVariable" x="279.64844, 330.97656, 357.53906, 402.46094, 433.82812, 460, " y="117.5, ">
+			Start 
+	</text>
+	<defs />
+	<text font-size="80" font-weight="600" font-family="Noto Color Emoji" x="482.5, " y="117.5, ">
+			🧪
+	</text>
+	<defs />
+	<text font-size="80" font-family="pictex-InterVariable" x="604.60938, 676.875, 696.25, 745.23438, 794.21875, 813.59375, 860.23438, " y="117.5, ">
+			Middle 
+	</text>
+	<defs />
+	<text font-size="80" font-weight="600" font-family="Noto Color Emoji" x="882.73438, " y="117.5, ">
+			🚀
+	</text>
+	<defs />
+	<text font-size="80" font-family="pictex-InterVariable" x="1004.8438, 1052.9297, 1100.1953, 1149.1797, " y="117.5, ">
+			End!
+	</text>
+	<text font-size="60" font-family="pictex-InterVariable" x="1189.0625, 1232.3633, 1268.3398, 1303.7891, 1338.7695, " y="117.5, ">
+			Done.
+	</text>
+</svg>

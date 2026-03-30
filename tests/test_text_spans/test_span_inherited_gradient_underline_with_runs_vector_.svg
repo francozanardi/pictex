@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1628" height="176"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="1628" height="176" />
+	<text font-size="60" font-family="pictex-InterVariable" x="40, 83.828125, 119.80469, 155.25391, 174.29688, 207.92969, 241.85547, 261.48438, 278.76953, " y="98.125, ">
+			Context. 
+	</text>
+	<defs>
+		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="295.64453" y1="40" x2="1215.8594" y2="40">
+			<stop offset="0" stop-color="red" />
+			<stop offset="1" stop-color="yellow" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_0)" font-size="60" font-family="pictex-InterVariable" x="295.64453, 334.375, 369.85352, 384.38477, 416.05469, " y="98.125, ">
+			This 
+	</text>
+	<defs>
+		<linearGradient id="gradient_1" gradientUnits="userSpaceOnUse" x1="295.64453" y1="40" x2="1215.8594" y2="40">
+			<stop offset="0" stop-color="red" />
+			<stop offset="1" stop-color="yellow" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_1)" font-size="60" font-family="Noto Color Emoji" x="432.92969, " y="98.125, ">
+			👍
+	</text>
+	<defs>
+		<linearGradient id="gradient_2" gradientUnits="userSpaceOnUse" x1="295.64453" y1="40" x2="1215.8594" y2="40">
+			<stop offset="0" stop-color="red" />
+			<stop offset="1" stop-color="yellow" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_2)" font-size="60" font-family="pictex-InterVariable" x="524.51172, 539.04297, 570.71289, " y="98.125, ">
+			is 
+	</text>
+	<defs>
+		<linearGradient id="gradient_3" gradientUnits="userSpaceOnUse" x1="295.64453" y1="40" x2="1215.8594" y2="40">
+			<stop offset="0" stop-color="red" />
+			<stop offset="1" stop-color="yellow" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_3)" font-size="60" font-family="DejaVu Sans" x="587.58789, " y="98.125, ">
+			😎
+	</text>
+	<defs>
+		<linearGradient id="gradient_4" gradientUnits="userSpaceOnUse" x1="295.64453" y1="40" x2="1215.8594" y2="40">
+			<stop offset="0" stop-color="red" />
+			<stop offset="1" stop-color="yellow" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_4)" font-size="60" font-family="pictex-InterVariable" x="667.01172, 700.70312, " y="98.125, ">
+			a 
+	</text>
+	<defs>
+		<linearGradient id="gradient_5" gradientUnits="userSpaceOnUse" x1="295.64453" y1="40" x2="1215.8594" y2="40">
+			<stop offset="0" stop-color="red" />
+			<stop offset="1" stop-color="yellow" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_5)" font-size="60" font-family="Noto Color Emoji" x="717.57812, " y="98.125, ">
+			🎉
+	</text>
+	<defs>
+		<linearGradient id="gradient_6" gradientUnits="userSpaceOnUse" x1="295.64453" y1="40" x2="1215.8594" y2="40">
+			<stop offset="0" stop-color="red" />
+			<stop offset="1" stop-color="yellow" />
+		</linearGradient>
+	</defs>
+	<text fill="url(#gradient_6)" font-size="60" font-family="pictex-InterVariable" x="809.16016, 845.95703, 868.54492, 902.23633, 938.97461, 953.50586, 988.48633, 1023.9355, 1043.5645, 1060.4395, 1092.1094, 1129.4336, 1163.125, 1198.5742, " y="98.125, ">
+			gradient span.
+	</text>
+	<text font-size="60" font-family="pictex-InterVariable" x="1232.7344, 1268.7988, 1304.248, 1340.9863, 1357.8613, 1392.1387, 1428.1152, 1463.5645, 1482.6074, 1516.2402, 1550.166, 1569.7949, " y="98.125, ">
+			End context.
+	</text>
+	<path fill="none" stroke="black" stroke-width="6" stroke-miterlimit="4" d="M40 132.04164L296 132.04164" />
+	<defs>
+		<linearGradient id="gradient_7" gradientUnits="userSpaceOnUse" x1="295.64453" y1="40" x2="1215.8594" y2="40">
+			<stop offset="0" stop-color="red" />
+			<stop offset="1" stop-color="yellow" />
+		</linearGradient>
+	</defs>
+	<path fill="none" stroke="url(#gradient_7)" stroke-width="6" stroke-miterlimit="4" d="M296 132.04164L1216 132.04164" />
+	<path fill="none" stroke="black" stroke-width="6" stroke-miterlimit="4" d="M1216 132.04164L1587.0801 132.04164" />
+</svg>
