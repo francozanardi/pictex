@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - **Text Layout (height with wrapping)**: Containers with wrapped text no longer reserve excess vertical space. Previously, when Taffy queried the min-content size of a text node, the reported height was based on one word per line, causing the parent container to over-reserve height even when the final allocated width allowed for more efficient reflow.
 - **Font Weight and Style on default fonts**: `font_weight()` and `font_style()` now work correctly when using the default font, which is a variable font. Note that the current built-in default font only exposes the weight axis.
+- **Letter Spacing**: The `letter_spacing()` method now correctly applies spacing to clusters. Previously, spacing was added to every glyph, which caused incorrect spacing for clusters (e.g., a base character + combining mark) and multi-glyph emoji sequences. Now, spacing is only added to the last glyph in each cluster, matching browser behavior.
+- **Letter Spacing**: The `letter_spacing()` is now ignored for cursive scripts (e.g., Arabic) to prevent breaking character connections. This matches browser behavior, which also disables letter spacing for cursive scripts.
 
 ### Added
 - **Inline Spans** (`Span`): Introduced a new `Span` builder for applying granular, rich formatting within a single text block.
