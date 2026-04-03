@@ -12,12 +12,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Font Weight and Style on default fonts**: `font_weight()` and `font_style()` now work correctly when using the default font, which is a variable font. Note that the current built-in default font only exposes the weight axis.
 - **Letter Spacing**: The `letter_spacing()` method now correctly applies spacing to clusters. Previously, spacing was added to every glyph, which caused incorrect spacing for clusters (e.g., a base character + combining mark) and multi-glyph emoji sequences. Now, spacing is only added to the last glyph in each cluster, matching browser behavior.
 - **Letter Spacing**: The `letter_spacing()` is now ignored for cursive scripts (e.g., Arabic) to prevent breaking character connections. This matches browser behavior, which also disables letter spacing for cursive scripts.
+- **Border Radius Colour Fringe**: Eliminated a colour fringe visible at rounded corners when a solid border and `border_radius` are combined. The background fill is now painted only up to the centre line of the border stroke, so background anti-aliased pixels are absorbed by the solid border and never bleed past its outer edge. Dashed and dotted borders are unaffected.
 
 ### Added
 - **Inline Spans** (`Span`): Introduced a new `Span` builder for applying granular, rich formatting within a single text block.
   - Apply varied styles (color, font size/weight/style, decorations, gradients, stroke, shadows) to specific subsets of text.
   - Spans can be nested deeply; properties cascade down and inherit naturally unless explicitly overridden.
   - Fully compatible with automatic font fallbacks, complex emoji sequences, bidirectional text, and contextual character joining.
+- **Overflow Hidden** (`overflow("hidden")`): Content that exceeds a node's bounds is now clipped. Mirrors the CSS `overflow: hidden` property.
+  - Applies to both container nodes (`Row`, `Column`) and `Text` nodes with a fixed size.
+  - Clips to the **padding box**, so backgrounds and borders remain fully visible.
+  - When combined with `border_radius`, the clip follows the rounded shape of the element.
+  - Non-inheritable: must be set explicitly on each node.
 
 ## [2.2.0] - 2026-03-29
 
