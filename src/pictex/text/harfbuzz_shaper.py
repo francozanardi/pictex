@@ -10,6 +10,7 @@ class ShapedText(NamedTuple):
     glyphs: list[ShapedGlyph]
     width: float
     visual_width: float  # Includes last glyph overhang (e.g. italic slant)
+    is_cursive_script: bool = False  # True when the run belongs to a cursive script (e.g. Arabic)
 
 
 class HarfBuzzShaper:
@@ -24,7 +25,17 @@ class HarfBuzzShaper:
     def __init__(self) -> None:
         self._font_cache: dict[tuple[int, float], tuple[hb.Font, int, object]] = {}
     
-    def shape_text_run(self, run: TextRun) -> ShapedText:
+    # Optional ligature features disabled when letter-spacing is active, matching Chrome/Blink:
+    # liga, clig, and calt are all disabled unconditionally for non-cursive scripts.
+    # Required ligatures (rlig) are intentionally omitted so mandatory joins are preserved.
+    _OPTIONAL_LIGATURE_FEATURES = ('liga', 'clig', 'calt')
+
+    # Cursive scripts for which letter-spacing is ignored entirely, matching Chrome 137+.
+    # These scripts require visual connections between letters that letter-spacing would break.
+    # Source: https://groups.google.com/a/chromium.org/g/blink-dev/c/K_tGT0tTJoM
+    _CURSIVE_SCRIPTS = frozenset({'Arab', 'Syrc', 'Mong', 'Nkoo', 'Rohg', 'Mand', 'Phag'})
+
+    def shape_text_run(self, run: TextRun, disable_optional_ligatures: bool = False) -> ShapedText:
         """
         Shape a TextRun using HarfBuzz.
 
@@ -34,9 +45,12 @@ class HarfBuzzShaper:
         Args:
             run: The TextRun to shape, carrying text, font, direction, and
                  its position within the parent BiDiFragment.
+            disable_optional_ligatures: When True, disables liga/clig/calt features
+                 before shaping. Ignored automatically for cursive scripts (Arabic etc.)
+                 since those scripts skip letter-spacing entirely.
 
         Returns:
-            ShapedText with glyphs and total width.
+            ShapedText with glyphs, total width, and is_cursive_script flag.
         """
         hb_font, upem = self._get_or_create_hb_font(run.font)
         font_size = run.font.getSize()
@@ -46,10 +60,17 @@ class HarfBuzzShaper:
             full_text=run.bidi_fragment.text,
             start_index=run.fragment_offset,
         )
-        hb.shape(hb_font, buffer)
+
+        is_cursive = buffer.script in self._CURSIVE_SCRIPTS
+        if disable_optional_ligatures and not is_cursive:
+            features = {tag: False for tag in self._OPTIONAL_LIGATURE_FEATURES}
+            hb.shape(hb_font, buffer, features)
+        else:
+            hb.shape(hb_font, buffer)
 
         return self._process_shaped_buffer(
-            buffer, hb_font, font_size, upem, run.direction, run.fragment_offset
+            buffer, hb_font, font_size, upem, run.direction, run.fragment_offset,
+            is_cursive_script=is_cursive,
         )
     
     def _create_buffer(
@@ -69,29 +90,30 @@ class HarfBuzzShaper:
         return buffer
     
     def _process_shaped_buffer(
-        self, 
+        self,
         buffer: hb.Buffer,
         hb_font: hb.Font,
-        font_size: float, 
+        font_size: float,
         upem: int,
         direction: TextDirection,
-        cluster_offset: int = 0
+        cluster_offset: int = 0,
+        is_cursive_script: bool = False,
     ) -> ShapedText:
         """Convert HarfBuzz buffer results to ShapedText."""
         infos = buffer.glyph_infos
         positions = buffer.glyph_positions
-        
+
         glyphs: list[ShapedGlyph] = []
         total_width = 0.0
-        
+
         for info, pos in zip(infos, positions):
             glyph = self._create_shaped_glyph(info, pos, font_size, upem, cluster_offset)
             glyphs.append(glyph)
             total_width += glyph.x_advance
-        
+
         visual_width = self._compute_visual_width(glyphs, hb_font, font_size, upem, direction)
-        
-        return ShapedText(glyphs=glyphs, width=total_width, visual_width=visual_width)
+
+        return ShapedText(glyphs=glyphs, width=total_width, visual_width=visual_width, is_cursive_script=is_cursive_script)
     
     def _create_shaped_glyph(
         self,

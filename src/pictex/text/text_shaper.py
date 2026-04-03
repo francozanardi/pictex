@@ -184,18 +184,20 @@ class TextShaper:
 
     def _shape_run(self, run: TextRun) -> float:
         """Shape a single run. Returns its visual width."""
-        shaped = self._hb_shaper.shape_text_run(run)
+        letter_spacing = run.style.letter_spacing.get()
+        has_letter_spacing = not letter_spacing.is_normal
+
+        shaped = self._hb_shaper.shape_text_run(run, disable_optional_ligatures=has_letter_spacing)
         run.shaped_glyphs = shaped.glyphs
         run.width = shaped.width
 
-        letter_spacing = run.style.letter_spacing.get()
-        if letter_spacing.is_normal or not run.shaped_glyphs:
+        if not has_letter_spacing or not run.shaped_glyphs or shaped.is_cursive_script:
             return shaped.visual_width
 
         spacing_px = self._resolve_letter_spacing_px(letter_spacing, run)
         if spacing_px is not None:
-            self._apply_letter_spacing(run.shaped_glyphs, spacing_px)
-            run.width += spacing_px * (len(run.shaped_glyphs) - 1)
+            n_gaps = self._apply_letter_spacing(run.shaped_glyphs, spacing_px)
+            run.width += spacing_px * n_gaps
 
         return shaped.visual_width
 
@@ -221,13 +223,27 @@ class TextShaper:
         widths = font.getWidths(glyph_ids)
         return widths[0] if widths else None
 
-    # TODO: we're applying spacing by glyphs instead of by graphemes,
-    # it will cause issues with complex emojis like family 👨‍👩‍👧‍👦
-    # we should also take a look at scripting systems like Arabic
-    def _apply_letter_spacing(self, glyphs: list[ShapedGlyph], spacing_px: float) -> None:
-        """Add spacing_px to the x_advance of every glyph except the last."""
-        for glyph in glyphs[:-1]:
-            glyph.x_advance += spacing_px
+    def _apply_letter_spacing(self, glyphs: list[ShapedGlyph], spacing_px: float) -> int:
+        """Add spacing_px after each grapheme cluster boundary.
+
+        Uses HarfBuzz cluster values to detect boundaries: consecutive glyphs
+        sharing the same cluster value belong to the same grapheme cluster (e.g.
+        a base glyph + combining mark, or a multi-glyph emoji component).
+        Spacing is added to the x_advance of the last glyph in each cluster group,
+        except for the final cluster - matching browser behaviour.
+
+        Works correctly for both LTR (clusters non-decreasing) and RTL (clusters
+        non-increasing), since HarfBuzz returns glyphs in visual order.
+
+        Returns the number of cluster boundaries where spacing was applied,
+        so the caller can update run.width accordingly.
+        """
+        n_gaps = 0
+        for i in range(len(glyphs) - 1):
+            if glyphs[i].cluster != glyphs[i + 1].cluster:
+                glyphs[i].x_advance += spacing_px
+                n_gaps += 1
+        return n_gaps
 
     def _create_blobs(self, runs: list[TextRun], baseline: float) -> None:
         """Create TextBlobs for all runs using the final baseline."""
