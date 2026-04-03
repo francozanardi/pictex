@@ -56,6 +56,8 @@ class FontManager:
 
         if not typeface:
             typeface = TypefaceLoader.load_default()
+            if utils.is_variable_font(typeface):
+                typeface = self._apply_variations_to_variable_font(typeface)
         
         return self._create_font(typeface)
     

@@ -94,7 +94,14 @@ class LayoutEngine:
                 if available_space.width.scale == Scale.POINTS:
                     wrap_width = available_space.width.value
                 elif available_space.width.scale == Scale.MIN_CONTENT:
-                    wrap_width = 0
+                    # Find the true min-content width (widest non-breakable token) by shaping
+                    # with wrap_width=0 (one token per line), then use that width to compute
+                    # the height. This ensures the reported height is consistent with the
+                    # width Taffy will actually allocate (which equals the min-content width),
+                    # preventing Taffy from over-reserving vertical space.
+                    text_node.set_text_wrap_width(0)
+                    wrap_width = text_node.compute_intrinsic_width()
+                    text_node._clear_bounds()
 
             if wrap_width is not None:
                 # We need to use ceil here since the text content bounds are computed using ceil
