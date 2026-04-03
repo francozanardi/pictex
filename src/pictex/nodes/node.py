@@ -2,7 +2,7 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Optional, Tuple
 import skia
-from ..models import Style, Shadow, RenderProps, CropMode, Transform
+from ..models import Style, Shadow, RenderProps, CropMode, Overflow
 from ..painters import Painter
 from ..utils import create_composite_shadow_filter, to_int_skia_rect, clone_skia_rect, cached_property, Cacheable
 from ..layout import LayoutResult
@@ -109,25 +109,78 @@ class Node(Cacheable):
             return filter.computeFastBounds(source_bounds)
         return source_bounds
 
-    def _get_painters(self) -> list[Painter]:
-        """Return list of painters for this node. Must be implemented by subclasses."""
-        raise NotImplementedError("_get_painters() is not implemented")
-    
+    def _get_decoration_painters(self) -> list[Painter]:
+        """Return painters for decorations (background, border). Never clipped.
+
+        These painters are drawn outside of any ``overflow: hidden`` clip so
+        that the background fills the border box and the border sits on top of
+        any clipped content.
+        """
+        raise NotImplementedError("_get_decoration_painters() is not implemented")
+
+    def _get_content_painters(self) -> list[Painter]:
+        """Return painters for actual content (text, images). Subject to clip.
+
+        When ``overflow`` is ``HIDDEN`` these painters are drawn inside a clip
+        rect bounded by ``padding_bounds``, preventing content from bleeding
+        outside the element box.
+        """
+        return []
+
     def compute_intrinsic_width(self) -> int:
         """Compute intrinsic content width. Used by measure functions."""
         raise NotImplementedError("compute_intrinsic_width() is not implemented")
-    
+
     def compute_intrinsic_height(self) -> int:
         """Compute intrinsic content height. Used by measure functions."""
         raise NotImplementedError("compute_intrinsic_height() is not implemented")
 
     def paint(self, canvas: skia.Canvas) -> None:
-        """Paint this node and its children to the canvas. All bounds are in absolute canvas coordinates."""
-        for painter in self._get_painters():
-            painter.paint(canvas)
+        """Paint this node and its children to the canvas.
         
+        All bounds are in absolute canvas coordinates.
+        
+        Decoration painters (background, border) are always painted without
+        clipping.  Content painters and child nodes are clipped to
+        ``padding_bounds`` when ``overflow`` is ``HIDDEN``.
+        """
+        for painter in self._get_decoration_painters():
+            painter.paint(canvas)
+
+        overflow_hidden = (
+            self.computed_styles.overflow.get() == Overflow.HIDDEN
+        )
+        if overflow_hidden:
+            canvas.save()
+            canvas.clipRRect(self._build_overflow_clip_rrect(), doAntiAlias=True)
+
+        for painter in self._get_content_painters():
+            painter.paint(canvas)
+
         for child in self._children:
             child.paint(canvas)
+
+        if overflow_hidden:
+            canvas.restore()
+
+    def _build_overflow_clip_rrect(self) -> skia.RRect:
+        """Build the clip shape for ``overflow: hidden``.
+
+        Clips to ``padding_bounds``.  When a ``border_radius`` is set the
+        corner radii are reduced by the border width so the rounded clip rect
+        is concentric with the border, exactly as ``BorderPainter`` does for
+        its stroke.
+        """
+        clip_rect = self.padding_bounds
+        box_radius = self.computed_styles.border_radius.get()
+        if not box_radius:
+            return skia.RRect.MakeRect(clip_rect)
+
+        # Reduce radii by the border width so the clip sits inside the border,
+        # matching the visual curve of the painted border.
+        border = self.computed_styles.border.get()
+        radius_offset = border.width if border else 0.0
+        return box_radius.apply_corner_radius(clip_rect, radius_offset)
 
     def init_render_dependencies(self, render_props: RenderProps) -> None:
         """Initialize rendering dependencies (fonts, text shapers, etc.)."""

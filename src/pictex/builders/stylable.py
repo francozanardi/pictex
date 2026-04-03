@@ -542,6 +542,38 @@ class Stylable(InlineStyleable):
         self._style.align_self.set(alignment if isinstance(alignment, AlignSelf) else AlignSelf(alignment))
         return self
 
+    def overflow(self, value: Union[Overflow, Literal["hidden", "visible"]]) -> Self:
+        """Controls how content that exceeds the element's bounds is rendered.
+
+        Equivalent to CSS ``overflow``. When set to ``"hidden"``, any content
+        (text, child nodes, images) that extends beyond the element's
+        **padding box** is clipped and hidden. The background and border are
+        not affected by the clip.
+
+        This property is **not inherited**.
+
+        Args:
+            value: ``"hidden"`` to clip overflowing content, or ``"visible"``
+                to leave it unclipped (the default). Accepts the ``Overflow``
+                enum or its string equivalents.
+
+        Returns:
+            The ``Self`` instance for chaining.
+
+        Example:
+            ```python
+            # Clip text that overflows a fixed-size box:
+            Text("Very long text…").size(width=200, height=50).overflow("hidden")
+
+            # Clip children that grow beyond a container:
+            Row(child1, child2).size(width=300).overflow("hidden")
+            ```
+        """
+        self._style.overflow.set(
+            value if isinstance(value, Overflow) else Overflow(value)
+        )
+        return self
+
     def _parse_radius_value(self, value: Union[float, int, str]) -> BorderRadiusValue:
         if isinstance(value, str) and value.endswith('%'):
             return BorderRadiusValue(value=float(value.rstrip('%')), mode='percent')

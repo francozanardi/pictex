@@ -10,7 +10,7 @@ class ContainerNode(Node):
         super().__init__(style)
         self._set_children(children)
 
-    def _get_painters(self) -> list[Painter]:
+    def _get_decoration_painters(self) -> list[Painter]:
         """Return painters for container background and border."""
         if not self._render_props:
             raise RuntimeError("_render_props not initialized - call prepare_tree_for_rendering first")

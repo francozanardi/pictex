@@ -46,12 +46,18 @@ class TextNode(BaseTextNode):
         self._text_shaper = None
         self._text_wrap_width = None
 
-    def _get_painters(self) -> list[Painter]:
-        if not self._font_manager or not self._render_props:
+    def _get_decoration_painters(self) -> list[Painter]:
+        if not self._render_props:
             raise RuntimeError("Dependencies not initialized")
         return [
             BackgroundPainter(self.computed_styles, self.border_bounds, self._render_props.is_svg),
             BorderPainter(self.computed_styles, self.border_bounds),
+        ]
+
+    def _get_content_painters(self) -> list[Painter]:
+        if not self._font_manager or not self._render_props:
+            raise RuntimeError("Dependencies not initialized")
+        return [
             TextPainter(
                 self.computed_styles,
                 self._font_manager,

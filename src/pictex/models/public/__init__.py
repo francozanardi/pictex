@@ -21,6 +21,7 @@ from .render_node import RenderNode
 from .node_type import NodeType
 from .line_height import LineHeight, LineHeightMode
 from .letter_spacing import LetterSpacing, LetterSpacingMode
+from .overflow import Overflow
 
 __all__ = [
     "Shadow", "OutlineStroke", "StrokeMode",
@@ -46,4 +47,5 @@ __all__ = [
     "NodeType",
     "LineHeight", "LineHeightMode",
     "LetterSpacing", "LetterSpacingMode",
+    "Overflow",
 ]

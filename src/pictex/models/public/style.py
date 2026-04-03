@@ -16,6 +16,7 @@ from .color import SolidColor
 from .size import SizeValue
 from .line_height import LineHeight
 from .letter_spacing import LetterSpacing
+from .overflow import Overflow
 
 
 @dataclass
@@ -78,6 +79,7 @@ class Style:
         default_factory=lambda: StyleProperty(FlexWrap.NOWRAP, inheritable=False)
     )
     gap: StyleProperty[float] = field(default_factory=lambda: StyleProperty(0.0, inheritable=False))
+    overflow: StyleProperty[Overflow] = field(default_factory=lambda: StyleProperty(Overflow.VISIBLE, inheritable=False))
 
     def is_explicit(self, field_name: str) -> bool:
         property: Optional[StyleProperty] = getattr(self, field_name)
