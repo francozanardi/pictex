@@ -1,7 +1,7 @@
 import skia
 from .painter import Painter
 from ..utils import create_composite_shadow_filter
-from ..models import Style, BackgroundImageSizeMode
+from ..models import Style, BackgroundImageSizeMode, BorderStyle
 
 class BackgroundPainter(Painter):
 
@@ -27,28 +27,42 @@ class BackgroundPainter(Painter):
     def _build_background_rrect(self) -> skia.RRect:
         """Build the RRect used for painting background colour and image.
 
-        When *both* a border and a border_radius are present, the background
-        is restricted to the area inside the border (the padding box). This
-        prevents the background drawRRect's anti-aliased edge pixels from
-        bleeding outside the border's outer edge, which would produce a visible
-        colour fringe at rounded corners.
+        When *both* a **solid** border and a border_radius are present, the
+        background rect is inset by ``border.width / 2``, that is, to the
+        **centre line** of the border stroke.
+
+        Rationale
+        ---------
+        Skia's ``drawRRect`` with ``AntiAlias=True`` produces semi-transparent
+        AA pixels that extend slightly beyond the shape boundary.  When the
+        background fills the full border box, those AA pixels land outside the
+        border's outer edge and appear as a colour fringe.
+
+        By inset-ing the background to the centre of the border stroke:
+
+        * The background's outer AA pixels land within the *inner half* of the
+          stroke, where the border paint is fully opaque and covers them
+          completely, so no fringe is visible.
+        * The background never reaches the *outer half* of the stroke, so no
+          background pixels can bleed past the border's outer edge.
+        * The transition (background → border) stays visually smooth because
+          the border naturally absorbs the background's AA edge.
+
+        For dashed or dotted borders the background must fill the full border
+        box so that the gaps in the stroke reveal the background colour (CSS
+        ``background-clip: border-box`` default behaviour).
 
         Without a border, or without a border_radius, the border box shape is
         used unchanged (same as :meth:`_build_rounded_box_rect`).
-
-        This matches CSS ``background-clip: padding-box`` semantics when a
-        border is present.
         """
         border = self._style.border.get()
         box_radius = self._style.border_radius.get()
-        if not border or border.width <= 0 or not box_radius:
+        if not border or border.width <= 0 or not box_radius or border.style != BorderStyle.SOLID:
             return self._build_rounded_box_rect()
 
-        # Inset the box by the full border width so the background fills only
-        # the padding area.  Reduce the corner radii by the same amount so the
-        # inner curve is concentric with the painted border stroke.
-        inner_rect = self._box_bounds.makeInset(border.width, border.width)
-        return box_radius.apply_corner_radius(inner_rect, border.width)
+        offset = border.width / 2
+        inner_rect = self._box_bounds.makeInset(offset, offset)
+        return box_radius.apply_corner_radius(inner_rect, offset)
 
     def _paint_box_shadows(self, canvas: skia.Canvas, box_rect: skia.RRect):
         if self._is_svg:
