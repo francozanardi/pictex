@@ -11,10 +11,11 @@ class BackgroundPainter(Painter):
         self._is_svg = is_svg
 
     def paint(self, canvas: skia.Canvas) -> None:
-        rounded_box_rect = self._build_rounded_box_rect()
-        self._paint_box_shadows(canvas, rounded_box_rect)
-        self._paint_background_color(canvas, rounded_box_rect)
-        self._paint_background_image(canvas, rounded_box_rect)
+        border_rrect = self._build_rounded_box_rect()
+        bg_rrect = self._build_background_rrect()
+        self._paint_box_shadows(canvas, border_rrect)
+        self._paint_background_color(canvas, bg_rrect)
+        self._paint_background_image(canvas, bg_rrect)
 
     def _build_rounded_box_rect(self) -> skia.RRect:
         box_radius = self._style.border_radius.get()
@@ -22,6 +23,32 @@ class BackgroundPainter(Painter):
             return skia.RRect.MakeRect(self._box_bounds)
 
         return box_radius.apply_corner_radius(self._box_bounds)
+
+    def _build_background_rrect(self) -> skia.RRect:
+        """Build the RRect used for painting background colour and image.
+
+        When *both* a border and a border_radius are present, the background
+        is restricted to the area inside the border (the padding box). This
+        prevents the background drawRRect's anti-aliased edge pixels from
+        bleeding outside the border's outer edge, which would produce a visible
+        colour fringe at rounded corners.
+
+        Without a border, or without a border_radius, the border box shape is
+        used unchanged (same as :meth:`_build_rounded_box_rect`).
+
+        This matches CSS ``background-clip: padding-box`` semantics when a
+        border is present.
+        """
+        border = self._style.border.get()
+        box_radius = self._style.border_radius.get()
+        if not border or border.width <= 0 or not box_radius:
+            return self._build_rounded_box_rect()
+
+        # Inset the box by the full border width so the background fills only
+        # the padding area.  Reduce the corner radii by the same amount so the
+        # inner curve is concentric with the painted border stroke.
+        inner_rect = self._box_bounds.makeInset(border.width, border.width)
+        return box_radius.apply_corner_radius(inner_rect, border.width)
 
     def _paint_box_shadows(self, canvas: skia.Canvas, box_rect: skia.RRect):
         if self._is_svg:
@@ -39,6 +66,9 @@ class BackgroundPainter(Painter):
             return
 
         paint = skia.Paint(AntiAlias=True)
+        # Gradient shaders are resolved against the full border-box bounds so
+        # that gradient colours span the visible element - even when box_rect
+        # is the smaller padding-box RRect used to prevent corner bleeding.
         background_color.apply_to_paint(paint, self._box_bounds)
         canvas.drawRRect(box_rect, paint)
 
