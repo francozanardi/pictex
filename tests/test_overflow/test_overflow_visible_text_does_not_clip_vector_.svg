@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="117"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="200" height="117" />
+	<rect fill="#ECF0F1" width="200" height="60" />
+	<text fill="blue" font-size="24" font-family="pictex-InterVariable" x="0, 15.492188, 29.683594, 35.496094, 48.164062, 54.914062, 60.726562, 73.394531, 80.144531, 93.621094, 100.37109, 113.39062, 127.38281, 136.79297, " y="23.25, ">
+			This is a very
+	</text>
+	<text fill="blue" font-size="24" font-family="pictex-InterVariable" x="0, 5.8125, 20.203125, 34.382812, 49.101562, 55.851562, 68.519531, 82.511719, 96.691406, 104.30859, 118.30078, 132.48047, 146.19141, " y="52.289062, ">
+			long sentence
+	</text>
+	<text fill="blue" font-size="24" font-family="pictex-InterVariable" x="0, 7.8515625, 22.042969, 35.519531, 43.371094, 50.121094, 69.761719, 75.574219, 81.386719, 87.199219, 93.949219, 107.87109, 120.89062, 134.88281, 144.29297, 153.17578, 158.98828, 172.94531, " y="81.328125, ">
+			that will overflow
+	</text>
+	<text fill="blue" font-size="24" font-family="pictex-InterVariable" x="0, 7.8515625, 22.042969, 36.035156, 42.785156, 51.667969, 57.480469, 70.042969, 84.035156, 98.730469, 105.48047, 120.17578, 134.02734, 147.12891, " y="110.36719, ">
+			the fixed box.
+	</text>
+</svg>

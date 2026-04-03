@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="633" height="53"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="633" height="53" />
+	<rect fill="#ECF0F1" width="500" height="53" />
+	<rect fill="#3498DB" width="93" height="53" />
+	<text font-size="30" font-family="pictex-InterVariable" x="8, 27.248047, 44.987305, 62.975586, 74.738281, " y="37.0625, ">
+			Short
+	</text>
+	<rect fill="#E74C3C" x="93" width="317" height="53" />
+	<text font-size="30" font-family="pictex-InterVariable" x="101, 120.36523, 138.10449, 145.37012, 161.20508, 169.64258, 179.16406, 195.98047, 212.94336, 222.75781, 231.19531, 238.46094, 254.2959, 262.7334, 279.00781, 296.49805, 308.26074, 325.12109, 333.55859, 358.10938, 365.375, 383.74414, " y="37.0625, ">
+			This text is very wide
+	</text>
+	<rect fill="#2ECC71" x="410" width="223" height="53" />
+	<text font-size="30" font-family="pictex-InterVariable" x="418, 438.69824, 445.96387, 461.79883, 479.78711, 488.22461, 512.77539, 520.04102, 538.41016, 555.90039, 564.33789, 571.60352, 581.125, 598.61523, " y="37.0625, ">
+			Also wide item
+	</text>
+</svg>

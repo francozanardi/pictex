@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="126"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="200" height="126" />
+	<rect fill="#ECF0F1" width="200" height="126" />
+	<rect fill="none" stroke="#2C3E50" stroke-width="4" stroke-miterlimit="4" x="2" y="2" width="196" height="122" />
+	<clipPath id="cl_6">
+		<rect x="4" y="4" width="192" height="118" />
+	</clipPath>
+	<g clip-path="url(#cl_6)">
+		<rect fill="#3498DB" x="4" y="4" width="121" height="84" />
+		<text font-size="28" font-family="pictex-InterVariable" x="12, 32.453125, 49.242188, 65.785156, 74.671875, 90.996094, 107.53906, " y="39.125, ">
+				Content
+		</text>
+		<text font-size="28" font-family="pictex-InterVariable" x="12, " y="73.003906, ">
+				A
+		</text>
+		<rect fill="#E74C3C" x="125" y="4" width="146" height="118" />
+		<text font-size="28" font-family="pictex-InterVariable" x="133, 153.45312, 170.24219, 186.78516, 195.67188, 211.99609, 228.53906, " y="39.125, ">
+				Content
+		</text>
+		<text font-size="28" font-family="pictex-InterVariable" x="133, 151.32031, 159.19531, " y="73.003906, ">
+				B -
+		</text>
+		<text font-size="28" font-family="pictex-InterVariable" x="133, 149.24219, 164.43164, 180.75586, 191.73438, 202.09766, 208.87891, 225.16211, 248.07617, " y="106.88281, ">
+				overflows
+		</text>
+	</g>
+</svg>

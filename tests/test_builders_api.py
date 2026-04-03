@@ -1,3 +1,4 @@
+import pytest
 from pictex import *
 from pathlib import Path
 from .conftest import IMAGE_PATH
@@ -335,3 +336,46 @@ def test_font_weight():
     with pytest.raises(ValueError) as excinfo:
         text.font_weight("invalid-weight")
     assert "Invalid font weight" in str(excinfo.value)
+
+def test_overflow_api():
+    """overflow() accepts enum and string forms; default is VISIBLE."""
+    from pictex import Overflow
+
+    # Default
+    text = Text("hello")
+    assert text._style.overflow.get() == Overflow.VISIBLE
+
+    # String form
+    text.overflow("hidden")
+    assert text._style.overflow.get() == Overflow.HIDDEN
+
+    text.overflow("visible")
+    assert text._style.overflow.get() == Overflow.VISIBLE
+
+    # Enum form
+    text.overflow(Overflow.HIDDEN)
+    assert text._style.overflow.get() == Overflow.HIDDEN
+
+    # Fluent chaining works
+    result = Text("hi").overflow("hidden")
+    assert result._style.overflow.get() == Overflow.HIDDEN
+
+    # Invalid string raises ValueError
+    with pytest.raises(ValueError):
+        Text("x").overflow("scroll")  # type: ignore[arg-type]
+
+def test_overflow_not_inherited():
+    """overflow is NOT inherited from parent to children."""
+    from pictex import Overflow
+    from pictex.nodes import RowNode, TextNode
+    from pictex.models import Style
+
+    parent_style = Style()
+    child_style = Style()
+
+    parent_style.overflow.set(Overflow.HIDDEN)
+
+    child_style.inherit_from(parent_style)
+
+    # overflow should remain at its default (VISIBLE) — not copied from parent
+    assert child_style.overflow.get() == Overflow.VISIBLE

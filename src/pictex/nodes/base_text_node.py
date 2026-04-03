@@ -2,8 +2,8 @@ from math import ceil
 from typing import Optional
 import skia
 from .node import Node
-from ..models import Line, StrokeMode, TextDecoration
-from ..utils import cached_property, cached_method, to_int_skia_rect
+from ..models import Line, StrokeMode, TextDecoration, Overflow
+from ..utils import cached_property, cached_method, to_int_skia_rect, clone_skia_rect
 
 
 class BaseTextNode(Node):
@@ -105,15 +105,21 @@ class BaseTextNode(Node):
 
     def _compute_paint_bounds(self) -> skia.Rect:
         paint_bounds = super()._compute_paint_bounds()
-        shadow_bounds = self._compute_shadow_bounds(
-            self.absolute_text_bounds, self.computed_styles.text_shadows.get()
-        )
-        paint_bounds.join(shadow_bounds)
+        overflow_visible = self.computed_styles.overflow.get() == Overflow.VISIBLE
+        if overflow_visible:
+            shadow_bounds = self._compute_shadow_bounds(
+                self.absolute_text_bounds, self.computed_styles.text_shadows.get()
+            )
+            paint_bounds.join(shadow_bounds)
+
+        if not overflow_visible:
+            return paint_bounds
 
         outline = self.computed_styles.text_stroke.get()
         if not outline or outline.mode == StrokeMode.INLINE:
             return paint_bounds
 
         stroke_expansion = outline.width if outline.mode == StrokeMode.OUTLINE else outline.width / 2
-        paint_bounds.join(self.absolute_text_bounds.makeOutset(stroke_expansion, stroke_expansion))
+        stroke_bounds = self.absolute_text_bounds.makeOutset(stroke_expansion, stroke_expansion)
+        paint_bounds.join(stroke_bounds)
         return paint_bounds

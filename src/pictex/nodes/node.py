@@ -85,15 +85,17 @@ class Node(Cacheable):
 
     def _compute_paint_bounds(self) -> skia.Rect:
         paint_bounds = clone_skia_rect(self.margin_bounds)
-        for child in self.children:
-            paint_bounds.join(child.paint_bounds)
+
+        if self.computed_styles.overflow.get() == Overflow.VISIBLE:
+            for child in self.children:
+                paint_bounds.join(child.paint_bounds)
         
         paint_bounds.join(
             self._compute_shadow_bounds(self.border_bounds, self.computed_styles.box_shadows.get())
         )
 
         # This only makes sense if the padding is negative
-        paint_bounds.join(self.content_bounds) 
+        paint_bounds.join(self.content_bounds)
 
         return paint_bounds
 

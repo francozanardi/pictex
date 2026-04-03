@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-InterVariable';
+    src: url('InterVariable.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="200" height="60" />
+	<rect fill="#ECF0F1" width="200" height="60" />
+	<clipPath id="cl_5">
+		<rect width="200" height="60" />
+	</clipPath>
+	<g clip-path="url(#cl_5)">
+		<text fill="blue" font-size="24" font-family="pictex-InterVariable" x="0, 15.492188, 29.683594, 35.496094, 48.164062, 54.914062, 60.726562, 73.394531, 80.144531, 93.621094, 100.37109, 113.39062, 127.38281, 136.79297, " y="23.25, ">
+				This is a very
+		</text>
+		<text fill="blue" font-size="24" font-family="pictex-InterVariable" x="0, 5.8125, 20.203125, 34.382812, 49.101562, 55.851562, 68.519531, 82.511719, 96.691406, 104.30859, 118.30078, 132.48047, 146.19141, " y="52.289062, ">
+				long sentence
+		</text>
+	</g>
+</svg>
