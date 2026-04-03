@@ -13,10 +13,10 @@
 }</style></defs>
 	<rect fill-opacity="0" width="231" height="168" />
 	<rect fill="#ECF0F1" width="231" height="168" />
-	<clipPath id="cl_4">
+	<clipPath id="cl_7">
 		<rect width="231" height="168" />
 	</clipPath>
-	<g clip-path="url(#cl_4)">
+	<g clip-path="url(#cl_7)">
 		<rect fill="#3498DB" width="97" height="53" />
 		<text font-size="30" font-family="pictex-InterVariable" x="8, 24.962891, 32.228516, 49.953125, 67.443359, 75.880859, " y="37.0625, ">
 				Line 1

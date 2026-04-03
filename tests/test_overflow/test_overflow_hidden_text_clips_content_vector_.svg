@@ -4,10 +4,10 @@
 }</style></defs>
 	<rect fill-opacity="0" width="200" height="60" />
 	<rect fill="#ECF0F1" width="200" height="60" />
-	<clipPath id="cl_5">
+	<clipPath id="cl_8">
 		<rect width="200" height="60" />
 	</clipPath>
-	<g clip-path="url(#cl_5)">
+	<g clip-path="url(#cl_8)">
 		<text fill="blue" font-size="24" font-family="pictex-InterVariable" x="0, 15.492188, 29.683594, 35.496094, 48.164062, 54.914062, 60.726562, 73.394531, 80.144531, 93.621094, 100.37109, 113.39062, 127.38281, 136.79297, " y="23.25, ">
 				This is a very
 		</text>

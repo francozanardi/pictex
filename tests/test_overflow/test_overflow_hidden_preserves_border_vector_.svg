@@ -8,10 +8,10 @@
 	<rect fill-opacity="0" width="200" height="126" />
 	<rect fill="#ECF0F1" width="200" height="126" />
 	<rect fill="none" stroke="#2C3E50" stroke-width="4" stroke-miterlimit="4" x="2" y="2" width="196" height="122" />
-	<clipPath id="cl_6">
+	<clipPath id="cl_9">
 		<rect x="4" y="4" width="192" height="118" />
 	</clipPath>
-	<g clip-path="url(#cl_6)">
+	<g clip-path="url(#cl_9)">
 		<rect fill="#3498DB" x="4" y="4" width="121" height="84" />
 		<text font-size="28" font-family="pictex-InterVariable" x="12, 32.453125, 49.242188, 65.785156, 74.671875, 90.996094, 107.53906, " y="39.125, ">
 				Content
