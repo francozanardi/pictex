@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="264" height="208"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-Vazirmatn';
+    src: url('Vazirmatn-Regular.ttf');
+}@font-face {
+    font-family: 'pictex-Vazirmatn';
+    src: url('Vazirmatn-Regular.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="264" height="208" />
+	<rect fill="white" width="264" height="208" />
+	<rect fill="#F0F0F0" x="20" y="20" width="224" height="79" />
+	<text font-size="50" font-family="pictex-Vazirmatn" x="20, 82.939453, 96.367188, 124.78516, 136.38184, 149.80957, 175.7373, 190.1416, 201.73828, 215.16602, " y="71.269531, ">
+			ﷲ ﻻإ ﻪﻟإ ﻻ
+	</text>
+	<rect fill="#F0F0F0" x="20" y="109" width="224" height="79" />
+	<text font-size="50" font-family="pictex-Vazirmatn" x="20, 82.939453, 96.367188, 124.78516, 136.38184, 149.80957, 175.7373, 190.1416, 201.73828, 215.16602, " y="160.26953, ">
+			ﷲ ﻻإ ﻪﻟإ ﻻ
+	</text>
+</svg>

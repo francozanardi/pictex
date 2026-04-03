@@ -1,6 +1,6 @@
 import pytest
 from pictex import Canvas, Column, Text, LetterSpacingMode
-from .conftest import STATIC_FONT_PATH, JAPANESE_FONT_PATH
+from .conftest import STATIC_FONT_PATH, JAPANESE_FONT_PATH, FONT_WITH_LIGATURES_PATH, VAZIRMATN_FONT_PATH
 
 
 # ---------------------------------------------------------------------------
@@ -164,4 +164,47 @@ def test_letter_spacing_with_multirun_text(file_regression, render_engine):
     )
     render_func, check_func = render_engine
     image = render_func(canvas, Text("Hello 日本語").letter_spacing(6))
+    check_func(file_regression, image)
+
+
+def test_letter_spacing_disables_optional_ligatures(file_regression, render_engine):
+    """
+    Optional ligatures (liga/calt) must not form when letter-spacing is non-zero.
+    The top row shows FiraCode's native ligatures (-> == fi); the bottom row applies
+    letter-spacing and those ligatures must be absent — each character rendered separately.
+    """
+    canvas = (
+        Canvas()
+        .font_family(FONT_WITH_LIGATURES_PATH)
+        .font_size(50)
+        .background_color("white")
+        .padding(20)
+    )
+    content = Column(
+        Text("fi -> ==").background_color("#f0f0f0"),
+        Text("fi -> ==").letter_spacing(6).background_color("#f0f0f0"),
+    ).gap(10)
+    render_func, check_func = render_engine
+    image = render_func(canvas, content)
+    check_func(file_regression, image)
+
+
+def test_letter_spacing_is_ignored_on_arabic_script(file_regression, render_engine):
+    """
+    Letter spacing must be ignored for Arabic and other cursive scripts,
+    since those scripts use connected letterforms that can't be separated without breaking the text.
+    """
+    canvas = (
+        Canvas()
+        .font_family(VAZIRMATN_FONT_PATH)
+        .font_size(50)
+        .background_color("white")
+        .padding(20)
+    )
+    content = Column(
+        Text("لا إله إلا الله").background_color("#f0f0f0"),
+        Text("لا إله إلا الله").letter_spacing(6).background_color("#f0f0f0"),
+    ).gap(10)
+    render_func, check_func = render_engine
+    image = render_func(canvas, content)
     check_func(file_regression, image)

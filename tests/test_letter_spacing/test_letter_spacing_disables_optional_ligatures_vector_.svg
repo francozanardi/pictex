@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="322" height="182"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-FiraCodeMediumFiraCode';
+    src: url('FiraCode-Medium.ttf');
+}@font-face {
+    font-family: 'pictex-FiraCodeMediumFiraCode';
+    src: url('FiraCode-Medium.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="322" height="182" />
+	<rect fill="white" width="322" height="182" />
+	<rect fill="#F0F0F0" x="20" y="20" width="240" height="66" />
+	<text font-size="50" font-family="pictex-FiraCodeMediumFiraCode" x="20, 80, " y="69.5, ">
+			f 
+	</text>
+	<rect fill="#F0F0F0" x="20" y="96" width="282" height="66" />
+	<text font-size="50" font-family="pictex-FiraCodeMediumFiraCode" x="20, 56, 92, 128, 164, 200, 236, 272, " y="145.5, ">
+			fi -&gt; ==
+	</text>
+</svg>
