@@ -1,6 +1,6 @@
 [project]
 name = "pictex"
-version = "2.2.0"
+version = "2.3.0"
 description = "A Python library for efficient image generation using CSS Flexbox."
 authors = [
     { name = "Franco Zanardi", email = "francozanardi97@gmail.com" },
